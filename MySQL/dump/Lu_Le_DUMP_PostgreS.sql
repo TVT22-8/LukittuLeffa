@@ -1,7 +1,5 @@
 -- Table structure for table `joinrequest`
 
-
-
 DROP TABLE IF EXISTS joinrequest;
 CREATE TABLE joinrequest (
   status BOOLEAN NOT NULL,
@@ -17,7 +15,7 @@ CREATE TABLE joinrequest (
 DROP TABLE IF EXISTS userlukittu;
 CREATE TABLE userlukittu (
   userid SERIAL PRIMARY KEY,
-  username TEXT NOT NULL CHECK (LENGTH(username) <= 30), --'Username less than 30'
+  username TEXT NOT NULL CHECK (LENGTH(username) <= 30), --'Username has to be less than 30'
   pwd TEXT NOT NULL,
   UNIQUE (userid),
   UNIQUE (username)
@@ -36,6 +34,9 @@ CREATE TABLE watchgroup (
   UNIQUE (groupid),
   UNIQUE (groupname)
 );
+
+ALTER Table watchgroup
+alter COLUMN groupname set not null, add check (length(groupname) <= 30); -- Groupname has to be less than 30 
 
 -- Table structure for table `watchhistory`
 
@@ -68,3 +69,7 @@ CREATE TABLE watchreviews (
   watchhistory_movieid INT NOT NULL,
   CONSTRAINT fk_watchreviews_watchhistory1 FOREIGN KEY (watchhistory_movieid) REFERENCES watchhistory (movieid)
 );
+
+ALTER Table watchreviews
+ALTER COLUMN rating TYPE INT, --changed the precise float to INT
+ADD CONSTRAINT check_rating CHECK (rating >= 1 AND rating <= 10); --Ensure that the rating of the movie stays between 1 and 10
