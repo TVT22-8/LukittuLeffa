@@ -17,7 +17,7 @@ CREATE TABLE joinrequest (
 DROP TABLE IF EXISTS userlukittu;
 CREATE TABLE userlukittu (
   userid SERIAL PRIMARY KEY,
-  username TEXT NOT NULL CHECK (LENGTH(username) <= 30), --'Username less than 30'
+  username TEXT NOT NULL CHECK (LENGTH(username) <= 30), --'Username has to be less than 30'
   pwd TEXT NOT NULL,
   UNIQUE (userid),
   UNIQUE (username)
@@ -36,6 +36,9 @@ CREATE TABLE watchgroup (
   UNIQUE (groupid),
   UNIQUE (groupname)
 );
+
+ALTER Table watchgroup
+alter COLUMN groupname set not null, add check (length(groupname) <= 30); -- Groupname has to be less than 30 
 
 -- Table structure for table `watchhistory`
 
