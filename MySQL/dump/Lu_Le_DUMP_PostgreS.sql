@@ -1,7 +1,5 @@
 -- Table structure for table `joinrequest`
 
-
-
 DROP TABLE IF EXISTS joinrequest;
 CREATE TABLE joinrequest (
   status BOOLEAN NOT NULL,
@@ -71,3 +69,7 @@ CREATE TABLE watchreviews (
   watchhistory_movieid INT NOT NULL,
   CONSTRAINT fk_watchreviews_watchhistory1 FOREIGN KEY (watchhistory_movieid) REFERENCES watchhistory (movieid)
 );
+
+ALTER Table watchreviews
+ALTER COLUMN rating TYPE INT, --changed the precise float to INT
+ADD CONSTRAINT check_rating CHECK (rating >= 1 AND rating <= 10); --Ensure that the rating of the movie stays between 1 and 10
