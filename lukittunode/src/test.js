@@ -1,3 +1,5 @@
+// USED TO TEST TMDB API REQUESTS DELETE BEFORE FINAL COMPILE
+/*
 const { makeAPICall } = require('./utils/api');
 
 const baseUrl = 'https://api.themoviedb.org/3';
@@ -11,4 +13,29 @@ makeAPICall(baseUrl,endpoint, bearerToken)
   })
   .catch(error => {
     console.error('Error:', error.message);
+  });
+
+*/
+const fetch = require('node-fetch');
+const { apiKey } = require('./config'); // Assuming config.js is in the same directory
+
+const baseUrl = 'https://api.themoviedb.org/3';
+const movieId = 245891; // Replace with the specific movie ID you want to fetch
+
+fetch(`${baseUrl}/movie/${movieId}?api_key=${apiKey}`)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('Movie Details:', data);
+  })
+  .catch(error => {
+    console.error('Error:', error.message);
+    if (error.response) {
+      console.error('Response Body:', error.response.body);
+      console.error('Response Headers:', error.response.headers);
+    }
   });
