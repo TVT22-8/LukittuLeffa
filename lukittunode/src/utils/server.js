@@ -1,5 +1,5 @@
 //to start the server: node server OR nodemon server
-const main = require('./main');
+const main = require('../main');
 const express = require('express');
 
 const app = main;
