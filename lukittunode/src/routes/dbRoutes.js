@@ -4,7 +4,7 @@
 
 const express =  require ('express');
 const router = express.Router();
-const pool = require('../db_pool/pool')
+const pool = require('../../db_pool/pool')
 
 router.get('/users',async(req, res)=>{
     try{
