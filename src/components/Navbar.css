@@ -1,0 +1,12 @@
+/* Navbar.css */
+.dark-mode {
+    background-color: #1a1a1a; /* Dark background color */
+    color: #fff; /* Light text color */
+  }
+  
+  .light-mode {
+    background-color: #fff; /* Light background color */
+    color: #333; /* Dark text color */
+  }
+  
+  /* Add additional styling as needed */
