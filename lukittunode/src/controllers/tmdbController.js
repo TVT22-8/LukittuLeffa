@@ -10,7 +10,15 @@ const tmdbController = {
       res.status(500).json({ error: error.message });
     }
   },
-  // Other controller functions for TMDb API
+  searchbykeyword: async(req, res) =>{
+    try {
+      const {qword} = req.params;
+      const data = await MovieSearch(qword, ['title', 'poster_path', 'release_date', 'id'])
+      res.json(data)
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 };
 
 module.exports = tmdbController;
