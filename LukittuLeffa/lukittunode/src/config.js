@@ -1,0 +1,4 @@
+module.exports = {
+    bearerToken: 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MDE0YTZjMzhjYTVjMmU1Zjc4OGRlNWZhM2QyMmRhMCIsInN1YiI6IjY1NGNkYjNlNWE1ZWQwMDExZTA1ZTZkMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VhyYRjGa7sNaAiQV3Tw5vHz674ZKTZG07m5-aL98PMA'
+    ,apiKey: '9014a6c38ca5c2e5f788de5fa3d22da0'
+}
