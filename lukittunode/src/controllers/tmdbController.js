@@ -1,20 +1,16 @@
-const { makeAPICall } = require('../utils/api');
-const { bearerToken } = require('../config'); // Import configuration
-const { apiKey } = require('../config');
-const baseUrl = 'https://api.themoviedb.org/3';
+const { fetchfromid } = require('../utils/fetchfromid');
 
 const tmdbController = {
-    getMovieDetails: async (req, res) => {
-      try {
-        const { movieid } = req.params;
-        const endpoint = `movie/${movieid}?api_key=${apiKey}`; // Use movieid in the endpoint
-  
-        const response = await makeAPICall(baseUrl, endpoint, bearerToken);
-        res.json(response);
-      } catch (error) {
-        res.status(500).json({ error: error.message });
-      }
-    },
-    // Other controller functions for TMDb API
-  };
+  getMovieDetailsfromid: async (req, res) => {
+    try {
+      const { movieid } = req.params;
+      const data = await fetchfromid(movieid, ['title', 'tagline', 'genres', 'release_date', 'overview', 'popularity', 'runtime']);
+      res.json(data);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+  // Other controller functions for TMDb API
+};
+
 module.exports = tmdbController;

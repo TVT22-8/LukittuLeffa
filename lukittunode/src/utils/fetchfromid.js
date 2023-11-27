@@ -2,12 +2,12 @@
 
 
 const fetch = require('node-fetch');
-const { apiKey } = require('./config'); // Assuming config.js is in the same directory
-
+const { apiKey } = require('../config'); // Assuming config.js is in the same directory
+ 
 const baseUrl = 'https://api.themoviedb.org/3';
 const movieId = 245891; // Replace with the specific movie ID you want to fetch
 
-const fetchMovieDetails = (movieId, fields) => {
+function fetchfromid  (movieId, fields)  {
   const fetchUrl = `${baseUrl}/movie/${movieId}?api_key=${apiKey}`;
 
   return fetch(fetchUrl)
@@ -38,5 +38,8 @@ const fetchMovieDetails = (movieId, fields) => {
       }
     });
 };
+
+module.exports = fetchfromid;
 // below can be altered to get data you want current example gives everything.
-fetchMovieDetails(movieId, ['title', 'tagline', 'genres', 'release_date', 'overview', 'popularity', 'runtime']);
+fetchfromid(movieId, ['title', 'tagline', 'genres', 'release_date', 'overview', 'popularity', 'runtime']);
+// genres show as objects because they are given as genre ids in API, needs func etc.
