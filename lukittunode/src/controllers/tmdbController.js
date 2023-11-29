@@ -1,21 +1,28 @@
-const { fetchfromid } = require('../utils/fetchfromid');
+const fetchfromid = require('../utils/fetchfromid')
+const  MovieSearch  = require('../utils/keywordsearch')
 
 const tmdbController = {
   getMovieDetailsfromid: async (req, res) => {
     try {
-      const { movieid } = req.params;
-      const data = await fetchfromid(movieid, ['title', 'tagline', 'genres', 'release_date', 'overview', 'popularity', 'runtime']);
+      console.log('getMovieDetailsfromid called');
+      const movieId = req.params.movieId;
+      console.log('movieId:', movieId); // Check if movieId is retrieved correctly
+      const data = await fetchfromid(movieId, ['title', 'tagline', 'genres', 'release_date', 'overview', 'popularity', 'runtime']);
       res.json(data);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+       console.error('Error in getMovieDetailsfromid:', error);
+       res.status(500).json({ error: error.message });
     }
   },
-  searchbykeyword: async(req, res) =>{
+  searchbykeyword: async (req, res) => {
     try {
-      const {qword} = req.params;
-      const data = await MovieSearch(qword, ['title', 'poster_path', 'release_date', 'id'])
-      res.json(data)
+      console.log('searchbykeyword called');
+      const { qword } = req.query;
+      console.log('qword:', qword); // Check if qword is retrieved correctly
+      const data = await MovieSearch(qword, ['title', 'poster_path', 'release_date', 'id']);
+      res.json(data);
     } catch (error) {
+      console.error('Error in searchbykeyword:', error);
       res.status(500).json({ error: error.message });
     }
   }

@@ -22,7 +22,6 @@ function MovieSearch  (qword, fields)  {
         });
         return filteredMovie;
       });
-      console.log(filteredData);
       return filteredData; // Returning the filtered data for further processing if needed
     })
     .catch((error) => {
@@ -32,11 +31,3 @@ function MovieSearch  (qword, fields)  {
 };
 
 module.exports = MovieSearch;
-// Example usage:
-//const searchKeyword = 'dragon';
-
-//MovieSearch(searchKeyword, ['title', 'poster_path', 'release_date', 'id']).then((movies) => {
-  // The "movies" variable contains the filtered movie data with selected fields
-  //console.log(movies);
-  // You can perform further operations or processing with the filtered movie data here
-//});
