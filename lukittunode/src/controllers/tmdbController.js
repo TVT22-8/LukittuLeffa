@@ -1,5 +1,6 @@
 const fetchfromid = require('../utils/fetchfromid')
 const  MovieSearch  = require('../utils/keywordsearch')
+const getCredits = require ('../utils/getcreditsforid')
 
 const tmdbController = {
   getMovieDetailsfromid: async (req, res) => {
@@ -26,7 +27,18 @@ const tmdbController = {
       res.status(500).json({ error: error.message });
     }
   },
-  
+  getcast: async (req, res) => {
+    try {
+      console.log('getcast called');
+      const { movieId } = req.params;
+      console.log('movieId:', movieId); // Check if qword is retrieved correctly
+      const data = await getCredits(movieId);
+      res.json(data);
+    } catch (error) {
+      console.error('Error in getcast:', error);
+      res.status(500).json({ error: error.message });
+    }
+  }
 };
 
 module.exports = tmdbController;

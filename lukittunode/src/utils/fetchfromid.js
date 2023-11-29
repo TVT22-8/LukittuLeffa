@@ -33,16 +33,3 @@ async function fetchfromid(movieId, fields) {
 }
 
 module.exports = fetchfromid;
-
-/*
-const movieId = 245891; // Replace with the desired movie ID
-const requestedFields = ['title', 'tagline', 'genres', 'release_date', 'overview', 'popularity', 'runtime', 'poster_path'];
-
-fetchfromid(movieId, requestedFields)
-  .then(data => {
-    console.log('Requested Movie Details:', data);
-  })
-  .catch(error => {
-    console.error('Error:', error.message);
-  });
-  */

@@ -10,6 +10,8 @@ const fakeReqSearchByKeyword = {
   query: { qword: 'dragon' } // Replace 'Avengers' with an actual keyword for testing
 };
 
+
+
 // Simulating response objects
 const fakeRes = {
   json: (data) => {
@@ -38,5 +40,15 @@ const fakeRes = {
     await tmdbController.searchbykeyword(fakeReqSearchByKeyword, fakeRes);
   } catch (error) {
     console.error('Error occurred in searchbykeyword:', error);
+  }
+})();
+
+//Test getcast function
+(async () => {
+  try {
+    console.log('Testing getcast...');
+    await tmdbController.getcast(fakeReqGetMovieDetails, fakeRes);
+  }catch (error){
+    console.error('error occurred in getcast', error);
   }
 })();
