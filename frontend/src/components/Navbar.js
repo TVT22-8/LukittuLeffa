@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import Dropdown from './Dropdown';
+import SearchBar from './SearchBar';
+import { Button } from './Button'; // Import the Button component
+
+// ... (existing imports)
 
 function Navbar() {
   const [click, setClick] = useState(false);
@@ -30,44 +33,28 @@ function Navbar() {
   return (
     <>
       <nav className='navbar'>
-        <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-          EPIC
-          <i class='fab fa-firstdraft' />
-        </Link>
+        <div className='nav-item' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+          <Link to='/services' className='nav-links' onClick={closeMobileMenu}>
+            Services <i className='fas fa-caret-down' />
+          </Link>
+          {dropdown && <Dropdown />}
+        </div>
+
+        <div className='navbar-center'>
+          <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
+            Lukittuleffa
+            <i className='fab fa-firstdraft' />
+          </Link>
+        </div>
+
+        <div className='navbar-right'>
+          <SearchBar />
+          <Button /> {/* Sign Up button */}
+        </div>
+
         <div className='menu-icon' onClick={handleClick}>
           <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
         </div>
-        <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-          <li className='nav-item'>
-            <Link to='/' className='nav-links' onClick={closeMobileMenu}>
-              Home
-            </Link>
-          </li>
-          <li
-            className='nav-item'
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
-            <Link
-              to='/services'
-              className='nav-links'
-              onClick={closeMobileMenu}
-            >
-              Services <i className='fas fa-caret-down' />
-            </Link>
-            {dropdown && <Dropdown />}
-          </li>
-          <li>
-            <Link
-              to='/sign-up'
-              className='nav-links-mobile'
-              onClick={closeMobileMenu}
-            >
-              Sign Up
-            </Link>
-          </li>
-        </ul>
-        <Button />
       </nav>
     </>
   );
