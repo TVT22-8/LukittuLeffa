@@ -9,15 +9,18 @@ import Home from './components/pages/Home';
 
 function App() {
   return (
+    <Router>
     <div className="App">
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route path='/' exact component={Home} />
-          {/* Correct the path and component name */}
-          <Route path='/pages/Group' component={Group} />
-        </Switch>
-      </Router>
-    </div>
+      <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/Movie" element={<Movie/>} />
+          <Route path="/Group" element={<Group/>} />
+        </Routes>
+      </div>
+    </Router>
+
   );
 }
+
+export default App;
