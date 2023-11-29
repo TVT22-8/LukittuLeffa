@@ -6,7 +6,7 @@ export const MenuItems = [
     },
     {
       title: 'Groups',
-      path: '/groups',
+      path: '/pages/Group',
       cName: 'dropdown-link'
     },
     {
