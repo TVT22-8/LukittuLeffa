@@ -1,22 +1,17 @@
 export const MenuItems = [
     {
-      title: 'Marketing',
-      path: '/marketing',
+      title: 'Settings',
+      path: '/settings',
       cName: 'dropdown-link'
     },
     {
-      title: 'Consulting',
-      path: '/consulting',
+      title: 'Groups',
+      path: '/groups',
       cName: 'dropdown-link'
     },
     {
-      title: 'Design',
-      path: '/design',
-      cName: 'dropdown-link'
-    },
-    {
-      title: 'Development',
-      path: '/development',
+      title: 'Log out',
+      path: '/',
       cName: 'dropdown-link'
     }
   ];
