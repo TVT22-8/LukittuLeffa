@@ -2,33 +2,19 @@
 //Sends only as JSON currently
 //In POSTMAN -> BODY -> RAW -> JSON for POST
 
-const express =  require ('express');
+const express = require('express');
 const router = express.Router();
-const pool = require('../../db_pool/pool');
+const groupController = require('../controllers/groupController');
+const userController = require('../controllers/userController');
 
-router.get('/users',async(req, res)=>{
-    try{
-        const result = await pool.query('SELECT * FROM userlukittu');
-        res.json(result.rows);
-    }catch(error){
-        console.error(error);
-        res.status(500).json({error:'internal Server Error'});
-    }
-});
+router.get('/users', userController.getUsers);
+router.post('/users', userController.createUser);
+router.delete('/users/:uId', userController.deleteUser);
 
-router.post('/users', async (req, res)=>{
-    const {uname, pwd} = req.body;
-
-    try{
-        const result = await pool.query(
-            'INSERT INTO userlukittu (username, pwd) VALUES ($1, $2) RETURNING *',
-            [uname, pwd]
-        );
-        res.json(result.rows[0]);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
-    }
-});
+router.get('/groups', groupController.getAllGroups);
+router.post('/groups', groupController.createGroup);
+router.delete('/groups/:groupId/:adminId/:deletedId', groupController.removeMember);
+router.delete('/groups/:groupId/:adminId', groupController.deleteGroup);
+router.post('/groups', groupController.addMember);
 
 module.exports = router;
