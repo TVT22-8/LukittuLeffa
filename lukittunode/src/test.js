@@ -22,7 +22,7 @@ const fakeRes = {
     return fakeRes;
   }
 };
-/*
+
 // Test getMovieDetailsfromid function
 (async () => {
   try {
@@ -52,7 +52,7 @@ const fakeRes = {
     console.error('error occurred in getcast', error);
   }
 })();
-*/
+
 //Test getSimilar function
 (async () => {
   try {
