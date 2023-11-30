@@ -1,6 +1,7 @@
 const fetchfromid = require('../utils/fetchfromid')
 const  MovieSearch  = require('../utils/keywordsearch')
 const getCredits = require ('../utils/getcreditsforid')
+const getSimilar = require ('../utils/getsimilarmovies')
 
 const tmdbController = {
   getMovieDetailsfromid: async (req, res) => {
@@ -31,13 +32,25 @@ const tmdbController = {
     try {
       console.log('getcast called');
       const { movieId } = req.params;
-      console.log('movieId:', movieId); // Check if qword is retrieved correctly
+      console.log('movieId:', movieId); 
       const data = await getCredits(movieId);
       res.json(data);
     } catch (error) {
       console.error('Error in getcast:', error);
       res.status(500).json({ error: error.message });
     }
+  },
+  getSimilarMovies: async () => {
+    try {
+      console.log('get similar called');
+      const { movieId } = req.params;
+      console.log('movieId:', movieId); 
+      const data = await getSimilar(movieId);
+      res.json(data);
+    } catch (error) {
+      console.error('Error in getsimilar:', error);
+      res.status(500).json({ error: error.message });
+    } 
   }
 };
 

@@ -12,4 +12,6 @@ router.get(`${baseUrl}/search/movie `,tmdbController.searchbykeyword);
 // Add more routes for TMDb API endpoints
 
 router.get(`${baseUrl}/movie/credits`, tmdbController.getcast);
+
+
 module.exports = router;

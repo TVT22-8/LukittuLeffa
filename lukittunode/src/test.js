@@ -22,7 +22,7 @@ const fakeRes = {
     return fakeRes;
   }
 };
-
+/*
 // Test getMovieDetailsfromid function
 (async () => {
   try {
@@ -50,5 +50,14 @@ const fakeRes = {
     await tmdbController.getcast(fakeReqGetMovieDetails, fakeRes);
   }catch (error){
     console.error('error occurred in getcast', error);
+  }
+})();
+*/
+(async () => {
+  try {
+    console.log ('testing get similar...');
+    await tmdbController.getSimilarMovies(fakeReqGetMovieDetails, fakeRes);
+  } catch (error){
+    console.error('error occurred', error);
   }
 })();
