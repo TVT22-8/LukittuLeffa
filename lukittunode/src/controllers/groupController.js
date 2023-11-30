@@ -91,6 +91,17 @@ exports.deleteGroup = async (req, res) => {
     }
 };
 
+exports.addMember = async(req, res) =>{
+    const{gName, adminId, newMember} = req.params;
+    try{
+
+    }
+
+    catch(error){
+
+    }
+};
+
 /*insert INTO watchgroup (groupname, description, members)VALUES ('TestiRyhma', 'me olemme testiryhma joojoo', '{5}')
 
 update watchgroup set members = array_append(members, 15) where groupname = 'TestiRyhma';
