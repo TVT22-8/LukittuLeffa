@@ -92,13 +92,16 @@ exports.deleteGroup = async (req, res) => {
 };
 
 exports.addMember = async(req, res) =>{
-    const{gName, adminId, newMember} = req.params;
+    const{groupName, adminId, newMember} = req.body;
     try{
-
-    }
-
-    catch(error){
-
+        const result = await pool.query('UPDATE watchgroup SET members = array_append(members, $1) WHERE groupname = $2 RETURNING *',
+        [newMember, groupName]
+        );
+        console.log(groupName, newMember);
+        res.json(result.rows[0]);
+    } catch(error){
+        console.error(error);
+        res.status(500).json({error:'Internal Server Error'});
     }
 };
 

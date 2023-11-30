@@ -29,16 +29,17 @@ DROP TABLE IF EXISTS watchgroup;
 CREATE TABLE watchgroup (
   groupid SERIAL PRIMARY KEY,
   groupname TEXT NOT NULL,
-  moderatorid INT NOT NULL, --removed moderatorid array
   description TEXT,
-  members INT[] DEFAULT ARRAY[]::INT[], --added members array
+  owner_userid INT NOT NULL, -- Added column for the owner (references userlukittu)
+  members INT[] DEFAULT ARRAY[]::INT[], -- Added members array
   UNIQUE (groupid),
-  UNIQUE (groupname)
+  UNIQUE (groupname),
+  CONSTRAINT fk_watchgroup_owner FOREIGN KEY (owner_userid) REFERENCES userlukittu (userid)
 );
 
 ALTER Table watchgroup
-drop column moderatorid;
 ADD COLUMN members INT[] DEFAULT ARRAY[]::INT[];
+ALTER Table watchgroup
 alter COLUMN groupname set not null, add check (length(groupname) <= 30); -- Groupname has to be less than 30 
 
 -- Table structure for table `watchhistory`
