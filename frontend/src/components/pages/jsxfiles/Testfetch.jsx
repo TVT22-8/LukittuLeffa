@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
+
 const Testfetch = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3002/');
+        const response = await fetch('http://localhost:3002/db/users');
         const result = await response.json();
         setData(result);
       } catch (error) {
@@ -30,3 +31,4 @@ const Testfetch = () => {
 };
 
 export default Testfetch;
+
