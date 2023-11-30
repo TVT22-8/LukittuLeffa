@@ -1,41 +1,65 @@
-// USED TO TEST TMDB API REQUESTS DELETE BEFORE FINAL COMPILE
-/*
-const { makeAPICall } = require('./utils/api');
+// Import the controller functions
+const tmdbController = require('./controllers/tmdbController');
 
-const baseUrl = 'https://api.themoviedb.org/3';
-const endpoint = 'authentication';
-const bearerToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MDE0YTZjMzhjYTVjMmU1Zjc4OGRlNWZhM2QyMmRhMCIsInN1YiI6IjY1NGNkYjNlNWE1ZWQwMDExZTA1ZTZkMyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VhyYRjGa7sNaAiQV3Tw5vHz674ZKTZG07m5-aL98PMA'; // Replace with your actual bearer token
+// Simulating a request object with params and query
+const fakeReqGetMovieDetails = {
+  params: { movieId: '245891' } // Replace '123' with an actual movie ID for testing
+};
 
-// Make an API request using the bearer token
-makeAPICall(baseUrl,endpoint, bearerToken)
-  .then(data => {
+const fakeReqSearchByKeyword = {
+  query: { qword: 'dragon' } // Replace 'Avengers' with an actual keyword for testing
+};
+
+
+
+// Simulating response objects
+const fakeRes = {
+  json: (data) => {
     console.log('Response:', data);
-  })
-  .catch(error => {
-    console.error('Error:', error.message);
-  });
+  },
+  status: (code) => {
+    console.log('Status Code:', code);
+    return fakeRes;
+  }
+};
+/*
+// Test getMovieDetailsfromid function
+(async () => {
+  try {
+    console.log('Testing getMovieDetailsfromid...');
+    await tmdbController.getMovieDetailsfromid(fakeReqGetMovieDetails, fakeRes);
+  } catch (error) {
+    console.error('Error occurred in getMovieDetailsfromid:', error);
+  }
+})(); */
 
+// Test searchbykeyword function
+(async () => {
+  try {
+    console.log('Testing searchbykeyword...');
+    await tmdbController.searchbykeyword(fakeReqSearchByKeyword, fakeRes);
+  } catch (error) {
+    console.error('Error occurred in searchbykeyword:', error);
+  }
+})();
+/*
+//Test getcast function
+(async () => {
+  try {
+    console.log('Testing getcast...');
+    await tmdbController.getcast(fakeReqGetMovieDetails, fakeRes);
+  }catch (error){
+    console.error('error occurred in getcast', error);
+  }
+})();
+
+//Test getSimilar function
+(async () => {
+  try {
+    console.log ('testing get similar...');
+    await tmdbController.getSimilarMovies(fakeReqGetMovieDetails, fakeRes);
+  } catch (error){
+    console.error('error occurred', error);
+  }
+})();
 */
-const fetch = require('node-fetch');
-const { apiKey } = require('./config'); // Assuming config.js is in the same directory
-
-const baseUrl = 'https://api.themoviedb.org/3';
-const movieId = 245891; // Replace with the specific movie ID you want to fetch
-
-fetch(`${baseUrl}/movie/${movieId}?api_key=${apiKey}`)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Movie Details:', data);
-  })
-  .catch(error => {
-    console.error('Error:', error.message);
-    if (error.response) {
-      console.error('Response Body:', error.response.body);
-      console.error('Response Headers:', error.response.headers);
-    }
-  });
