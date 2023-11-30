@@ -3,8 +3,8 @@ const fetch = require('node-fetch');
 const { apiKey } = require('../config');
 const baseUrl = 'https://api.themoviedb.org/3';
 
-function MovieSearch  (qword, fields)  {
-  const fetchUrl = `${baseUrl}/search/movie?query=${qword}&api_key=${apiKey}`;
+function MovieSearch  (query, fields)  {
+  const fetchUrl = `${baseUrl}/search/movie?query=${query}&api_key=${apiKey}`;
 
   return fetch(fetchUrl)
     .then((response) => {
