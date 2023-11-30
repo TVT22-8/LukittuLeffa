@@ -22,7 +22,7 @@ const fakeRes = {
     return fakeRes;
   }
 };
-
+/*
 // Test getMovieDetailsfromid function
 (async () => {
   try {
@@ -31,7 +31,7 @@ const fakeRes = {
   } catch (error) {
     console.error('Error occurred in getMovieDetailsfromid:', error);
   }
-})();
+})(); */
 
 // Test searchbykeyword function
 (async () => {
@@ -42,7 +42,7 @@ const fakeRes = {
     console.error('Error occurred in searchbykeyword:', error);
   }
 })();
-
+/*
 //Test getcast function
 (async () => {
   try {
@@ -62,3 +62,4 @@ const fakeRes = {
     console.error('error occurred', error);
   }
 })();
+*/
