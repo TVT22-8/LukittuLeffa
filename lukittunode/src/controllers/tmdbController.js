@@ -40,7 +40,7 @@ const tmdbController = {
       res.status(500).json({ error: error.message });
     }
   },
-  getSimilarMovies: async () => {
+  getSimilarMovies: async (req, res) => {
     try {
       console.log('get similar called');
       const { movieId } = req.params;

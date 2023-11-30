@@ -48,8 +48,6 @@ async function getSimilar(movieId) {
       genre_names: mapGenreIdsToNames(movie.genre_ids) // Convert genre_ids to genre_names
     }));
 
-    console.log('Similar Movies:', similarMovies);
-
     return similarMovies;
   } catch (error) {
     console.error('Error fetching similar movies:', error.message);
@@ -57,13 +55,5 @@ async function getSimilar(movieId) {
   }
 }
 
-// Example usage:
-getSimilar(245891)
-  .then((similarMovies) => {
-    console.log('Received Similar Movies:', similarMovies);
-  })
-  .catch((error) => {
-    console.error('Error in getSimilar:', error.message);
-  });
+module.exports = getSimilar;
 
-  module.exports = getSimilar;

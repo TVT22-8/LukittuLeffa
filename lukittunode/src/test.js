@@ -53,6 +53,7 @@ const fakeRes = {
   }
 })();
 */
+//Test getSimilar function
 (async () => {
   try {
     console.log ('testing get similar...');
