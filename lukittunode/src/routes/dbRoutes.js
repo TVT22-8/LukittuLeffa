@@ -8,6 +8,7 @@ const groupController = require('../controllers/groupController');
 const userController = require('../controllers/userController');
 
 router.get('/users', userController.getUsers);
+router.get('/users/:uId', userController.getUserbyId);
 router.post('/users', userController.createUser);
 router.delete('/users/:uId', userController.deleteUser);
 

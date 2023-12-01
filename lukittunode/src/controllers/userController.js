@@ -10,6 +10,17 @@ exports.getUsers = async (req, res) => {
   }
 };
 
+exports.getUserbyId = async (req, res)=>{
+    const {uId} = req.params;
+    try{
+        const result = await pool.query('SELECT * FROM userlukittu WHERE userId = $1', [uId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Internal Server Error'});
+    }
+};
+
 exports.createUser = async (req, res) => {
   const { uname, pwd } = req.body;
 
