@@ -4,6 +4,9 @@
 /node_modules
 /.pnp
 .pnp.js
+bin/
+/frontend/node_modules
+/lukittuleffa/node_modules
 
 # testing
 /coverage
