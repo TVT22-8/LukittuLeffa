@@ -1,0 +1,26 @@
+/* GroupList.css */
+.group-list-container {
+    display: flex;
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 10px;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  
+  .group-detail-container {
+    width: 70%; /* Adjust the width based on your design */
+    padding: 10px;
+    border-left: 1px solid #ccc;
+  }
+  
+  /* Additional styling as needed */
