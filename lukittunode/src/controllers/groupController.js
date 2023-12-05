@@ -10,11 +10,25 @@ exports.getAllGroups = async(req, res) => {
     }
 };
 
+exports.getAllMembersByID = async(req,res) => {
+    const {groupId} = req.params;
+
+    console.log('groupid: ', groupId);
+    try{
+        const result = await pool.query('SELECT u.userid, u.username FROM userlukittu u JOIN group_membership gm ON u.userid = gm.userid JOIN watchgroup wg ON gm.groupid = wg.groupid WHERE wg.groupid = $1',
+        [groupId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error:'Internal Server Error'});
+    }
+};
+
 exports.createGroup = async(req, res) => {
     const {gName, description, ownerId} = req.body;
     try{
         const result = await pool.query('INSERT INTO watchgroup (groupname, description, owner_userid) VALUES ($1, $2, $3) RETURNING *',
-        [gName, description, members]
+        [gName, description, ownerId]
     );
         res.json(result.rows[0]);
     } catch(error){
@@ -22,6 +36,20 @@ exports.createGroup = async(req, res) => {
         res.status(500).json({error:'Internal Server Error'});
     }
 };
+
+exports.addMember = async(req, res) =>{
+    const{groupId, newMember, adminBool} = req.body;
+    try{
+        const result = await pool.query('INSERT INTO group_membership(userid, groupid, is_admin) VALUES ($1, $2, $3)',
+        [newMember, groupId, adminBool]
+        );
+        res.json(result.rows);
+    } catch(error){
+        console.error(error);
+        res.status(500).json({error:'Internal Server Error'});
+    }
+};
+
 
 exports.removeMember = async (req, res) => {
     const { groupId, adminId, deletedId } = req.params;
@@ -91,22 +119,3 @@ exports.deleteGroup = async (req, res) => {
     }
 };
 
-exports.addMember = async(req, res) =>{
-    const{groupName, adminId, newMember} = req.body;
-    try{
-        const result = await pool.query('UPDATE watchgroup SET members = array_append(members, $1) WHERE groupname = $2 RETURNING *',
-        [newMember, groupName]
-        );
-        console.log(groupName, newMember);
-        res.json(result.rows[0]);
-    } catch(error){
-        console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
-    }
-};
-
-/*insert INTO watchgroup (groupname, description, members)VALUES ('TestiRyhma', 'me olemme testiryhma joojoo', '{5}')
-
-update watchgroup set members = array_append(members, 15) where groupname = 'TestiRyhma';
-
-Select members[2] as first_member from watchgroup where groupname = 'TestiRyhma'; */
