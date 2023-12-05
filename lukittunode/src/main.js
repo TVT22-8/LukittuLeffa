@@ -35,7 +35,7 @@ const res = {
 };
 
 // Use the function
-getMovieDetailsfromid(req, res);
+//getMovieDetailsfromid(req, res);
 
 
 
