@@ -4,7 +4,7 @@ const app = express();
 const routes = require('./routes');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { getMovieDetailsfromid } = require('./controllers/tmdbController');
+const { getMovieDetailsfromid, getcast } = require('./controllers/tmdbController');
 const fetchfromid = require('./utils/fetchfromid');
 
 
@@ -23,7 +23,7 @@ app.listen(port, () => {
 
 // Miikan hiekkis
 // Simulate a request and response objects (replace with actual objects in your application)
-const req = {
+/*const req = {
   params: {
     movieId: '553287', // Replace with the actual movieId
   },
@@ -36,6 +36,7 @@ const res = {
 
 // Use the function
 getMovieDetailsfromid(req, res);
+getcast(req, res);*/
 
 
 
