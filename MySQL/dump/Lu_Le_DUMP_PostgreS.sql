@@ -10,6 +10,18 @@ CREATE TABLE joinrequest (
   CONSTRAINT fk_invitation_watchgroup1 FOREIGN KEY (watchgroup_groupid) REFERENCES watchgroup (groupid)
 );
 
+alter table joinrequest drop constraint fk_invitation_watchgroup1;
+
+DROP TABLE  EXISTS group_membership;
+CREATE TABLE group_membership (
+  user_id INT,
+  group_id INT,
+  is_admin BOOLEAN DEFAULT false,
+  PRIMARY KEY (user_id, group_id),
+  FOREIGN KEY (user_id) REFERENCES userlukittu(userid),
+  FOREIGN KEY (group_id) REFERENCES watchgroup(groupid)
+);
+
 -- Table structure for table `userlukittu`
 
 DROP TABLE IF EXISTS userlukittu;
@@ -31,17 +43,13 @@ CREATE TABLE watchgroup (
   groupname TEXT NOT NULL,
   description TEXT,
   owner_userid INT NOT NULL, -- Added column for the owner (references userlukittu)
-  members INT[] DEFAULT ARRAY[]::INT[], -- Added members array
   UNIQUE (groupid),
   UNIQUE (groupname),
-  CONSTRAINT fk_watchgroup_owner FOREIGN KEY (owner_userid) REFERENCES userlukittu (userid)
+  FOREIGN KEY (owner_userid) REFERENCES userlukittu (userid)
 );
 
-ALTER Table watchgroup
-ADD COLUMN members INT[] DEFAULT ARRAY[]::INT[];
-ALTER Table watchgroup
-alter COLUMN groupname set not null, add check (length(groupname) <= 30); -- Groupname has to be less than 30 
-
+--ALTER Table watchgroup
+--ADD COLUMN members INT[] DEFAULT ARRAY[]::INT[];
 -- Table structure for table `watchhistory`
 
 DROP TABLE IF EXISTS watchhistory;
@@ -71,7 +79,9 @@ CREATE TABLE watchreviews (
   rating FLOAT NOT NULL,
   reviewdate TIMESTAMP,
   watchhistory_movieid INT NOT NULL,
-  CONSTRAINT fk_watchreviews_watchhistory1 FOREIGN KEY (watchhistory_movieid) REFERENCES watchhistory (movieid)
+  userlukittu_userid INT NOT NULL,
+CONSTRAINT fk_watchreviews_userlukittu FOREIGN KEY (userlukittu_userid) REFERENCES userlukittu (userid),
+CONSTRAINT fk_watchreviews_watchhistory1 FOREIGN KEY (watchhistory_movieid) REFERENCES watchhistory (movieid)
 );
 
 ALTER Table watchreviews
