@@ -11,9 +11,9 @@ exports.getAllGroups = async(req, res) => {
 };
 
 exports.createGroup = async(req, res) => {
-    const {gName, description, members} = req.body;
+    const {gName, description, ownerId} = req.body;
     try{
-        const result = await pool.query('INSERT INTO watchgroup (groupname, description, members) VALUES ($1, $2, $3) RETURNING *',
+        const result = await pool.query('INSERT INTO watchgroup (groupname, description, owner_userid) VALUES ($1, $2, $3) RETURNING *',
         [gName, description, members]
     );
         res.json(result.rows[0]);
@@ -35,25 +35,25 @@ exports.removeMember = async (req, res) => {
 
         const group = groupResult.rows[0];
 
-        const moderatorId = group.members[0];
+        const moderatorId = group.owner_userid;
         console.log('deleted user id: ',deletedId);
         console.log('admin trier: ',adminId);
-        console.log('moderator id: ', moderatorId) // The first member is the moderator
+        console.log('moderator id: ', moderatorId) // PreSelected userids
 
         if (moderatorId.toString() !== adminId.toString()) {
             return res.status(403).json({ error: 'Permission denied. Only the moderator can remove users.' });
         }
 
         const result = await pool.query(
-            'UPDATE watchgroup SET members = array_remove(members, $1) WHERE groupid = $2 RETURNING *',
+            'DELETE FROM group_membership WHERE userid = $1 AND groupid = $2',
             [deletedId, groupId]
         );
 
-        if (result.rows.length === 0) {
+        if (result.rowCount === 0) {
             return res.status(404).json({ error: 'User not found in the group' });
         }
 
-        res.json({ message: 'User removed successfully', updatedGroup: result.rows[0] });
+        res.json({ message: 'User removed successfully', updatedGroup: group });
 
     } catch (error) {
         console.error(error);
@@ -71,7 +71,7 @@ exports.deleteGroup = async (req, res) => {
         }
 
         const group = groupResult.rows[0];
-        const moderatorId = group.members[0];
+        const moderatorId = group.owner_userid;
 
         if(moderatorId.toString() !== adminId.toString()){
             return res.status(403).json({error: 'Permission denied. Only the moderator can remove group'});
