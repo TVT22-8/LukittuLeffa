@@ -6,7 +6,7 @@ exports.getUsers = async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Server error when fetching USERS' });
   }
 };
 
@@ -18,7 +18,7 @@ exports.getUserById = async(req,res) => {
         res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
+        res.status(500).json({error:'Server error when fetching USER by ID'});
     }
 };
 
@@ -30,7 +30,7 @@ exports.getUsersGroups = async (req, res) => {
         res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
+        res.status(500).json({error:'Server error when fetching Users Groups by userID'});
         }
   };
 
@@ -46,7 +46,7 @@ exports.createUser = async (req, res) => {
     res.json(result.rows[0]);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Server error when creating an User' });
   }
 };
 
@@ -58,6 +58,6 @@ exports.deleteUser = async (req, res) => {
             res.json({message: 'User deleted succesfully'});
     } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'Internal Server Error'});
+        res.status(500).json({error: 'Server error when deleting an User'});
     }
 };
