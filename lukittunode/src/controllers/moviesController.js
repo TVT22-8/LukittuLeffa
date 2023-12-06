@@ -1,5 +1,7 @@
 const pool = require('../../db_pool/pool');
 
+//WATCH HISTORY SEGMENT
+
 exports.getUserWatchHistory = async(req, res) => {
     const {uId} = req.params;
     try{
@@ -8,7 +10,7 @@ exports.getUserWatchHistory = async(req, res) => {
     res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
+        res.status(500).json({error:'Server error when fetching an Users Watch History'});
     }
 };
 
@@ -20,7 +22,7 @@ exports.addMovieToWatchHistory = async(req,res) => {
         res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
+        res.status(500).json({error:'Server error when Adding a Movie to Users Watch History'});
     }
 };
 
@@ -32,6 +34,10 @@ exports.removeMovieFromHistory = async(req,res)=>{
         res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
+        res.status(500).json({error:'Server error when removing a Movie from Users Watch History'});
     }
 }
+
+
+//WATCHLIST SEGMENT
+

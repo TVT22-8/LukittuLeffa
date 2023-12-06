@@ -6,11 +6,11 @@ exports.getUsers = async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Server error when fetching USERS' });
   }
 };
 
-exports.getUsersById = async(req,res) => {
+exports.getUserById = async(req,res) => {
     const {uId} = req.params;
     try{
         const result = await pool.query('SELECT * FROM userlukittu where userid=$1;',
@@ -18,21 +18,22 @@ exports.getUsersById = async(req,res) => {
         res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
+        res.status(500).json({error:'Server error when fetching USER by ID'});
     }
-}
+};
 
-exports.getUsersGroups = async (req, res) =>{
-    const {uId} = req.params;
+exports.getUsersGroups = async (req, res) => {
+  const {uId} = req.params;
     try{
         const result = await pool.query('SELECT wg.groupid, wg.groupname FROM watchgroup wg JOIN group_membership gm on wg.groupid = gm.groupid JOIN userlukittu u on gm.userid = u.userid WHERE u.userid = $1',
         [uId]);
         res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
-    }
-};
+        res.status(500).json({error:'Server error when fetching Users Groups by userID'});
+        }
+  };
+
 
 exports.createUser = async (req, res) => {
   const { uname, pwd } = req.body;
@@ -45,7 +46,7 @@ exports.createUser = async (req, res) => {
     res.json(result.rows[0]);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Server error when creating an User' });
   }
 };
 
@@ -57,6 +58,6 @@ exports.deleteUser = async (req, res) => {
             res.json({message: 'User deleted succesfully'});
     } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'Internal Server Error'});
+        res.status(500).json({error: 'Server error when deleting an User'});
     }
 };

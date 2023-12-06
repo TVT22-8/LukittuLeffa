@@ -8,7 +8,7 @@ exports.getUsersReviews = async(req,res) => {
         res.json(result.rows);
     }catch(error){
         console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
+        res.status(500).json({error:'Server error when fetching Users Reviews'});
     }
 };
 
@@ -20,7 +20,7 @@ exports.postMovieReview = async(req,res) => {
         res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
+        res.status(500).json({error:'Server error when Posting a new Review'});
     }
 };
 
@@ -32,6 +32,6 @@ exports.removeReview = async(req,res) => {
         res.json(result.rows);
     } catch (error){
         console.error(error);
-        res.status(500).json({error:'Internal Server Error'});
+        res.status(500).json({error:'Server Error when removing an User Review by ID'});
     }
 };
