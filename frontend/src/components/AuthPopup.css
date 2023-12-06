@@ -1,0 +1,51 @@
+/* AuthPopup.css */
+
+.auth-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+  }
+  
+  .auth-popup h2 {
+    margin-bottom: 20px;
+  }
+  
+  .auth-popup label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .auth-popup input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .auth-popup button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .auth-popup button:last-child {
+    margin-right: 0;
+  }
+  
+  .auth-popup button:hover {
+    background-color: #45a049;
+  }
+  
+  .auth-popup button:active {
+    background-color: #3e8e41;
+  }
+  
+  /* Add any additional styling as needed */
