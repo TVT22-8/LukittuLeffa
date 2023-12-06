@@ -3,7 +3,7 @@ const xml2js = require('xml2js');
 
 const fetchFinnkinoData = async () => {
   try {
-    const response = await fetch('https://www.finnkino.fi/xml/Schedule/?area=1018');
+    const response = await fetch('https://www.finnkino.fi/xml/Schedule/');
     const xmlData = await response.text();
     return xmlData;
   } catch (error) {

@@ -1,4 +1,6 @@
+const e = require('express');
 const getFinnkinoEvents  = require ('../utils/Finnkinoeventlist');
+const getFinnkinoNews = require('../utils/FinnkinoNews');
 
 const FinnkinoController = {
     getEvents: async (req, res) => {
@@ -10,6 +12,16 @@ const FinnkinoController = {
         res.status(500).json({ error: 'Error fetching Finnkino events' });
       }
     },
+    getNews: async (req, res) => {
+        try {
+            const news = await getFinnkinoNews();
+            res.json(news);
+        } catch (error){
+            console.error('Error in getFinnkinoNews:', error);
+            res.status(500).json({ error: 'Error fetching Finnkino news'});
+        }
+    },
+
 };
 
 
