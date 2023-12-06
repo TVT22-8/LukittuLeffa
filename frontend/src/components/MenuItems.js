@@ -1,7 +1,7 @@
 export const MenuItems = [
     {
       title: 'Settings',
-      path: '/settings',
+      path: '/Settings',
       cName: 'dropdown-link'
     },
     {

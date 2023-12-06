@@ -1,0 +1,25 @@
+/* styles.css */
+.group-page {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .group-list {
+    max-height: 300px; /* Add your desired max height for the scrollable area */
+    overflow-y: auto;
+  }
+  
+  .group-item {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  
+  .in-group {
+    background-color: #aaffaa; /* Example color for groups you are in */
+  }
+  
+  .not-in-group {
+    background-color: #ffaaaa; /* Example color for groups you are not in */
+  }
