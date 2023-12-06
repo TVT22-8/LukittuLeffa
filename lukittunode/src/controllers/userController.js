@@ -10,7 +10,7 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-exports.getUsersById = async(req,res) => {
+exports.getUserById = async(req,res) => {
     const {uId} = req.params;
     try{
         const result = await pool.query('SELECT * FROM userlukittu where userid=$1;',

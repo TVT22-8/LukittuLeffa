@@ -19,7 +19,7 @@ router.delete('/users/watchhistory/:uId/:movieId', movieController.removeMovieFr
 
 router.get('/users', userController.getUsers);
 router.get('/users/groups/:uId', userController.getUsersGroups);
-router.get('/users/:uId', userController.getUserbyId);
+router.get('/users/:uId', userController.getUserById);
 router.post('/users', userController.createUser);
 router.delete('/users/:uId', userController.deleteUser);
 
