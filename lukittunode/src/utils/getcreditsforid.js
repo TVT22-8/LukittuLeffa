@@ -13,9 +13,16 @@ function getCredits(movieId) {
       return response.json();
     })
     .then((data) => {
-     
-      const { cast } = data; // Extract 'cast' from received data
-      return cast;
+      const { cast, crew } = data; // Extract 'cast' and 'crew' from received data
+      const writingMembers = crew.filter(member => member.known_for_department === 'Writing');
+      const producingMembers = crew.filter(member => member.known_for_department === 'Production');
+      const directingMembers = crew.filter(member => member.known_for_department === 'Directing');
+      return {
+        directing: directingMembers,
+        writing: writingMembers,
+        producing: producingMembers,
+        cast: cast
+      };
     })
     .catch((error) => {
       console.error('Error fetching credits:', error);
