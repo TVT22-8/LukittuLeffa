@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import MyNavbar from './components/Navbar';
 import Movie from './components/pages/Movie';
 import Group from './components/pages/Group';
 import Home from './components/pages/Home';
@@ -23,7 +23,7 @@ const App = () => {
   return (
     <Router>
       <div className={`App ${theme}`}>
-        <Navbar />
+        <MyNavbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Movie" element={<Movie />} />

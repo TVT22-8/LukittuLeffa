@@ -6,7 +6,6 @@ const Home = () => {
   return (
     <div>
       <Testfetch />
-      <ShapeExample />
       <h2>Welcome to the Home Page!</h2>
     </div>
   );

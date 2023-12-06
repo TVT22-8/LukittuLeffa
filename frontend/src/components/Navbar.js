@@ -1,63 +1,75 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import './Navbar.css';
-import Dropdown from './Dropdown';
 import SearchBar from './SearchBar';
 import { Button } from './Button'; // Import the Button component
 
-// ... (existing imports)
+const MenuItems = [
+  {
+    title: 'Service 1',
+    path: '/service1',
+    cName: 'nav-links',
+  },
+  {
+    title: 'Service 2',
+    path: '/service2',
+    cName: 'nav-links',
+  },
+  {
+    title: 'More Services',
+    path: '/more-services',
+    cName: 'nav-links',
+  },
+];
 
-function Navbar() {
+function MyNavbar() {
   const [click, setClick] = useState(false);
-  const [dropdown, setDropdown] = useState(false);
 
   const handleClick = () => setClick(!click);
-  const closeMobileMenu = () => setClick(false);
-
-  const onMouseEnter = () => {
-    if (window.innerWidth < 960) {
-      setDropdown(false);
-    } else {
-      setDropdown(true);
-    }
-  };
-
-  const onMouseLeave = () => {
-    if (window.innerWidth < 960) {
-      setDropdown(false);
-    } else {
-      setDropdown(false);
-    }
-  };
 
   return (
-    <>
-      <nav className='navbar'>
-        <div className='nav-item' onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-          <Link to='/services' className='nav-links' onClick={closeMobileMenu}>
-            Services <i className='fas fa-caret-down' />
-          </Link>
-          {dropdown && <Dropdown />}
-        </div>
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Nav className='nav-item'>
+        <NavDropdown
+          title="Services"
+          id="basic-nav-dropdown"
+          show={click}
+          onClick={handleClick}
+          className="custom-dropdown" // Add a custom class for styling
+        >
+          {MenuItems.map((item, index) => (
+            <NavDropdown.Item key={index}>
+              <Link
+                className={item.cName}
+                to={item.path}
+                onClick={() => setClick(false)}
+              >
+                {item.title}
+              </Link>
+            </NavDropdown.Item>
+          ))}
+        </NavDropdown>
+      </Nav>
 
-        <div className='navbar-center'>
-          <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-            Lukittuleffa
-            <i className='fab fa-firstdraft' />
-          </Link>
-        </div>
+      <div className='navbar-center'>
+        <Link to='/' className='navbar-logo'>
+          Lukittuleffa
+          <i className='fab fa-firstdraft' />
+        </Link>
+      </div>
 
-        <div className='navbar-right'>
-          <SearchBar />
-          <Button /> {/* Sign Up button */}
-        </div>
+      <div className='navbar-right'>
+        <SearchBar />
+        <Button /> {/* Sign Up button */}
+      </div>
 
-        <div className='menu-icon' onClick={handleClick}>
-          <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
-        </div>
-      </nav>
-    </>
+      <div className='menu-icon' onClick={handleClick}>
+        <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+      </div>
+    </Navbar>
   );
 }
 
-export default Navbar;
+export default MyNavbar;
+

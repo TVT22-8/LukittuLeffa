@@ -126,7 +126,7 @@
   .menu-icon {
     display: block;
     position: absolute;
-    top: 05;
+    top: 0;
     right: 0;
     transform: translate(-100%, 60%);
     font-size: 1.8rem;
@@ -160,4 +160,14 @@
   button {
     display: none;
   }
+}
+
+/* Add a black background to the dropdown */
+.custom-dropdown .dropdown-menu {
+  background-color: black;
+}
+
+/* Optionally, change the text color in the dropdown */
+.custom-dropdown .dropdown-menu a {
+  color: white;
 }
