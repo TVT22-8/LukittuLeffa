@@ -111,10 +111,9 @@ exports.deleteGroup = async (req, res) => {
 
         res.json({message:'Group removed succesfully', updatedGroup: result.rows[0]});
     }
-    
+
     catch(error){
         console.error(error);
         res.status(500).json({error: 'Internal Server Error'});
     }
 };
-

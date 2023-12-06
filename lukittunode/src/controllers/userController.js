@@ -10,10 +10,10 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-exports.getUsersGroups = async (req, res) =>{
+exports.getUsersById = async(req,res) => {
+    const {uId} = req.params;
     try{
-        const {uId} = req.params;
-        const result = await pool.query('SELECT wg.groupid, wg.groupname FROM watchgroup wg JOIN group_membership gm on wg.groupid = gm.groupid JOIN userlukittu u on gm.userid = u.userid WHERE u.userid = $1',
+        const result = await pool.query('SELECT * FROM userlukittu where userid=$1;',
         [uId]);
         res.json(result.rows);
     } catch (error) {
@@ -22,17 +22,18 @@ exports.getUsersGroups = async (req, res) =>{
     }
 };
 
-
-exports.getUserbyId = async (req, res)=>{
-    const {uId} = req.params;
+exports.getUsersGroups = async (req, res) => {
+  const {uId} = req.params;
     try{
-        const result = await pool.query('SELECT * FROM userlukittu WHERE userId = $1', [uId]);
+        const result = await pool.query('SELECT wg.groupid, wg.groupname FROM watchgroup wg JOIN group_membership gm on wg.groupid = gm.groupid JOIN userlukittu u on gm.userid = u.userid WHERE u.userid = $1',
+        [uId]);
         res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'Internal Server Error'});
-    }
-};
+        res.status(500).json({error:'Internal Server Error'});
+        }
+  };
+
 
 exports.createUser = async (req, res) => {
   const { uname, pwd } = req.body;
