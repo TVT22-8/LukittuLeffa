@@ -10,14 +10,15 @@ const groupController = require('../controllers/groupController');
 const userController = require('../controllers/userController');
 
 router.get('/users/watchreviews/:uId', reviewController.getUsersReviews);
-router.post('/users/watchreviews', reviewController.postMovieReview);
 router.delete('/users/watchreviews/:uId/:reviewId', reviewController.removeReview);
+router.post('/users/watchreviews', reviewController.postMovieReview);
 
 router.get('/users/watchhistory/:uId', movieController.getUserWatchHistory);
 router.post('/users/watchhistory', movieController.addMovieToWatchHistory);
 router.delete('/users/watchhistory/:uId/:movieId', movieController.removeMovieFromHistory);
 
 router.get('/users', userController.getUsers);
+router.get('/users/:uId', userController.getUsersById);
 router.get('/users/groups/:uId', userController.getUsersGroups);
 router.post('/users', userController.createUser);
 router.delete('/users/:uId', userController.deleteUser);
