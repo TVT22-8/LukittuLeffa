@@ -48,8 +48,8 @@ CREATE TABLE watchgroup (
   FOREIGN KEY (owner_userid) REFERENCES userlukittu (userid)
 );
 
-ALTER Table watchgroup
-ADD COLUMN members INT[] DEFAULT ARRAY[]::INT[];
+--ALTER Table watchgroup
+--ADD COLUMN members INT[] DEFAULT ARRAY[]::INT[];
 -- Table structure for table `watchhistory`
 
 DROP TABLE IF EXISTS watchhistory;
@@ -79,7 +79,9 @@ CREATE TABLE watchreviews (
   rating FLOAT NOT NULL,
   reviewdate TIMESTAMP,
   watchhistory_movieid INT NOT NULL,
-  CONSTRAINT fk_watchreviews_watchhistory1 FOREIGN KEY (watchhistory_movieid) REFERENCES watchhistory (movieid)
+  userlukittu_userid INT NOT NULL,
+CONSTRAINT fk_watchreviews_userlukittu FOREIGN KEY (userlukittu_userid) REFERENCES userlukittu (userid),
+CONSTRAINT fk_watchreviews_watchhistory1 FOREIGN KEY (watchhistory_movieid) REFERENCES watchhistory (movieid)
 );
 
 ALTER Table watchreviews
