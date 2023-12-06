@@ -1,7 +1,6 @@
 // GroupList.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './GroupList.css'; // Import your CSS file
 
 const GroupList = () => {
   const groups = [

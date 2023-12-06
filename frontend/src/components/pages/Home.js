@@ -1,5 +1,6 @@
 import React from 'react';
 import Testfetch from './jsxfiles/Testfetch';
+import ShapeExample from './jsxComponents/ItemCard';
 
 const Home = () => {
   return (
