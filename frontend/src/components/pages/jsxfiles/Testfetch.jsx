@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Card, Button, CardBody } from 'react-bootstrap';
 
 const url = 'https://image.tmdb.org/t/p/original';
+const url2 = 'https://image.tmdb.org/t/p/w200';
 
 const Testfetch = () => {
   const [movieId, setMovieId] = useState('');
   const [movieInfo, setMovieInfo] = useState('');
+  const [castInfo, setCastInfo] = useState('');
 
   const fetchMovieInfo = async () => {
     try {
@@ -17,6 +19,21 @@ const Testfetch = () => {
       console.error('Error fetching movie information:', error);
     }
   };
+  const fetchCastInfo = async () => {
+    try {
+      const response = await fetch(`http://localhost:3002/tmdb/movie/${movieId}/credits`);
+      const data = await response.json();
+      console.log(data);
+      setCastInfo(data); // Corrected: setMovieInfo instead of setMovieId
+    } catch (error) {
+      console.error('Error fetching movie information:', error);
+    }
+  };
+
+  const click = () => {
+    fetchCastInfo();
+    fetchMovieInfo();
+  };
 
   return (
     <div>
@@ -24,7 +41,7 @@ const Testfetch = () => {
         Enter Movie ID:
         <input type="text" value={movieId} onChange={(e) => setMovieId(e.target.value)} />
       </label>
-      <button onClick={fetchMovieInfo}>Fetch Movie Information</button>
+      <button onClick={click}>Fetch Movie Information</button>
     <div style={{ display: 'flex', justifyContent: 'flex-start', margin: '0 200px' }}>
       {movieInfo && (
         <Card style={{ width: '25rem' }}>
@@ -52,6 +69,28 @@ const Testfetch = () => {
           </Card.Body>
         </Card>
       )}
+      <div style={{ display: 'flex-end',flexDirection: 'column', justifyContent: 'flex-end', margin: '0 50px' }}>
+      {castInfo &&(
+        <Card style={{ maxHeight: '800px',width: "300px", overflowY: 'auto'  }}>
+          <Card.Body>
+            <Card.Title>Cast:</Card.Title>
+            <Card.Text>
+            {castInfo.cast.map((actor, index) => (
+                      <span key={actor.id} style={{ display: 'flex', alignItems: 'center' }}>
+                        {index > 0 && <br />}
+                        <Card.Img style={{height:"20%", width:"20%", marginRight: '10px'}} src={url2 + actor.profile_path} />
+                        <div>
+                  <div>{actor.name}</div>
+                  <div>{actor.character}</div>
+          </div>
+                      </span>
+                    ))}
+            </Card.Text>
+          </Card.Body>
+        </Card>
+      )}
+      
+      </div>
       </div>
       </div>
     </div>
