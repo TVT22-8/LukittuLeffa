@@ -4,8 +4,10 @@ const app = express();
 const routes = require('./routes');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
 const { getMovieDetailsfromid, getcast } = require('./controllers/tmdbController');
 const fetchfromid = require('./utils/fetchfromid');
+
 
 
 app.use(bodyParser.json()); // For parsing JSON data
@@ -20,24 +22,6 @@ const port = 3002;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-// Miikan hiekkis
-// Simulate a request and response objects (replace with actual objects in your application)
-/*const req = {
-  params: {
-    movieId: '553287', // Replace with the actual movieId
-  },
-};
-
-const res = {
-  json: data => console.log(data), // Replace with your actual response handling logic
-  status: code => console.log(`Status Code: ${code}`), // Replace with your actual response handling logic
-};
-
-// Use the function
-getMovieDetailsfromid(req, res);
-getcast(req, res);*/
-
 
 
 
