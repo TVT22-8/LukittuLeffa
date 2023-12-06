@@ -3,7 +3,7 @@ const router = express.Router();
 const FinnkinoController = require('../controllers/FinnkinoController');
 
 
-router.get('/events', FinnkinoController);
+router.get('/events', FinnkinoController.getEvents);
 
 
 
