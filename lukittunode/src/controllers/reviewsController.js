@@ -12,6 +12,19 @@ exports.getUsersReviews = async(req,res) => {
     }
 };
 
+exports.getMovieReviews = async(req,res) => {
+    const{movieId} = req.params;
+    try{
+        const result = await pool.query('SELECT * FROM watchreviews WHERE watchhistory_movieid = $1',
+        [movieId]);
+        res.json(result.rows);
+    }catch(error){
+        console.error(error);
+        res.status(500).json({error:'Server error when fetching Users Reviews'});
+    }
+};
+
+
 exports.postMovieReview = async(req,res) => {
     const{revText, rating, movieId, uId} = req.body;
     try{
