@@ -8,6 +8,7 @@ const Testfetch = () => {
   const [movieId, setMovieId] = useState('');
   const [movieInfo, setMovieInfo] = useState('');
   const [castInfo, setCastInfo] = useState('');
+  const [reviewInfo, setReviewInfo] = useState('');
 
   const fetchMovieInfo = async () => {
     try {
@@ -29,10 +30,21 @@ const Testfetch = () => {
       console.error('Error fetching movie information:', error);
     }
   };
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch(`http://localhost:3002/db/movies/watchreviews/${movieId}`);
+      const data = await response.json();
+      console.log(data);
+      setReviewInfo(data);
+    } catch (error) {
+      console.error('Error fetching moviereviews information:', error);
+    }
+  }
 
   const click = () => {
     fetchCastInfo();
     fetchMovieInfo();
+    fetchReviews();
   };
 
   return (
@@ -62,7 +74,7 @@ const Testfetch = () => {
       </div>
       <div style={{ position: 'absolute', top: '100px', left: '500px', display: 'flex', justifyContent: 'flex-end', margin: '0 50px' }}>
         {movieInfo && (
-          <Card style={{ width: '700px', height: '300px' }}>
+          <Card style={{ width: '700px', height: '400px' }}>
             <Card.Body>
               <Card.Title style={{ textAlign: 'center', fontSize: '3rem' }}>{movieInfo.title}</Card.Title>
               <Card.Text style={{ fontSize: '1.1rem' }}>
@@ -84,7 +96,7 @@ const Testfetch = () => {
                     <Card.Img style={{ height: "20%", width: "20%", marginRight: '10px' }} src={url2 + actor.profile_path} />
                     <div>
                       <div>{actor.name}</div>
-                      <div>{actor.character}</div>
+                      <div>- {actor.character}</div>
                     </div>
                   </span>
                 ))}
@@ -97,15 +109,35 @@ const Testfetch = () => {
         {castInfo && (
           <Card style={{ maxHeight: '800px', width: "300px", overflowY: 'auto' }}>
             <Card.Body>
-              <Card.Title>Workers:</Card.Title>
+              <Card.Title>Crew:</Card.Title>
               <Card.Text>
-                {castInfo.directing.map((actor, index) => (
-                  <span key={actor.id} style={{ display: 'flex', alignItems: 'center' }}>
+                {castInfo.directing.map((director, index) => (
+                  <span key={director.id} style={{ display: 'flex', alignItems: 'center' }}>
                     {index > 0 && <br />}
-                    <Card.Img style={{ height: "20%", width: "20%", marginRight: '10px' }} src={url2 + actor.profile_path} />
+                    <Card.Img style={{ height: "20%", width: "20%", marginRight: '10px' }} src={url2 + director.profile_path} />
                     <div>
-                      <div>{actor.name}</div>
-                      <div>{actor.character}</div>
+                      <div>{director.name}</div>
+                      <div>- {director.job}</div>
+                    </div>
+                  </span>
+                ))}
+                {castInfo.producing.map((producer, index) => (
+                  <span key={producer.id} style={{ display: 'flex', alignItems: 'center' }}>
+                    {index > 0 && <br />}
+                    <Card.Img style={{ height: "20%", width: "20%", marginRight: '10px' }} src={url2 + producer.profile_path} />
+                    <div>
+                      <div>{producer.name}</div>
+                      <div>- {producer.job}</div>
+                    </div>
+                  </span>
+                ))}
+                {castInfo.writing.map((writer, index) => (
+                  <span key={writer.id} style={{ display: 'flex', alignItems: 'center' }}>
+                    {index > 0 && <br />}
+                    <Card.Img style={{ height: "20%", width: "20%", marginRight: '10px' }} src={url2 + writer.profile_path} />
+                    <div>
+                      <div>{writer.name}</div>
+                      <div>- {writer.job}</div>
                     </div>
                   </span>
                 ))}
@@ -114,6 +146,23 @@ const Testfetch = () => {
           </Card>
         )}
       </div>
+      <div style={{ position: 'absolute', top: '520px', left: '500px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', margin: '0 50px' }}>
+  {reviewInfo && (
+    <Card style={{ width: '700px', height: '380px' }}>
+      <Card.Body>
+        <Card.Title style={{ textAlign: 'center', fontSize: '3rem' }}>Reviews:</Card.Title>
+        <Card.Text style={{ fontSize: '1.1rem', whiteSpace: 'pre-line' }}>
+          {reviewInfo.map((review, index) => (
+            <span key={index}>
+              {index > 0 && '\n'}
+              "{review.reviewtext}" {review.reviewdate}
+            </span>
+          ))}
+        </Card.Text>
+      </Card.Body>
+    </Card>
+  )}
+</div>
 
 
     </div>
