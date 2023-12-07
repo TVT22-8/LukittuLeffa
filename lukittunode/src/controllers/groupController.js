@@ -28,8 +28,7 @@ exports.createGroup = async(req, res) => {
     const {gName, description, ownerId} = req.body;
     try{
         const result = await pool.query('INSERT INTO watchgroup (groupname, description, owner_userid) VALUES ($1, $2, $3) RETURNING *',
-        [gName, description, ownerId]
-    );
+        [gName, description, ownerId]);
         res.json(result.rows[0]);
     } catch(error){
         console.error(error);
@@ -112,10 +111,9 @@ exports.deleteGroup = async (req, res) => {
 
         res.json({message:'Group removed succesfully', updatedGroup: result.rows[0]});
     }
-    
+
     catch(error){
         console.error(error);
         res.status(500).json({error: 'Internal Server Error'});
     }
 };
-
