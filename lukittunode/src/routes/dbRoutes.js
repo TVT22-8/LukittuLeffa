@@ -7,21 +7,33 @@ const movieController = require('../controllers/moviesController');//Users Watch
 const reviewController = require('../controllers/reviewsController');//Users reviews
 const groupController = require('../controllers/groupController');//Group related queries
 const userController = require('../controllers/userController');//For User creation and what groups the user is in
+const watchListController = require('../controllers/watchListController');//Managing users Watchlists
 
+//WATCH LIST
+router.get('/users/watchlist/:uId', watchListController.getUsersWatchlist);//Get Users Movies in their Watchlist
+router.post('/users/watchlist', watchListController.addMovieToUsersWatchlist);//Add a Movie to Users watchlist
+router.delete('/users/watchlist/:uId/:movieId', watchListController.removeMovieFromUsersWatchlist);//Remove a movie from Users Watchlist
+
+
+//REVIEWS
 router.get('/users/watchreviews/:uId', reviewController.getUsersReviews);//What reviews a certain user has posted
+router.get('/movies/watchreviews/:movieId', reviewController.getMovieReviews);//ALL the reviews a certain movie has
 router.delete('/users/watchreviews/:uId/:reviewId', reviewController.removeReview);//Delete a certain review by ID
 router.post('/users/watchreviews', reviewController.postMovieReview);//Create a new review for user
 
+//WATCH HISTORY
 router.get('/users/watchhistory/:uId', movieController.getUserWatchHistory);//Get a spesific users watchhistory
 router.post('/users/watchhistory', movieController.addMovieToWatchHistory);//Add a new movie to a users history
 router.delete('/users/watchhistory/:uId/:movieId', movieController.removeMovieFromHistory);//Remove a movie from users history by userID and movieID
 
+//USERS
 router.get('/users', userController.getUsers);//Get all users IDs Names and Passwords
 router.get('/users/groups/:uId', userController.getUsersGroups);//Get all the groups an user is in
 router.get('/users/:uId', userController.getUserById);//Get user by ID
 router.post('/users', userController.createUser);//Create a new user (SIGN UP)
 router.delete('/users/:uId', userController.deleteUser);//Delete an user by userID
 
+//GROUPS
 router.get('/groups', groupController.getAllGroups);//Get all groups and the ownersID
 router.get('/groups/members/:groupId', groupController.getAllMembersByID);//Get all members of a group by groupID
 router.post('/groups', groupController.createGroup);//Create a group, insert the owners ID
