@@ -5,9 +5,6 @@ const routes = require('./routes');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const { getMovieDetailsfromid, getcast } = require('./controllers/tmdbController');
-const fetchfromid = require('./utils/fetchfromid');
-
 
 
 app.use(bodyParser.json()); // For parsing JSON data
