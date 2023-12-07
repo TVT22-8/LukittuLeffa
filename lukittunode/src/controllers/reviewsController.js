@@ -15,7 +15,7 @@ exports.getUsersReviews = async(req,res) => {
 exports.getMovieReviews = async(req,res) => {
     const{movieId} = req.params;
     try{
-        const result = await pool.query('SELECT * FROM watchreviews WHERE watchhistory_movieid = $1',
+        const result = await pool.query("SELECT reviewid, reviewtext, rating, TO_CHAR(reviewdate, 'DD.MM.YYYY HH24:MI') AS reviewdate, ul.username FROM watchreviews JOIN userlukittu ul ON userlukittu_userid = ul.userid WHERE watchhistory_movieid = $1",
         [movieId]);
         res.json(result.rows);
     }catch(error){
