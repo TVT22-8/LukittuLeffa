@@ -18,7 +18,7 @@ export function Button() {
   return (
     <div>
       <Link to='#' onClick={handleOpenPopup}>
-        <button className='btn'>Sign Up</button>
+        <button className='btn' color='white'>Sign Up</button>
       </Link>
 
       {isPopupOpen && <AuthPopup onClose={handleClosePopup} />}
