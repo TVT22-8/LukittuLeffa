@@ -1,12 +1,14 @@
 import React from 'react';
-import Testfetch from './jsxfiles/Testfetch';
+import Homefetch from './jsxfiles/Homefetch';
 import ShapeExample from './jsxComponents/ItemCard';
 
 const Home = () => {
+
+
   return (
     <div>
-      <Testfetch />
-      <h2>Welcome to the Home Page!</h2>
+      <h1>Lukitut leffat</h1>
+      <Homefetch />
     </div>
   );
 }

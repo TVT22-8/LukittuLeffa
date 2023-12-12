@@ -5,9 +5,7 @@ import Testfetch from './jsxfiles/Testfetch';
 const Movie = () => {
   return (
     <div>
-      <Mcover />
-      <h2>About Us</h2>
-      <p>This is a simple React website example.</p>
+      <Testfetch />
     </div>
   );
 }

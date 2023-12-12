@@ -58,7 +58,7 @@ const Testfetch = () => {
       <div style={{ display: 'flex', justifyContent: 'flex-start', margin: '0 100px' }}>
         {movieInfo && (
           <Card style={{ width: '25rem' }}>
-            <Card.Img variant="top" src={url + movieInfo.poster_path} /> {/* Corrected: Card.Img */}
+            <Card.Img variant="top" src={url + movieInfo.poster_path} />
             <Card.Body>
               <Card.Title>Title: {movieInfo.title}</Card.Title>
               <Card.Text>
@@ -147,24 +147,22 @@ const Testfetch = () => {
         )}
       </div>
       <div style={{ position: 'absolute', top: '520px', left: '500px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', margin: '0 50px' }}>
-  {reviewInfo && (
-    <Card style={{ width: '700px', height: '380px' }}>
-      <Card.Body>
-        <Card.Title style={{ textAlign: 'center', fontSize: '3rem' }}>Reviews:</Card.Title>
-        <Card.Text style={{ fontSize: '1.1rem', whiteSpace: 'pre-line' }}>
-          {reviewInfo.map((review, index) => (
-            <span key={index}>
-              {index > 0 && '\n'}
-              "{review.reviewtext}" {review.reviewdate}
-            </span>
-          ))}
-        </Card.Text>
-      </Card.Body>
-    </Card>
-  )}
-</div>
-
-
+        {reviewInfo && (
+          <Card style={{ width: '700px', height: '380px', overflowY: 'auto' }}>
+            <Card.Body>
+              <Card.Title style={{ textAlign: 'center', fontSize: '3rem' }}>Reviews:</Card.Title>
+              <Card.Text style={{ fontSize: '1.1rem', whiteSpace: 'pre-line' }}>
+                {reviewInfo.map((review, index) => (
+                  <span key={index}>
+                    {index > 0 && <br />}
+                    <div>  "{review.reviewtext}" {review.username} - {review.reviewdate}</div>
+                  </span>
+                ))}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        )}
+      </div>
     </div>
   );
 };
