@@ -13,13 +13,20 @@ app.post('/verifylogin', async (req, res) => {
     const{username, password} = req.body.credentials;
     console.log('credentials: ', username, password);
 
-    const dummyData = {
-      userId: 123,
-      username: 'john_doe',
-      role: 'user',
-    };
+    const user = await userController.getUserByUsername(username);
 
-    res.json({ authenticated: false, user: dummyData });
+    if (!user || !user.length) {
+      // User not found
+      console.log('User not found');
+      res.json({ authenticated: false, error: 'User not found' });
+      return;
+    }
+
+    const hashedPassword = user[0].pwd;
+    console.log(hashedPassword);
+
+    const match = bcrypt.compare(password,hashedPassword);
+    console.log(match);
 
   } catch (error) {
     console.error('Error during authentication:', error.message);
@@ -27,14 +34,6 @@ app.post('/verifylogin', async (req, res) => {
   }
 });
 
-async function checkPassword(inputPassword, hashedPassword) {
-  try {
-    const match = await bcrypt.compare(inputPassword, hashedPassword);
-    return match; // Returns true if passwords match, false otherwise
-  } catch (error) {
-    console.error('Error checking password:', error);
-    throw new Error('Error checking password');
-  }
-};
+
 
 module.exports = app;
