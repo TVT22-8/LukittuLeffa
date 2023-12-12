@@ -31,6 +31,7 @@
 .navbar-right {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .fa-firstdraft {
@@ -171,3 +172,4 @@
 .custom-dropdown .dropdown-menu a {
   color: white;
 }
+
