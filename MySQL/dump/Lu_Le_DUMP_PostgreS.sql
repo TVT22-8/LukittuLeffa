@@ -48,6 +48,9 @@ CREATE TABLE watchgroup (
   FOREIGN KEY (owner_userid) REFERENCES userlukittu (userid)
 );
 
+alter table watchgroup
+add column grouptexts 
+
 --ALTER Table watchgroup
 --ADD COLUMN members INT[] DEFAULT ARRAY[]::INT[];
 -- Table structure for table `watchhistory`
