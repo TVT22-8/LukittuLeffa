@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './SearchBar.css';
+import { Link } from 'react-router-dom';
+
 
 
 const SearchBar = ({ onSearch, searchResults }) => {
@@ -24,14 +26,15 @@ const SearchBar = ({ onSearch, searchResults }) => {
       {searchResults.length > 0 && (
         <div className="col-md-8"> {/* Adjust the column size as needed */}
           <ul className="list-group">
-            {searchResults.map((result) => (
-              <li key={result.id} className="list-group-item">
-                {/* Limit the displayed characters to 10 */}
-                {result.title.length > 10
-                  ? `${result.title.substring(0, 15)}...`
-                  : result.title}
-              </li>
-            ))}
+          {searchResults.map((result) => (
+  <li key={result.id} className="list-group-item">
+    <Link to={`/movie/${result.id}`}>
+      {result.title.length > 10
+        ? `${result.title.substring(0, 15)}...`
+        : result.title}
+    </Link>
+  </li>
+))}
           </ul>
         </div>
       )}

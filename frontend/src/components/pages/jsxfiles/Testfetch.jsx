@@ -1,14 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, CardBody } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+
 
 const url = 'https://image.tmdb.org/t/p/original';
 const url2 = 'https://image.tmdb.org/t/p/w200';
 
 const Testfetch = () => {
-  const [movieId, setMovieId] = useState('');
-  const [movieInfo, setMovieInfo] = useState('');
-  const [castInfo, setCastInfo] = useState('');
-  const [reviewInfo, setReviewInfo] = useState('');
+  // Remove the movieId state declaration
+  const [movieInfo, setMovieInfo] = useState(null);
+  const [castInfo, setCastInfo] = useState(null);
+  const [reviewInfo, setReviewInfo] = useState(null);
+  const { id: movieId } = useParams(); // Use movieId from the URL parameters
+
+  useEffect(() => {
+    // Define the fetching functions inside useEffect or move them outside if they don't need to access movieId directly from the closure
+    const fetchMovieInfo = async (id) => {
+      try {
+        const response = await fetch(`http://localhost:3002/tmdb/movie/${id}`);
+        const data = await response.json();
+        setMovieInfo(data);
+      } catch (error) {
+        console.error('Error fetching movie information:', error);
+      }
+      // ... use id argument instead of movieId state
+    };
+
+    const fetchCastInfo = async (id) => {
+      try {
+        const response = await fetch(`http://localhost:3002/tmdb/movie/${id}/credits`);
+        const data = await response.json();
+        setCastInfo(data);
+      } catch (error) {
+        console.error('Error fetching cast information:', error);
+      }
+    };
+
+    const fetchReviews = async (id) => {
+      try {
+        const response = await fetch(`http://localhost:3002/db/movies/watchreviews/${id}`);
+        const data = await response.json();
+        setReviewInfo(data);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
+
+    // Call the fetch functions with movieId from the URL params
+    if (movieId) {
+      fetchMovieInfo(movieId);
+      fetchCastInfo(movieId);
+      fetchReviews(movieId);
+    }
+  }, [movieId]); // Depend on movieId from useParams
 
   const fetchMovieInfo = async () => {
     try {
@@ -41,20 +85,9 @@ const Testfetch = () => {
     }
   }
 
-  const click = () => {
-    fetchCastInfo();
-    fetchMovieInfo();
-    fetchReviews();
-  };
-
+ 
   return (
     <div>
-      <label>
-        Enter Movie ID:
-        <input type="text" value={movieId} onChange={(e) => setMovieId(e.target.value)} />
-      </label>
-      <button onClick={click}>Fetch Movie Information</button>
-
       <div style={{ display: 'flex', justifyContent: 'flex-start', margin: '0 100px' }}>
         {movieInfo && (
           <Card style={{ width: '25rem' }}>
