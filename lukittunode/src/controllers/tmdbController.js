@@ -21,7 +21,7 @@ const tmdbController = {
       console.log('searchbykeyword called');
       const { query } = req.query;
       console.log('query:', query); // Check if qword is retrieved correctly
-      const data = await MovieSearch(query, ['title', 'poster_path', 'release_date', 'id']);
+      const data = await MovieSearch(query, ['title', 'poster_path', 'release_date', 'id', 'popularity']);
       res.json(data);
     } catch (error) {
       console.error('Error in searchbykeyword:', error);
