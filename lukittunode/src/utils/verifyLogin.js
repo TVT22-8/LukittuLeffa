@@ -1,5 +1,17 @@
 const bcrypt = require('bcrypt');
+const express = require('express');
 const userController = require('../controllers/userController');
+const app = express();
+
+app.post('http://localhost:3002/verifylogin', (req, res) => {
+  const receivedData = req.body.data;
+  console.log('Received data on the backend:', receivedData);
+
+  // You can perform additional processing here
+
+  // Sending a response back to the frontend
+  res.json({ message: 'Data received successfully on the backend!' });
+});
 
 async function checkPassword(inputPassword, hashedPassword) {
     try {

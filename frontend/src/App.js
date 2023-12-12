@@ -7,6 +7,7 @@ import Movie from './components/pages/Movie';
 import Group from './components/pages/Group';
 import Home from './components/pages/Home';
 import Settings from './components/pages/Settings';
+import { AuthProvider } from './components/pages/jsxfiles/Logging';
 
 const App = () => {
   const [theme, setTheme] = useState('light');
@@ -21,6 +22,7 @@ const App = () => {
   };
 
   return (
+    <AuthProvider>
     <Router>
       <div className={`App ${theme}`}>
         <MyNavbar />
@@ -35,6 +37,7 @@ const App = () => {
         </Routes>
       </div>
     </Router>
+    </AuthProvider>
   );
 };
 
