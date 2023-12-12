@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, CardBody, CardText, } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import OuterCard from './OuterCard';
 
 const Homefetch = () => {
+
+    useEffect(() => {
+        fetchfinnkino();
+      }, []); 
 
     const [finn, setFinn] = useState('');
 
@@ -18,11 +22,14 @@ const Homefetch = () => {
         }
     };
 
-    return (
+    
+    
 
+    return (
+        
 
         <div>
-      <Button onClick={fetchfinnkino}>Fetch</Button>
+            
       <OuterCard>
       {finn && (
         <div style={{display: 'inline-flex', flexDirection: 'row'}}>
