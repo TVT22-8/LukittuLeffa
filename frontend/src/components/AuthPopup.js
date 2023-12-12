@@ -13,11 +13,11 @@ const AuthPopup = ({ onClose }) => {
     onClose();
   };
 
+
   const { login } = useAuth();
 
   const handleLogin = async () => {
     await login(username, password);
-    console.log('Login:', username, password);
     onClose();
   };
 

@@ -2,10 +2,16 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const userController = require('../controllers/userController');
 const app = express();
+const bodyParser = require('body-parser');
+
+//app.use(express.json());
+app.use(bodyParser.json());
 
 app.post('http://localhost:3002/verifylogin', (req, res) => {
-  const receivedData = req.body.data;
-  console.log('Received data on the backend:', receivedData);
+  
+  const receivedData = req.body;
+  const { username, password } = receivedData;
+  console.log('Received data on the backend:', username, password);
 
   // You can perform additional processing here
 

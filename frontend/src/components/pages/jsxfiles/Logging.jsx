@@ -9,14 +9,20 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     // Implement login logic (e.g., call your backend endpoint)
     // Set the user data if login is successful
-    console.log(username, password);
+    /*const credentials = {
+        username: username,
+        password: password
+      };*/
+
     try {
+        console.log(username, password);
       const response = await fetch('http://localhost:3002/verifylogin', {
         method: 'POST',
+        body: JSON.stringify({ username, password }),
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ data: username, password }),
+        
       });
 
       const verify = await response.json();
