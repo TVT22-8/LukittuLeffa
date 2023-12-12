@@ -1,4 +1,6 @@
+const { default: BaseComponent } = require('bootstrap/js/dist/base-component');
 const pool = require('../../db_pool/pool');
+const bcrypt = require('bcrypt');
 
 exports.getUsers = async (req, res) => {
   try {
@@ -22,6 +24,18 @@ exports.getUserById = async(req,res) => {
     }
 };
 
+exports.getUserByUsername = async(req,res) => {
+  const {uName} = req.params;
+  try{
+      const result = await pool.query('SELECT * FROM userlukittu where username=$1;',
+      [uName]);
+      res.json(result.rows);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({error:'Server error when fetching USER by Username'});
+  }
+};
+
 exports.getUsersGroups = async (req, res) => {
   const {uId} = req.params;
     try{
@@ -37,11 +51,22 @@ exports.getUsersGroups = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   const { uname, pwd } = req.body;
-
+  
   try {
+    const hashedPassword = await new Promise((resolve, reject) => {
+      bcrypt.hash(pwd, 10, (err, hash) => {
+        if (err) {
+          console.error('Error generating hash:', err);
+          reject(err);
+        } else {
+          resolve(hash);
+        }
+      });
+    });
+  
     const result = await pool.query(
       'INSERT INTO userlukittu (username, pwd) VALUES ($1, $2) RETURNING *',
-      [uname, pwd]
+      [uname, hashedPassword]
     );
     res.json(result.rows[0]);
   } catch (error) {

@@ -3,7 +3,7 @@ const xml2js = require('xml2js');
 
 const fetchFinnkinoData = async () => {
   try {
-    const response = await fetch('https://www.finnkino.fi/xml/Schedule/');
+    const response = await fetch('https://www.finnkino.fi/xml/Events/');
     const xmlData = await response.text();
     return xmlData;
   } catch (error) {
@@ -12,17 +12,20 @@ const fetchFinnkinoData = async () => {
   }
 };
 
-const extractData = (shows) => {
-  return shows.map(show => {
+const extractData = (events) => {
+  return events.map(event => {
+    const title = event.Title?.[0] || 'N/A';
+    const productionYear = event.ProductionYear?.[0] || 'N/A';
+    const lengthInMinutes = event.LengthInMinutes?.[0] || 'N/A';
+    const synopsis = event.Synopsis?.[0] || 'N/A';
+    const largeImagePortrait = event.Images?.[0]?.EventLargeImagePortrait?.[0] || 'N/A';
+
     return {
-      Title: show?.Title?.[0] ?? 'N/A',
-      Language: show?.SpokenLanguage?.[0]?.Name ?? 'N/A',
-      Subtitles: [
-        show?.SubtitleLanguage1?.[0]?.Name ?? 'N/A',
-        show?.SubtitleLanguage2?.[0]?.Name ?? 'N/A'
-      ],
-      ShowURL: show?.ShowURL?.[0] ?? 'N/A',
-      LargeImagePortrait: show?.Images?.[0]?.EventLargeImagePortrait?.[0] ?? 'N/A'
+      Title: title,
+      ProductionYear: productionYear,
+      LengthInMinutes: lengthInMinutes,
+      Synopsis: synopsis,
+      EventLargeImagePortrait: largeImagePortrait
     };
   });
 };
@@ -32,15 +35,17 @@ const getFinnkinoEvents = async () => {
     const xmlData = await fetchFinnkinoData();
     const result = await xml2js.parseStringPromise(xmlData);
 
-    const shows = result.Schedule.Shows[0].Show;
-    const extractedData = extractData(shows);
+    const events = result?.Events?.Event || [];
+    console.log('Events:', events); // Log the 'events' array
+
+    const extractedData = extractData(events);
+    console.log('Extracted Data:', extractedData); // Log the extracted data
+    
     return extractedData;
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error retrieving Finnkino events:', error);
     throw error;
   }
 };
 
-module.exports = getFinnkinoEvents ;
-
- 
+module.exports = getFinnkinoEvents;

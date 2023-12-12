@@ -30,6 +30,7 @@ router.delete('/users/watchhistory/:uId/:movieId', movieController.removeMovieFr
 router.get('/users', userController.getUsers);//Get all users IDs Names and Passwords
 router.get('/users/groups/:uId', userController.getUsersGroups);//Get all the groups an user is in
 router.get('/users/:uId', userController.getUserById);//Get user by ID
+router.get('/users/name/:uName', userController.getUserByUsername);//Get user by Username
 router.post('/users', userController.createUser);//Create a new user (SIGN UP)
 router.delete('/users/:uId', userController.deleteUser);//Delete an user by userID
 
