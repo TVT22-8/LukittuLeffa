@@ -1,4 +1,3 @@
-// combines ALL routes in ./routes/ folder for easier access.
 const express = require('express');
 const router = express.Router();
 
@@ -16,7 +15,7 @@ router.use('/db', dbRoutes);
 // Use Finnkino routes
 router.use('/finnkino', FinnkinoRoutes);
 
-//Login verification
-router.use('/verifylogin',authenticateUser);
+// Login verification
+router.post('/verifylogin', authenticateUser);
 
 module.exports = router;

@@ -15,21 +15,21 @@ export const AuthProvider = ({ children }) => {
       };
 
     try {
-        console.log(username, password);
       const response = await fetch('http://localhost:3002/verifylogin', {
         method: 'POST',
-        body: JSON.stringify({credentials}),
+        body: JSON.stringify({ credentials }),
         headers: {
           'Content-Type': 'application/json',
         },
-        
       });
-      if (response.ok) {
-      const verify = await response.json();
-      console.log('Data from backend:', verify);
-      setUser(verify);
-      } else {
-        console.error('Failed to send string', response.statusText);
+
+      if(response.ok){
+        const result = await response.json();
+
+        console.log('Dummy Data From Backend: ', result.user);
+        console.log('Authenticated: ', result.authenticated);
+
+        setUser(result.user)
       }
     } catch (error) {
       console.error('Error sending data to backend:', error);
