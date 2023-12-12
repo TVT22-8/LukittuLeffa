@@ -1,4 +1,4 @@
-const { default: BaseComponent } = require('bootstrap/js/dist/base-component');
+//const { default: BaseComponent } = require('bootstrap/js/dist/base-component');
 const pool = require('../../db_pool/pool');
 const bcrypt = require('bcrypt');
 

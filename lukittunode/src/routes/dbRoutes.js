@@ -41,6 +41,8 @@ router.post('/groups', groupController.createGroup);//Create a group, insert the
 router.post('/groups/add-member', groupController.addMember);//Add a member to group, determine as a BOOLEAN if they have admin rights
 router.delete('/groups/:groupId/:adminId/:deletedId', groupController.removeMember);//Delete a member from a group, Insert the ADMINs ID and the userID you want to remove
 router.delete('/groups/:groupId/:adminId', groupController.deleteGroup);//Delete a group by a groups ID and admins ID
+router.get('/groups/chat/:groupId', groupController.getGroupChatsByID);//Get a Groups all Chats
+router.post('/groups/chat', groupController.postGroupChat);//Post a Group Chat
 
 
 module.exports = router;
