@@ -7,7 +7,6 @@ const Group = () => {
   return (
     <div>
       <GroupFetch />
-      <h2>Welcome to the Home Page!</h2>
     </div>
   );
 }
