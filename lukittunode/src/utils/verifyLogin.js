@@ -1,46 +1,54 @@
 const bcrypt = require('bcrypt');
+const express = require('express');
 const userController = require('../controllers/userController');
+const app = express();
+const bodyParser = require('body-parser');
 
-async function checkPassword(inputPassword, hashedPassword) {
-    try {
-      const match = await bcrypt.compare(inputPassword, hashedPassword);
-      return match; // Returns true if passwords match, false otherwise
-    } catch (error) {
-      console.error('Error checking password:', error);
-      throw new Error('Error checking password');
-    }
-  };
+app.use(bodyParser.json());
 
-  async function authenticateUser(username, inputPassword) {
-    try {
-      // Introduce a 2-second delay using setTimeout
-      await new Promise((resolve) => {
-        setTimeout(resolve, 2000);
-      });
-  
-      const userData = await userController.getUserByUsername({ params: { uName: username } });
-  
-      if (userData && userData.length > 0) {
-        const hashedPassword = userData[0].pwd; // Assuming 'pwd' is the column name for hashed password
-  
-        // Check if the provided password matches the hashed password retrieved from the database
-        const isPasswordValid = await checkPassword(inputPassword, hashedPassword);
-  
-        if (isPasswordValid) {
-          console.log('Authentication successful');
-          return { authenticated: true, user: userData[0] };
-        } else {
-          console.log('Invalid password');
-          return { authenticated: false, error: 'Invalid password' };
-        }
-      } else {
-        console.log('User not found');
-        return { authenticated: false, error: 'User not found' };
-      }
-    } catch (error) {
-      console.error('Error:', error.message);
-      return { authenticated: false, error: 'Server error during authentication' };
+app.post('/verifylogin', async (req, res) => {
+  try {
+    console.log('Received request at /verifylogin');
+
+    const{username, password} = req.body.credentials;
+    console.log('credentials: ', username, password);
+
+    const user = await userController.getUserByUsername(username);
+
+    if (!user || !user.length) {
+      // User not found
+      console.log('User not found');
+      res.json({ authenticated: false, error: 'User not found' });
+      return;
     }
+
+    const hashedPassword = user[0].pwd;
+    console.log(hashedPassword);
+
+        setTimeout(() => {
+      bcrypt.compare(password, hashedPassword)
+        .then((match) => {
+          console.log(match);
+          if (match) {
+            // Passwords match - User authenticated
+            res.json({ authenticated: true, message: 'User authenticated' });
+          } else {
+            // Passwords don't match
+            res.json({ authenticated: false, error: 'Invalid password' });
+          }
+        })
+        .catch((compareError) => {
+          console.error('Error during password comparison:', compareError.message);
+          res.json({ authenticated: false, error: 'Error during password comparison' });
+        });
+    }, 1000);
+
+  } catch (error) {
+    console.error('Error during authentication:', error.message);
+    res.json({ authenticated: false, error: 'Server error during authentication' });
   }
+});
 
-  module.exports = authenticateUser;
+
+
+module.exports = app;

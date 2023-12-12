@@ -7,7 +7,8 @@ import Movie from './components/pages/Movie';
 import Group from './components/pages/Group';
 import Home from './components/pages/Home';
 import Settings from './components/pages/Settings';
-import Testfetch from './components/pages/jsxfiles/Testfetch';
+
+import { AuthProvider } from './components/pages/jsxfiles/Logging';
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
   };
 
   return (
+    <AuthProvider>
     <Router>
       <div className={`App ${theme}`}>
         <MyNavbar />
@@ -36,6 +38,7 @@ const App = () => {
         </Routes>
       </div>
     </Router>
+    </AuthProvider>
   );
 };
 

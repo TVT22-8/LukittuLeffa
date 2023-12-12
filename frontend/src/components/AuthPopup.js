@@ -1,22 +1,23 @@
 // AuthPopup.js
 import React, { useState } from 'react';
-import './AuthPopup.css'; // Add styles for your popup
-
-import { Card, Button, CardBody, CardText, } from 'react-bootstrap';
+import './AuthPopup.css';
+import { useAuth } from './pages/jsxfiles/Logging';
+import { Card, Button } from 'react-bootstrap';
 
 const AuthPopup = ({ onClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleRegister = () => {
-    // Implement your registration logic
     console.log('Register:', username, password);
     onClose();
   };
 
-  const handleLogin = () => {
-    // Implement your login logic
-    console.log('Login:', username, password);
+
+  const { login } = useAuth();
+
+  const handleLogin = async () => {
+    await login(username, password);
     onClose();
   };
 
