@@ -7,10 +7,9 @@ const bodyParser = require('body-parser');
 //app.use(express.json());
 app.use(bodyParser.json());
 
-app.post('http://localhost:3002/verifylogin', (req, res) => {
-  
-  const receivedData = req.body;
-  const { username, password } = receivedData;
+app.post('/verifylogin', (req, res) => {
+  console.log(req);
+  const { username, password } = req.body;
   console.log('Received data on the backend:', username, password);
 
   // You can perform additional processing here
@@ -59,6 +58,6 @@ async function checkPassword(inputPassword, hashedPassword) {
       console.error('Error:', error.message);
       return { authenticated: false, error: 'Server error during authentication' };
     }
-  }
+  };
 
   module.exports = authenticateUser;

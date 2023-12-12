@@ -1,7 +1,7 @@
 // AuthPopup.js
 import React, { useState } from 'react';
 import './AuthPopup.css';
-import { AuthProvider, useAuth } from './pages/jsxfiles/Logging';
+import { useAuth } from './pages/jsxfiles/Logging';
 import { Card, Button } from 'react-bootstrap';
 
 const AuthPopup = ({ onClose }) => {

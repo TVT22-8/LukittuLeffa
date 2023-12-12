@@ -9,28 +9,32 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     // Implement login logic (e.g., call your backend endpoint)
     // Set the user data if login is successful
-    /*const credentials = {
+    const credentials = {
         username: username,
         password: password
-      };*/
+      };
 
     try {
         console.log(username, password);
       const response = await fetch('http://localhost:3002/verifylogin', {
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({credentials}),
         headers: {
           'Content-Type': 'application/json',
         },
         
       });
-
+      if (response.ok) {
       const verify = await response.json();
       console.log('Data from backend:', verify);
+      setUser(verify);
+      } else {
+        console.error('Failed to send string', response.statusText);
+      }
     } catch (error) {
       console.error('Error sending data to backend:', error);
     }
-    setUser({ username }); // Adjust this line according to your user data
+     // Adjust this line according to your user data
   };
 
   const logout = () => {
