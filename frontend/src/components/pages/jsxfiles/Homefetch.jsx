@@ -37,8 +37,8 @@ const Homefetch = () => {
             <Card key={index} style={{width: '200px', height: '290px'}}>
               {index > 0 && <br />}
               <CardBody>
-                <Link to={show.ShowURL}>
-                <Card.Img style={{height: "100%", width: "100%"}} src={show.LargeImagePortrait}></Card.Img>
+                <Link to={show.EventURL}>
+                <Card.Img style={{height: "100%", width: "100%"}} src={show.EventLargeImagePortrait}></Card.Img>
                 </Link>
               </CardBody>
             </Card>
