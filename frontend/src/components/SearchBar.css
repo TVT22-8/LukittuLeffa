@@ -1,8 +1,10 @@
 /* SearchBar.css */
 .search-bar {
-    display: flex;
-    align-items: center;
-  }
+  position: relative; /* Add this line */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
   
   input {
     padding: 0.5rem;
@@ -18,3 +20,14 @@
     border-radius: 0 4px 4px 0;
     cursor: pointer;
   }
+ 
+  .list-group {
+    width: 200px;
+    position: absolute;
+    top: 100%; /* This will start the list-group right after the search-bar */
+    left: 0; /* Align it with the left edge of the search-bar */
+    list-style: none;
+    text-align: start;
+    background: white; /* Optional: Set a background color so it overlays content below */
+    z-index: 1000; /* Optional: Ensure it stacks on top of other content */
+}  
