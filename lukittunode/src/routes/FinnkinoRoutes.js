@@ -6,6 +6,8 @@ const FinnkinoController = require('../controllers/FinnkinoController');
 router.get('/events', FinnkinoController.getEvents);
 //Finnkinon ajankohtaista sivu
 router.get('/news', FinnkinoController.getNews);
+//Lista näytöksistä ja aikataulu
+router.get('/schedule/:areaID',FinnkinoController.getSchedule);
 
 
 
