@@ -25,8 +25,23 @@ app.post('/verifylogin', async (req, res) => {
     const hashedPassword = user[0].pwd;
     console.log(hashedPassword);
 
-    const match = bcrypt.compare(password,hashedPassword);
-    console.log(match);
+        setTimeout(() => {
+      bcrypt.compare(password, hashedPassword)
+        .then((match) => {
+          console.log(match);
+          if (match) {
+            // Passwords match - User authenticated
+            res.json({ authenticated: true, message: 'User authenticated' });
+          } else {
+            // Passwords don't match
+            res.json({ authenticated: false, error: 'Invalid password' });
+          }
+        })
+        .catch((compareError) => {
+          console.error('Error during password comparison:', compareError.message);
+          res.json({ authenticated: false, error: 'Error during password comparison' });
+        });
+    }, 1000);
 
   } catch (error) {
     console.error('Error during authentication:', error.message);

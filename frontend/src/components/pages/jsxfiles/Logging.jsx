@@ -26,7 +26,6 @@ export const AuthProvider = ({ children }) => {
       if(response.ok){
         const result = await response.json();
 
-        console.log('Dummy Data From Backend: ', result.user);
         console.log('Authenticated: ', result.authenticated);
 
         setUser(result.user)
