@@ -19,13 +19,15 @@ const extractData = (events) => {
     const lengthInMinutes = event.LengthInMinutes?.[0] || 'N/A';
     const synopsis = event.Synopsis?.[0] || 'N/A';
     const largeImagePortrait = event.Images?.[0]?.EventLargeImagePortrait?.[0] || 'N/A';
+    const URL = event.EventURL?.[0] || 'N/A';
 
     return {
       Title: title,
       ProductionYear: productionYear,
       LengthInMinutes: lengthInMinutes,
       Synopsis: synopsis,
-      EventLargeImagePortrait: largeImagePortrait
+      EventLargeImagePortrait: largeImagePortrait,
+      EventURL: URL
     };
   });
 };

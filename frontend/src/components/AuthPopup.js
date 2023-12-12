@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import './AuthPopup.css'; // Add styles for your popup
 
+import { Card, Button, CardBody, CardText, } from 'react-bootstrap';
+
 const AuthPopup = ({ onClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -29,9 +31,9 @@ const AuthPopup = ({ onClose }) => {
         Password:
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </label>
-      <button onClick={handleRegister}>Register</button>
-      <button onClick={handleLogin}>Login</button>
-      <button onClick={onClose}>Close</button>
+      <Button onClick={handleRegister}>Register</Button>
+      <Button onClick={handleLogin}>Login</Button>
+      <Button onClick={onClose}>Close</Button>
     </div>
   );
 };

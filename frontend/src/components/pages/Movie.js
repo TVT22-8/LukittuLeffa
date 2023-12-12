@@ -9,7 +9,6 @@ const Movie = () => {
     <div>
       {id ? <Testfetch movieId={id} /> : <h2>Welcome to the Home Page!</h2>}
       {/* Render Testfetch only if there is an ID, otherwise show the homepage message */}
-        
     </div>
   );
 }
