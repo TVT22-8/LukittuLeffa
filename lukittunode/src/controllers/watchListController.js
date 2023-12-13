@@ -34,4 +34,4 @@ exports.removeMovieFromUsersWatchlist = async (req,res) => {
         console.error(error);
         res.status(500).json({error:'Server error when adding a Movie to Users Watch History'});
     }
-}
+};
