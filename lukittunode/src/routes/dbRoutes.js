@@ -38,11 +38,12 @@ router.delete('/users/:uId', userController.deleteUser);//Delete an user by user
 router.get('/groups', groupController.getAllGroups);//Get all groups and the ownersID
 router.get('/groups/members/:groupId', groupController.getAllMembersByID);//Get all members of a group by groupID
 router.post('/groups', groupController.createGroup);//Create a group, insert the owners ID
-router.post('/groups/add-member', groupController.addMember);//Add a member to group, determine as a BOOLEAN if they have admin rights
+router.post('/groups/add-member', groupController.addMember);//Add a member to group, determines admin rights
 router.delete('/groups/:groupId/:adminId/:deletedId', groupController.removeMember);//Delete a member from a group, Insert the ADMINs ID and the userID you want to remove
 router.delete('/groups/:groupId/:adminId', groupController.deleteGroup);//Delete a group by a groups ID and admins ID
 router.get('/groups/chat/:groupId', groupController.getGroupChatsByID);//Get a Groups all Chats
 router.post('/groups/chat', groupController.postGroupChat);//Post a Group Chat
+router.get('/groups/members/reviews/:groupId', groupController.getGroupMembersReviews);//Get All reviews of Groupmembers
 
 
 module.exports = router;

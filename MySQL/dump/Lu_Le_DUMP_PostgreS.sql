@@ -59,23 +59,26 @@ DROP TABLE IF EXISTS watchhistory;
 CREATE TABLE watchhistory (
   movieid INT NOT NULL,
   userlukittu_userid INT NOT NULL,
-  PRIMARY KEY (movieid),
+  PRIMARY KEY (movieid, userlukittu_userid),
   CONSTRAINT fk_watchhistory_userlukittu1 FOREIGN KEY (userlukittu_userid) REFERENCES userlukittu (userid)
 );
 
+
+SELECT trigger_name
+FROM information_schema.triggers
+WHERE event_object_table = 'watchhistory';
 -- Table structure for table `watchlist`
 
 DROP TABLE IF EXISTS watchlist;
 CREATE TABLE watchlist (
   movieid INT NOT NULL,
   userlukittu_userid INT NOT NULL,
-  PRIMARY KEY (movieid),
+  PRIMARY KEY (movieid, userlukittu_userid),
   CONSTRAINT fk_watchlist_userlukittu1 FOREIGN KEY (userlukittu_userid) REFERENCES userlukittu (userid)
 );
+ALTER TABLE watchlist DROP CONSTRAINT watchlist_pkey;
 
--- Table structure for table `watchreviews`
-
-DROP TABLE IF EXISTS watchreviews;
+-- Table structure for table `watchreviews
 CREATE TABLE watchreviews (
   reviewid SERIAL PRIMARY KEY,
   reviewtext TEXT,
