@@ -11,7 +11,6 @@ app.post('/verifylogin', async (req, res) => {
     console.log('Received request at /verifylogin');
 
     const{username, password} = req.body.credentials;
-    console.log('credentials: ', username, password);
 
     const user = await userController.getUserByUsername(username);
 
@@ -31,7 +30,7 @@ app.post('/verifylogin', async (req, res) => {
           console.log(match);
           if (match) {
             // Passwords match - User authenticated
-            res.json({ authenticated: true, message: 'User authenticated' });
+            res.json({ authenticated: true, message: 'User authenticated', user: user });
           } else {
             // Passwords don't match
             res.json({ authenticated: false, error: 'Invalid password' });

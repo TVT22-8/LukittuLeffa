@@ -138,6 +138,18 @@ exports.postGroupChat = async (req,res) => {
         res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error: 'Server Error Posting a Group Chat to Group: ' + groupId})
+        res.status(500).json({error: 'Server Error Posting a Group Chat to Group: ' + groupId});
+    }
+};
+
+exports.getGroupMembersReviews = async (req,res) => {
+    const{groupId} = req.params;
+    try{
+        const result = await pool.query("SELECT reviewid, reviewtext, rating, TO_CHAR(reviewdate, 'DD.MM.YYYY') AS reviewdate, watchhistory_movieid, userlukittu_userid FROM watchreviews wr JOIN group_membership gm on wr.userlukittu_userid = gm.userid where gm.groupid = $1",
+        [groupId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error:'Server Error Getting Group Members reviews: ', groupId});
     }
 };

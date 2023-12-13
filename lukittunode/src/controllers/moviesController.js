@@ -36,8 +36,4 @@ exports.removeMovieFromHistory = async(req,res)=>{
         console.error(error);
         res.status(500).json({error:'Server error when removing a Movie from Users Watch History'});
     }
-}
-
-
-//WATCHLIST SEGMENT
-
+};
