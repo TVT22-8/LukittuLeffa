@@ -28,7 +28,7 @@ router.get('/watchreviews', reviewController.getFiveLatestReviews);//For mainpag
 router.get('/users/watchhistory/:uId', movieController.getUserWatchHistory);//Get a spesific users watchhistory
 router.post('/users/watchhistory', movieController.addMovieToWatchHistory);//Add a new movie to a users history
 router.delete('/users/watchhistory/:uId/:movieId', movieController.removeMovieFromHistory);//Remove a movie from users history by userID and movieID
-router.get('/users/similar/:movieId', movieController.getUsersSimilars);
+router.get('/users/similar/:uId', movieController.getUsersSimilars);
 
 //USERS
 router.get('/users', userController.getUsers);//Get all users IDs Names and Passwords
