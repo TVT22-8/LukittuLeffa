@@ -269,7 +269,7 @@ const Homefetch = () => {
         <div style={{display: 'inline-flex', flexDirection: 'row'}}>
           {userReview.map((id, index) => (
             
-            <Card key={index} style={{width: '300px', height: '290px'}}>
+            <Card key={index} style={{width: '380px', height: '290px'}}>
               {index > 0 && <br />}
               <CardBody>
                 <Link to={`http://localhost:3000/movie/${id.watchhistory_movieid}`}>
