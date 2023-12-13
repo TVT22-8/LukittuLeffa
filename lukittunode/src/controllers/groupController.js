@@ -169,17 +169,20 @@ exports.getGroupMembersReviews = async (req,res) => {
 
         // Update result.rows with movie titles
         movieTitles.forEach(({ movieId, movieTitle }) => {
-            const rowToUpdate = result.rows.find((row) => row.watchhistory_movieid === movieId);
-            if (rowToUpdate) {
-                rowToUpdate.title = movieTitle;
-            }
+            result.rows
+                .filter((row) => row.watchhistory_movieid === movieId)
+                .forEach((rowToUpdate) => {
+                    if (rowToUpdate) {
+                        rowToUpdate.title = movieTitle;
+                    }
+                });
         });
-
+        
         const modifiedResult = result.rows.map(({ title, ...rest }) => ({
             ...rest,
-            title: title && title.title ? title.title : 'Title not found' // Assuming 'title' is the property containing the movie title
+            title: title && title.title ? title.title : 'Title not found'
         }));
-
+        
         res.json(modifiedResult);
     } catch (error) {
         console.error(error);
