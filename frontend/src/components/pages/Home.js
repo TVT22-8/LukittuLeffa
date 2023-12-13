@@ -10,6 +10,7 @@ const Home = () => {
   return (
     <div>
       <h3>Home Page</h3>
+      <Homefetch />
     </div>
   );
 }

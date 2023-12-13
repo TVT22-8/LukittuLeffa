@@ -9,7 +9,7 @@ const tmdbController = {
       console.log('getMovieDetailsfromid called');
       const movieId = req.params.movieId;
       console.log('movieId:', movieId); // Check if movieId is retrieved correctly
-      const data = await fetchfromid(movieId, ['title', 'tagline', 'genres', 'release_date', 'overview', 'popularity', 'runtime', 'poster_path']);
+      const data = await fetchfromid(movieId, ['id','title', 'tagline', 'genres', 'release_date', 'overview', 'popularity', 'runtime', 'poster_path']);
       res.json(data);
     } catch (error) {
        console.error('Error in getMovieDetailsfromid:', error);
