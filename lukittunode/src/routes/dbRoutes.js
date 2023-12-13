@@ -15,11 +15,13 @@ router.post('/users/watchlist', watchListController.addMovieToUsersWatchlist);//
 router.delete('/users/watchlist/:uId/:movieId', watchListController.removeMovieFromUsersWatchlist);//Remove a movie from Users Watchlist
 
 
+
 //REVIEWS
 router.get('/users/watchreviews/:uId', reviewController.getUsersReviews);//What reviews a certain user has posted
 router.get('/movies/watchreviews/:movieId', reviewController.getMovieReviews);//ALL the reviews a certain movie has
 router.delete('/users/watchreviews/:uId/:reviewId', reviewController.removeReview);//Delete a certain review by ID
 router.post('/users/watchreviews', reviewController.postMovieReview);//Create a new review for user
+router.get('/users/group/reviews/:uId', reviewController.getTwoLatestReviewsFromUsersGroups);//Get two of your groups latest reviews
 router.get('/watchreviews', reviewController.getFiveLatestReviews);//For mainpage get the Five Latest Reviews
 
 //WATCH HISTORY
