@@ -122,7 +122,7 @@ exports.deleteGroup = async (req, res) => {
 exports.getGroupChatsByID = async (req,res) => {
     const {groupId} = req.params;
     try{
-        const result = await pool.query("SELECT chat_id, ul.username, watchgroup_groupid, message_text, TO_CHAR(timestamp, 'DD.MM.YY HH24:MI') AS timestamp FROM group_chat gc JOIN userlukittu ul ON gc.userlukittu_userid = ul.userid WHERE gc.watchgroup_groupid = $1",
+        const result = await pool.query("SELECT chat_id, ul.username, message_text, TO_CHAR(timestamp, 'DD.MM.YY HH24:MI') AS timestamp FROM group_chat gc JOIN userlukittu ul ON gc.userlukittu_userid = ul.userid WHERE gc.watchgroup_groupid = $1",
         [groupId]);
         res.json(result.rows);
     } catch (error) {

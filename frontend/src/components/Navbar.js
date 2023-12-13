@@ -17,8 +17,8 @@ const MenuItems = [
     cName: 'nav-links',
   },
   {
-    title: 'More Services',
-    path: '/more-services',
+    title: 'User',
+    path: '/User',
     cName: 'nav-links',
   },
 ];
@@ -90,17 +90,17 @@ function MyNavbar() {
           onClick={handleClick}
           className="custom-dropdown" // Add a custom class for styling
         >
-          {MenuItems.map((item, index) => (
-            <NavDropdown.Item key={index}>
-              <Link
-                className={item.cName}
-                to={item.path}
-                onClick={() => setClick(false)}
-              >
-                {item.title}
-              </Link>
-            </NavDropdown.Item>
-          ))}
+        {MenuItems.map((item, index) => (
+  <NavDropdown.Item
+    key={index}
+    as={Link}
+    to={item.path}
+    onClick={() => setClick(false)}
+    className={item.cName}
+  >
+    {item.title}
+  </NavDropdown.Item>
+))}
         </NavDropdown>
       </Nav>
 
