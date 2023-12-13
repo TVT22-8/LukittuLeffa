@@ -41,7 +41,7 @@ exports.getUserByUsername = async(username) => {
 exports.getUsersGroups = async (req, res) => {
   const {uId} = req.params;
     try{
-        const result = await pool.query('SELECT wg.groupid, wg.groupname FROM watchgroup wg JOIN group_membership gm on wg.groupid = gm.groupid JOIN userlukittu u on gm.userid = u.userid WHERE u.userid = $1',
+        const result = await pool.query('select wg.groupid, wg.groupname, wg.description, gm.is_admin, username from watchgroup wg join group_membership gm on wg.groupid = gm.groupid join userlukittu u on gm.userid = u.userid where u.userid = $1',
         [uId]);
         res.json(result.rows);
     } catch (error) {

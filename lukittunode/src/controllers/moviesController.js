@@ -1,4 +1,6 @@
 const pool = require('../../db_pool/pool');
+const getSimilar = require('../utils/getsimilarmovies');
+const similar = require('../utils/getsimilarmovies');
 
 //WATCH HISTORY SEGMENT
 
@@ -7,12 +9,26 @@ exports.getUserWatchHistory = async(req, res) => {
     try{
         const result = await pool.query('SELECT movieid FROM watchhistory WHERE userlukittu_userid = $1',
         [uId]);
-    res.json(result.rows);
+        res.json(result.rows);
     } catch (error) {
         console.error(error);
         res.status(500).json({error:'Server error when fetching an Users Watch History'});
     }
 };
+
+exports.getUsersSimilars = async(req,res) => {
+    try {
+        const { movieId } = req.params;
+        const similarMovies = await getSimilar(movieId);
+        res.json({ similarMovies });
+    } catch (error) {
+    console.error(error);
+    res.status(500).json({error:'Server error when fetching an Users Watch History'});
+    }
+};
+
+exports.getUsersReviewsTitles
+
 
 exports.addMovieToWatchHistory = async(req,res) => {
     const {movieId, uId} = req.body;

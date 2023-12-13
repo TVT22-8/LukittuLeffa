@@ -1,10 +1,13 @@
 const pool = require('../../db_pool/pool');
+const fetchfromid = require('../utils/fetchfromid');
+const fetchingId = require('../utils/fetchfromid');
 
 exports.getUsersReviews = async(req,res) => {
     const{uId} = req.params;
     try{
         const result = await pool.query('SELECT reviewid, reviewtext, rating, reviewdate, watchhistory_movieid FROM watchreviews WHERE userlukittu_userid = $1',
         [uId]);
+
         res.json(result.rows);
     }catch(error){
         console.error(error);
@@ -49,13 +52,47 @@ exports.removeReview = async(req,res) => {
     }
 };
 
-exports.getFiveLatestReviews = async(req, res) => {
-    try{
+exports.getFiveLatestReviews = async (req, res) => {
+    try {
         const result = await pool.query(`SELECT reviewtext, rating, TO_CHAR(reviewdate, 'DD.MM.YY HH24:MI') AS reviewdate, watchhistory_movieid, ul.username AS reviewer_username FROM watchreviews wr JOIN userlukittu ul ON wr.userlukittu_userid = ul.userid ORDER BY wr.reviewdate DESC LIMIT 5`);
-        res.json(result.rows);
+
+        const watchhistoryMovieIds = result.rows.map((entry) => entry.watchhistory_movieid);
+        console.log(watchhistoryMovieIds);
+
+        async function fetchTitles(movieId) {
+            try {
+                const movieTitle = await fetchfromid(movieId, ['title']);
+                return { movieId, movieTitle };
+            } catch (error) {
+                console.error(`Error fetching title for movie ID ${movieId}:`, error);
+            }
+        }
+
+        for (const watchhistoryMovieId of watchhistoryMovieIds) {
+            await fetchTitles(watchhistoryMovieId);
+        }
+
+        const titlesPromises = watchhistoryMovieIds.map((watchhistoryMovieId) => fetchTitles(watchhistoryMovieId));
+        const movieTitles = await Promise.all(titlesPromises);
+
+        // Update result.rows with movie titles
+        movieTitles.forEach(({ movieId, movieTitle }) => {
+            const rowToUpdate = result.rows.find((row) => row.watchhistory_movieid === movieId);
+            if (rowToUpdate) {
+                rowToUpdate.title = movieTitle;
+            }
+        });
+
+        const modifiedResult = result.rows.map(({ title, ...rest }) => ({
+            ...rest,
+            title: title.title || 'Title not found' // Assuming 'title' is the property containing the movie title
+        }));
+
+        res.json(modifiedResult);
     } catch (error) {
         console.error(error);
-        res.status(500).json({error:'Server Error when fetching five latest Reviews'});
+        res.status(500).json({ error: 'Server Error when fetching five latest Reviews' });
     }
 };
+
 
