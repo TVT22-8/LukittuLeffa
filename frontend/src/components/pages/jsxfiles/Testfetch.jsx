@@ -54,36 +54,6 @@ const Testfetch = () => {
     }
   }, [movieId]); // Depend on movieId from useParams
 
-  const fetchMovieInfo = async () => {
-    try {
-      const response = await fetch(`http://localhost:3002/tmdb/movie/${movieId}`);
-      const data = await response.json();
-      console.log(data);
-      setMovieInfo(data); // Corrected: setMovieInfo instead of setMovieId
-    } catch (error) {
-      console.error('Error fetching movie information:', error);
-    }
-  };
-  const fetchCastInfo = async () => {
-    try {
-      const response = await fetch(`http://localhost:3002/tmdb/movie/${movieId}/credits`);
-      const data = await response.json();
-      console.log(data);
-      setCastInfo(data); // Corrected: setMovieInfo instead of setMovieId
-    } catch (error) {
-      console.error('Error fetching cast information:', error);
-    }
-  };
-  const fetchReviews = async () => {
-    try {
-      const response = await fetch(`http://localhost:3002/db/movies/watchreviews/${movieId}`);
-      const data = await response.json();
-      console.log(data);
-      setReviewInfo(data);
-    } catch (error) {
-      console.error('Error fetching moviereviews information:', error);
-    }
-  }
 
  
   return (
