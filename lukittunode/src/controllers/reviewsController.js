@@ -1,7 +1,6 @@
 const pool = require('../../db_pool/pool');
 const fetchfromid = require('../utils/fetchfromid');
 
-const tmdbController = require('../controllers/tmdbController');
 
 exports.getUsersReviews = async(req,res) => {
     const{uId} = req.params;
@@ -38,7 +37,7 @@ exports.getUsersReviews = async(req,res) => {
 
         const modifiedResult = result.rows.map(({ title, ...rest }) => ({
             ...rest,
-            title: title.title || 'Title not found' // Assuming 'title' is the property containing the movie title
+            title: title && title.title ? title.title : 'Title not found' // Assuming 'title' is the property containing the movie title
         }));
 
         res.json(modifiedResult);
@@ -119,7 +118,7 @@ exports.getFiveLatestReviews = async (req, res) => {
 
         const modifiedResult = result.rows.map(({ title, ...rest }) => ({
             ...rest,
-            title: title.title || 'Title not found' // Assuming 'title' is the property containing the movie title
+            title: title && title.title ? title.title : 'Title not found' // Assuming 'title' is the property containing the movie title
         }));
 
         res.json(modifiedResult);
