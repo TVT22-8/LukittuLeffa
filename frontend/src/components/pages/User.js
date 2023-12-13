@@ -1,82 +1,50 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
-
+import { useAuth } from './jsxfiles/Logging'; // Make sure the path is correct
+import { use } from "../../../../lukittunode/src/routes";
 
 const UserPage = () => {
+  const { user, logout } = useAuth();
+  const [watchList, setWatchList] = useState([]);
+  const navigate =useNavigate();
+  
+  // Fetch Watchlist using the authenticated user's information
+  useEffect(() => {
+    if (user) {
+      async function fetchWatchList() {
+        try {
+          const response = await fetch(`http://localhost:3002/db/users/watchlist/${user.userId}`);
+          if (response.ok) {
+            const data = await response.json();
+            setWatchList(data);
+          } else {
+            throw new Error('Network response was not ok.');
+          }
+        } catch (error) {
+          console.error("Fetch error: ", error);
+        }
+      }
+
+      fetchWatchList();
+    }
+  }, [user]);
+
+  if (!user) {
+    return <div>Please log in to view this page.</div>;
+  }
+
   return (
     <Container fluid="lg" className="my-4">
+      {/* User Greeting Section */}
+      <Row className="mb-3">
+        <Col>
+          <h1>Welcome, {user.username}</h1>
+          <Button variant="secondary" onClick={logout}>Logout</Button>
+        </Col>
+      </Row>
+
       {/* Suggestions Section */}
-      <Row className="mb-3">
-        <Col>
-          <Card>
-            <Card.Header>Suggestions</Card.Header>
-            <Card.Body>
-              {/* Replace with actual suggestions content */}
-              <Button variant="primary">Add movie</Button>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* History Section */}
-      <Row className="mb-3">
-        <Col>
-          <Card>
-            <Card.Header>History</Card.Header>
-            <Card.Body>
-              {/* Replace with actual history content */}
-              <Button variant="primary">Add movie</Button>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Watchlist Section */}
-      <Row className="mb-3">
-        <Col>
-          <Card>
-            <Card.Header>Watchlist</Card.Header>
-            <Card.Body>
-              {/* Replace with actual watchlist content */}
-              <Button variant="primary">Add movie</Button>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Groups Section */}
-      <Row className="mb-3">
-        <Col>
-          <Card>
-            <Card.Header>Your Groups</Card.Header>
-            <Card.Body>
-              {/* Replace with actual groups content */}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Reviews Section */}
-      <Row className="mb-3">
-        <Col>
-          <Card>
-            <Card.Header>Your Reviews</Card.Header>
-            <Card.Body>
-              {/* Replace with actual reviews content */}
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={4}>
-          {/* Side column for latest group reviews, etc. */}
-          <Card>
-            <Card.Header>Your Group's Latest Reviews</Card.Header>
-            <Card.Body>
-              {/* Replace with actual latest reviews content */}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+      {/* ... rest of the component ... */}
     </Container>
   );
 };

@@ -14,12 +14,12 @@ export function Button() {
   const handleClosePopup = () => {
     setPopupOpen(false);
   };
-
   return (
     <div>
-      <Link to='#' onClick={handleOpenPopup}>
-        <button className='btn' color='white'>Sign Up</button>
-      </Link>
+      {/* Use a button instead of Link here */}
+      <button className='btn' color='white' onClick={handleOpenPopup}>
+        Sign Up
+      </button>
 
       {isPopupOpen && <AuthPopup onClose={handleClosePopup} />}
     </div>
