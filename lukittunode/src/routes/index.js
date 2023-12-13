@@ -6,6 +6,7 @@ const dbRoutes = require('./dbRoutes');
 const FinnkinoRoutes = require('./FinnkinoRoutes');
 const authenticateUser = require('../utils/verifyLogin');
 
+
 // Use TMDb routes
 router.use('/tmdb', tmdbRoutes);
 
@@ -17,5 +18,7 @@ router.use('/finnkino', FinnkinoRoutes);
 
 // Login verification
 router.post('/verifylogin', authenticateUser);
+
+
 
 module.exports = router;

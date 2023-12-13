@@ -49,3 +49,13 @@ exports.removeReview = async(req,res) => {
     }
 };
 
+exports.getFiveLatestReviews = async(req, res) => {
+    try{
+        const result = await pool.query(`SELECT reviewtext, rating, TO_CHAR(reviewdate, 'DD.MM.YY HH24:MI') AS reviewdate, watchhistory_movieid, ul.username AS reviewer_username FROM watchreviews wr JOIN userlukittu ul ON wr.userlukittu_userid = ul.userid ORDER BY wr.reviewdate DESC LIMIT 5`);
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error:'Server Error when fetching five latest Reviews'});
+    }
+};
+
