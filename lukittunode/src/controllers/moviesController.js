@@ -17,9 +17,29 @@ exports.getUserWatchHistory = async(req, res) => {
 };
 
 exports.getUsersSimilars = async(req,res) => {
+    const {uId} = req.params;
     try {
-        const { movieId } = req.params;
-        const similarMovies = await getSimilar(movieId);
+        const result = await pool.query(`SELECT *
+        FROM watchhistory
+        WHERE userlukittu_userid = $1
+        ORDER BY entry_order DESC
+        LIMIT 3;`,[uId]);
+        const movieIds = result.rows.map((entry) => entry.movieid);
+        console.log(movieIds);
+
+        let similarMovies = [];
+
+        // Loop through each movie ID
+        for (const movieId of movieIds) {
+            // Fetch similar movies for the current movie ID
+            const currentSimilarMovies = await getSimilar([movieId]);
+
+            // Concatenate the results to the final array
+            similarMovies = similarMovies.concat(currentSimilarMovies);
+        }
+
+        console.log(similarMovies);
+
         res.json({ similarMovies });
     } catch (error) {
     console.error(error);
