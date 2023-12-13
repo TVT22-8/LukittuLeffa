@@ -51,7 +51,19 @@ const tmdbController = {
       console.error('Error in getsimilar:', error);
       res.status(500).json({ error: error.message });
     } 
-  }
+  },
+  getMovieTitlefromid: async (req, res) => {
+    try {
+      console.log('getMovieDetailsfromid called');
+      const movieId = req.params.movieId;
+      console.log('movieId:', movieId); // Check if movieId is retrieved correctly
+      const data = await fetchfromid(movieId, ['title']);
+      res.json(data);
+    } catch (error) {
+       console.error('Error in getMovieDetailsfromid:', error);
+       res.status(500).json({ error: error.message });
+    }
+  },
 };
 
 module.exports = tmdbController;

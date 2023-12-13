@@ -1,23 +1,27 @@
 const fetch = require('node-fetch');
+const { bearerToken, apiKey } = require('../../config');
 
-const makeAPICall = async (baseUrl, endpoint, token) => {
-  const url = `${baseUrl}/${endpoint}`;
+
+const makeAPICall = async (bearerToken) => {
+  const url = `https://api.themoviedb.org/3/authentication`;
 
   const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${bearerToken}`
     }
   };
 
   try {
     const response = await fetch(url, options);
     const data = await response.json();
-    return data;
+    console.log(data);
   } catch (error) {
     throw new Error(`API request failed: ${error.message}`);
   }
 };
 
 module.exports = makeAPICall;
+
+makeAPICall(bearerToken);
