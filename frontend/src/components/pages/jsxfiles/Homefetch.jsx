@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, CardBody, CardText, } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { StarFill } from 'react-bootstrap-icons';
 import OuterCard from './OuterCard';
 import useUserId from './useUserId';
+import RatingStars from './Ratingstars';
 
 const Homefetch = () => {
     const url = 'https://image.tmdb.org/t/p/original';
@@ -11,20 +13,38 @@ const Homefetch = () => {
     const [movieInfo, setMovieInfo] = useState('');
     const [history, setHistory] = useState('');
     const [movieHistory, setMovieHistory] = useState('');
+    const [fiveReviews, setFiveReviews] = useState('');
     const userId = useUserId();
 
-    useEffect(() => {
-        fetchMovieInfo();
-        fetchMovieHistory();
-    },[userWatch]);
+    
 
     useEffect(() => {
+        fetchFiveReviews();
         fetchfinnkino();
         fetchUserWatchlist();
         fetchUserHistory();
       }, [userId]); 
 
+    useEffect(() => {
+        fetchMovieInfo();
+    },[userWatch]);
+
+    useEffect(() => {
+        fetchMovieHistory();
+    },[history]);
+
     const [finn, setFinn] = useState('');
+
+    const fetchFiveReviews = async () => {
+        try {
+            const response = await fetch(`http://localhost:3002/db/watchreviews`);
+            const data = await response.json();
+            console.log(data, 'five reviews');
+            setFiveReviews(data);
+        } catch (error) {
+            console.error('Error fetching five reviews:', error);
+        }
+    };
 
     const fetchfinnkino = async () => {
         try {
@@ -41,7 +61,7 @@ const Homefetch = () => {
         try {
           const response = await fetch(`http://localhost:3002/db/users/watchlist/${userId[0].userid}`);
           const data = await response.json();
-          console.log(data);
+          console.log(data, 'userwatchlist');
           setUserWatch(data);
           
           
@@ -69,7 +89,7 @@ const Homefetch = () => {
           const moviePromises = history.map(async(id) => {
           const response = await fetch(`http://localhost:3002/tmdb/movie/${id.movieid}`);
           const data = await response.json();
-          console.log(data);
+          //console.log(data, 'finnkino');
           return data;
         });
         const movieInfoArray = await Promise.all(moviePromises);
@@ -88,7 +108,7 @@ const Homefetch = () => {
           const moviePromises = userWatch.map(async(id) => {
           const response = await fetch(`http://localhost:3002/tmdb/movie/${id.movieid}`);
           const data = await response.json();
-          console.log(data);
+          //console.log(data, 'movieinfo');
           return data;
         });
         const movieInfoArray = await Promise.all(moviePromises);
@@ -103,7 +123,30 @@ const Homefetch = () => {
       
     return (
     <div>
+
     <div style={{position: 'absolute', left: '60px'}}>
+    <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Five Latest Reviews</Card.Title>
+      <OuterCard>
+      {fiveReviews && (
+        <div style={{display: 'inline-flex', flexDirection: 'row'}}>
+          {fiveReviews.map((show, index) => (
+            <Card key={index} style={{width: '353px', height: '290px'}}>
+              {index > 0 && <br />}
+              <CardBody>
+                <CardText>{show.reviewtext}
+                <CardText style={{fontSize: '12px'}}>{show.reviewdate}
+                </CardText>Name: {show.reviewer_username}</CardText>
+                
+                <RatingStars rating={show.rating} />
+              </CardBody>
+            </Card>
+          ))}
+        </div>
+      )}
+      </OuterCard>
+      </div> 
+
+    <div style={{position: 'absolute', left: '60px', top: '500px'}}>
     <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Finnkino</Card.Title>
       <OuterCard>
       {finn && (
@@ -123,7 +166,7 @@ const Homefetch = () => {
       </OuterCard>
       </div> 
 
-      <div style={{position: 'absolute', left: '60px', top: '500px'}}>
+      <div style={{position: 'absolute', left: '60px', top: '880px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Watchlist</Card.Title>
       <OuterCard>
       {movieInfo && (
@@ -143,7 +186,7 @@ const Homefetch = () => {
       </OuterCard>
       </div>
 
-      <div style={{position: 'absolute', left: '60px', top: '880px'}}>
+      <div style={{position: 'absolute', left: '60px', top: '1210px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>History</Card.Title>
       <OuterCard>
       {movieHistory && (
