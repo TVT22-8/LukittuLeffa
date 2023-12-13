@@ -71,7 +71,7 @@ const Testfetch = () => {
       console.log(data);
       setCastInfo(data); // Corrected: setMovieInfo instead of setMovieId
     } catch (error) {
-      console.error('Error fetching movie information:', error);
+      console.error('Error fetching cast information:', error);
     }
   };
   const fetchReviews = async () => {
@@ -88,7 +88,7 @@ const Testfetch = () => {
  
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-start', margin: '0 100px' }}>
+      <div style={{ position: 'absolute', top: '100px', display: 'flex', justifyContent: 'flex-start', margin: '0 100px' }}>
         {movieInfo && (
           <Card style={{ width: '25rem' }}>
             <Card.Img variant="top" src={url + movieInfo.poster_path} />
