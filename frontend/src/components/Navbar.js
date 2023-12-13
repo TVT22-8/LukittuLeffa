@@ -17,8 +17,8 @@ const MenuItems = [
     cName: 'nav-links',
   },
   {
-    title: 'More Services',
-    path: '/more-services',
+    title: 'User',
+    path: '/User',
     cName: 'nav-links',
   },
 ];
