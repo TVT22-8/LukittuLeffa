@@ -47,6 +47,7 @@ async function getSimilar(movieId) {
       ...movie,
       genre_names: mapGenreIdsToNames(movie.genre_ids) // Convert genre_ids to genre_names
     }));
+    
 
     return similarMovies;
   } catch (error) {
