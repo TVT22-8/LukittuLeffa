@@ -71,13 +71,14 @@ describe('tmdbController', () => {
     ];
 
     fetchMock.get(`/api/${mockMovieId}/recommendations`, mockSimilarMovieData);
-
+    // Simulating the request object and response object
+    
     const req = { params: { movieId: mockMovieId } };
-    const res = { json: data => data };
+    const res = { json: data => data }; // Mocking the response.json() method
 
     await tmdbController.getSimilarMovies(req, res);
   } )
-  // Add tests for other controller methods in a similar manner
+  
 });
 
   
