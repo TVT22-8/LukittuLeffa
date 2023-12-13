@@ -27,8 +27,6 @@ exports.getUsersSimilars = async(req,res) => {
     }
 };
 
-exports.getUsersReviewsTitles
-
 
 exports.addMovieToWatchHistory = async(req,res) => {
     const {movieId, uId} = req.body;
