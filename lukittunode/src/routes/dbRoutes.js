@@ -20,11 +20,13 @@ router.get('/users/watchreviews/:uId', reviewController.getUsersReviews);//What 
 router.get('/movies/watchreviews/:movieId', reviewController.getMovieReviews);//ALL the reviews a certain movie has
 router.delete('/users/watchreviews/:uId/:reviewId', reviewController.removeReview);//Delete a certain review by ID
 router.post('/users/watchreviews', reviewController.postMovieReview);//Create a new review for user
+router.get('/watchreviews', reviewController.getFiveLatestReviews);//For mainpage get the Five Latest Reviews
 
 //WATCH HISTORY
 router.get('/users/watchhistory/:uId', movieController.getUserWatchHistory);//Get a spesific users watchhistory
 router.post('/users/watchhistory', movieController.addMovieToWatchHistory);//Add a new movie to a users history
 router.delete('/users/watchhistory/:uId/:movieId', movieController.removeMovieFromHistory);//Remove a movie from users history by userID and movieID
+router.get('/users/similar/:movieId', movieController.getUsersSimilars);
 
 //USERS
 router.get('/users', userController.getUsers);//Get all users IDs Names and Passwords

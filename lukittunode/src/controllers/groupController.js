@@ -1,4 +1,5 @@
 const pool = require('../../db_pool/pool');
+const fetchfromid = require('../utils/fetchfromid');
 
 exports.getAllGroups = async(req, res) => {
     try{
@@ -147,9 +148,45 @@ exports.getGroupMembersReviews = async (req,res) => {
     try{
         const result = await pool.query("SELECT reviewid, reviewtext, rating, TO_CHAR(reviewdate, 'DD.MM.YYYY') AS reviewdate, watchhistory_movieid, userlukittu_userid FROM watchreviews wr JOIN group_membership gm on wr.userlukittu_userid = gm.userid where gm.groupid = $1",
         [groupId]);
-        res.json(result.rows);
+        const watchhistoryMovieIds = result.rows.map((entry) => entry.watchhistory_movieid);
+        console.log(watchhistoryMovieIds);
+
+        async function fetchTitles(movieId) {
+            try {
+                const movieTitle = await fetchfromid(movieId, ['title']);
+                return { movieId, movieTitle };
+            } catch (error) {
+                console.error(`Error fetching title for movie ID ${movieId}:`, error);
+            }
+        }
+
+        for (const watchhistoryMovieId of watchhistoryMovieIds) {
+            await fetchTitles(watchhistoryMovieId);
+        }
+
+        const titlesPromises = watchhistoryMovieIds.map((watchhistoryMovieId) => fetchTitles(watchhistoryMovieId));
+        const movieTitles = await Promise.all(titlesPromises);
+
+        // Update result.rows with movie titles
+        movieTitles.forEach(({ movieId, movieTitle }) => {
+            result.rows
+                .filter((row) => row.watchhistory_movieid === movieId)
+                .forEach((rowToUpdate) => {
+                    if (rowToUpdate) {
+                        rowToUpdate.title = movieTitle;
+                    }
+                });
+        });
+        
+        const modifiedResult = result.rows.map(({ title, ...rest }) => ({
+            ...rest,
+            title: title && title.title ? title.title : 'Title not found'
+        }));
+        
+        res.json(modifiedResult);
     } catch (error) {
         console.error(error);
         res.status(500).json({error:'Server Error Getting Group Members reviews: ', groupId});
     }
 };
+

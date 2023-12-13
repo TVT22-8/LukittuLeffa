@@ -38,10 +38,10 @@ const getFinnkinoEvents = async () => {
     const result = await xml2js.parseStringPromise(xmlData);
 
     const events = result?.Events?.Event || [];
-    console.log('Events:', events); // Log the 'events' array
+    //console.log('Events:', events); // Log the 'events' array
 
     const extractedData = extractData(events);
-    console.log('Extracted Data:', extractedData); // Log the extracted data
+    //console.log('Extracted Data:', extractedData); // Log the extracted data
     
     return extractedData;
   } catch (error) {

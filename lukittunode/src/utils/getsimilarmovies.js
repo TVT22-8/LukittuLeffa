@@ -43,11 +43,15 @@ async function getSimilar(movieId) {
     const data = await response.json();
 
     // Process the received data here
-    const similarMovies = data.results.map(movie => ({
-      ...movie,
-      genre_names: mapGenreIdsToNames(movie.genre_ids) // Convert genre_ids to genre_names
-    }));
-    
+    const similarMovies = data.results
+      .map(movie => ({
+        title: movie.title,
+        poster_path: movie.poster_path,
+        vote_average: movie.vote_average,
+        movieId: movie.id
+      }))
+      .sort((a, b) => b.vote_average - a.vote_average) // Sort by vote_average in descending order
+      .slice(0, 3); // Take only the top three movies
 
     return similarMovies;
   } catch (error) {
