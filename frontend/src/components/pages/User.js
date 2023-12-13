@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import OuterCard from './jsxfiles/OuterCard';
 import useUserId from './jsxfiles/useUserId';
 import { Badge } from 'react-bootstrap';
-
+import RatingStars from './jsxfiles/Ratingstars';
 
 const UserPage = () => {
     const url = 'https://image.tmdb.org/t/p/original';
@@ -17,7 +17,6 @@ const UserPage = () => {
     const [userName, setUserName] = useState('');
     const [reviews, setReviews] = useState([]);
     const [userGroups, setUserGroups] = useState([]);
-    const [groupAdmins, setGroupAdmins] = useState([]);
     
 
 
@@ -36,10 +35,10 @@ const UserPage = () => {
 
       useEffect(() => {
         if (userId) {
+          console.log('Effect to fetch groups and admin status running');
           fetchUserGroupsAndAdminStatus();
         }
       }, [userId]);
-      
 
     const [finn, setFinn] = useState('');
 
@@ -98,47 +97,39 @@ const UserPage = () => {
             console.error('Error fetching user reviews:', error);
           }
         };
-        const fetchUserGroups = async () => {
-            try {
-              // Fetch all groups the user is a member of
-              const response = await fetch(`http://localhost:3002/db/users/groups/${userId[0].userid}`);
-              const groups = await response.json();
-          
-              // Assuming the API returns an array of group objects with an isAdmin property
-              setUserGroups(groups);
-            } catch (error) {
-              console.error('Error fetching groups for user:', error);
-            }
-          };
-          
-          useEffect(() => {
-            if (userId) {
-              fetchUserGroups();
-            }
-          }, [userId]);
+ 
         
-          const fetchUserGroupsAndAdminStatus = async () => {
-            try {
-              // Fetch all groups the user is a part of
-              const groupsResponse = await fetch(`http://localhost:3002/db/users/groups/${userId[0].userid}`);
-              const groupsData = await groupsResponse.json();
-          
-              // Fetch all group memberships to find where the user is an admin
-              const membershipsResponse = await fetch(`http://localhost:3002/db/groups/members/${userId[0].userid}`);
-              const membershipsData = await membershipsResponse.json();
-          
-              // Combine group data with admin status
-              const combinedGroups = groupsData.map(group => {
-                const isAdmin = membershipsData.some(member => member.groupid === group.groupid && member.is_admin);
-                return { ...group, is_admin: isAdmin };
+        const fetchUserGroupsAndAdminStatus = async () => {
+          try {
+            const userIdValue = userId[0].userid;
+        
+            // Fetch all groups the user is a part of
+            const groupsResponse = await fetch(`http://localhost:3002/db/users/groups/${userIdValue}`);
+            const groupsData = await groupsResponse.json();
+        
+            // Fetch all group memberships to find where the user is an admin
+            const membershipsResponse = await fetch(`http://localhost:3002/db/groups/members/${userIdValue}`);
+            const membershipsData = await membershipsResponse.json();
+        
+            // Log the memberships data to verify
+            console.log('Memberships data:', membershipsData);
+        
+            // Combine group data with admin status
+            const combinedGroups = groupsData.map(group => {
+              const isAdmin = membershipsData.some(member => {
+                // Convert both IDs to the same type before comparison
+                return String(member.groupid) === String(group.groupid) && member.is_admin;
               });
-          
-              setUserGroups(combinedGroups);
-            } catch (error) {
-              console.error('Error fetching groups and admin status:', error);
-            }
-          };
-
+              return { ...group, is_admin: isAdmin };
+            });
+        
+            // Log the combined groups data to verify
+            console.log('Setting user groups with admin status', combinedGroups);
+            setUserGroups(combinedGroups);
+          } catch (error) {
+            console.error('Error fetching groups and admin status:', error);
+          }
+        };
       const fetchUserHistory = async () => {
         try {
           const response = await fetch(`http://localhost:3002/db/users/watchhistory/${userId[0].userid}`);
@@ -262,23 +253,26 @@ const UserPage = () => {
     </Card>
   </Col>
 </Row>
- {/* Reviews Section */}
+{/* Reviews Section */}
 <Row className="mb-3">
   <Col>
     <Card>
       <Card.Header>User Reviews</Card.Header>
       <Card.Body>
         {reviews && reviews.length > 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', overflowX: 'auto' }}>
             {reviews.map((review, index) => (
-              <Card key={index} style={{ width: '100%', marginBottom: '10px' }}>
+              <Card key={index} style={{ width: '380px', height: '290px', marginRight: index < reviews.length - 1 ? '10px' : '0' }}>
                 <CardBody>
-                  <Card.Title>Review for Movie ID: {review.watchhistory_movieid}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">Rating: {review.rating}</Card.Subtitle>
+                  <Link to={`http://localhost:3000/movie/${review.watchhistory_movieid}`}>
+                    <Card.Title style={{ textAlign: 'center' }}>{review.title}</Card.Title>
+                  </Link>
+                  <br></br>
                   <Card.Text>{review.reviewtext}</Card.Text>
-                  <Card.Text className="text-muted">
+                  <Card.Text style={{ fontSize: '12px', textAlign: 'end' }}>
                     Reviewed on: {new Date(review.reviewdate).toLocaleDateString()}
                   </Card.Text>
+                  <RatingStars rating={review.rating} />
                 </CardBody>
               </Card>
             ))}
