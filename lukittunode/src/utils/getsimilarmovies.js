@@ -41,16 +41,14 @@ async function getSimilar(movieId) {
     }
 
     const data = await response.json();
-    console.log(data);
+
     // Process the received data here
     const similarMovies = data.results.map(movie => ({
       ...movie,
       genre_names: mapGenreIdsToNames(movie.genre_ids) // Convert genre_ids to genre_names
     }));
-    
 
     return similarMovies;
-    
   } catch (error) {
     console.error('Error fetching similar movies:', error.message);
     throw error;
