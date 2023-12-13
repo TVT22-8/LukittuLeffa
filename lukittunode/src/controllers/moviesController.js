@@ -1,12 +1,12 @@
 const pool = require('../../db_pool/pool');
 const getSimilar = require('../utils/getsimilarmovies');
-const similar = require('../utils/getsimilarmovies');
+
 
 //WATCH HISTORY SEGMENT
 
 exports.getUserWatchHistory = async(req, res) => {
     const {uId} = req.params;
-    try{
+    try{//Get every movie in users Watch History
         const result = await pool.query('SELECT movieid FROM watchhistory WHERE userlukittu_userid = $1',
         [uId]);
         res.json(result.rows);
@@ -18,7 +18,7 @@ exports.getUserWatchHistory = async(req, res) => {
 
 exports.getUsersSimilars = async(req,res) => {
     const {uId} = req.params;
-    try {
+    try {//Get 9 similar movies from users latest entries in Watch History
         const result = await pool.query(`SELECT *
         FROM watchhistory
         WHERE userlukittu_userid = $1
@@ -50,7 +50,7 @@ exports.getUsersSimilars = async(req,res) => {
 
 exports.addMovieToWatchHistory = async(req,res) => {
     const {movieId, uId} = req.body;
-    try{
+    try{//Add a movie to users Watch History, this also removes the movie from users Watch List!!!!
         const result = await pool.query('INSERT INTO watchhistory (movieid, userlukittu_userid) VALUES ($1, $2) RETURNING *',
         [movieId, uId]);
         res.json(result.rows);
@@ -62,7 +62,7 @@ exports.addMovieToWatchHistory = async(req,res) => {
 
 exports.removeMovieFromHistory = async(req,res)=>{
     const {movieId, uId} = req.params;
-    try{
+    try{//Remove a movive from Users Watch History
         const result = await pool.query('DELETE FROM watchhistory WHERE userlukittu_userid = $1 AND movieid = $2 RETURNING *',
         [uId, movieId]);
         res.json(result.rows);
