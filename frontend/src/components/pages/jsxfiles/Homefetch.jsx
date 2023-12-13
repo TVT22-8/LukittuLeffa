@@ -15,14 +15,18 @@ const Homefetch = () => {
     const [movieHistory, setMovieHistory] = useState('');
     const [fiveReviews, setFiveReviews] = useState('');
     const [userGroups, setUserGroups] = useState('');
+    const [userReview, setUserReview] = useState('');
     const userId = useUserId();
 
     
-
     useEffect(() => {
         fetchFiveReviews();
         fetchfinnkino();
+      }, []); 
+
+    useEffect(() => {
         fetchUserWatchlist();
+        fetchUserReviews();
         fetchUserHistory();
         fetchUserGroups();
       }, [userId]); 
@@ -45,6 +49,17 @@ const Homefetch = () => {
             setFiveReviews(data);
         } catch (error) {
             console.error('Error fetching five reviews:', error);
+        }
+    };
+
+    const fetchUserReviews = async () => {
+        try {
+            const response = await fetch(`http://localhost:3002/db/users/watchreviews/${userId[0].userid}`);
+            const data = await response.json();
+            console.log(data, 'user reviews');
+            setUserReview(data);
+        } catch (error) {
+            console.error('Error fetching user reviews:', error);
         }
     };
 
@@ -147,7 +162,7 @@ const Homefetch = () => {
             <Card key={index} style={{width: '353px', height: '290px'}}>
               {index > 0 && <br />}
               <CardBody>
-                <Link>
+                <Link to={`http://localhost:3000/movie/${show.watchhistory_movieid}`}>
                 <Card.Title style={{textAlign: 'center'}}>{show.title}</Card.Title>
                 </Link>
                 <br></br>
@@ -241,6 +256,35 @@ const Homefetch = () => {
               
             </Card>
             </Link>
+          ))}
+        </div>
+      )}
+      </OuterCard>
+      </div>
+
+      <div style={{position: 'absolute', left: '60px', top: '2020px', minWidth: '800px', maxWidth: '800px'}}>
+      <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Your Latest Review</Card.Title>
+      <OuterCard style={{ height: '325px', overflowX: 'auto'}}>
+      {userReview && (
+        <div style={{display: 'inline-flex', flexDirection: 'row'}}>
+          {userReview.map((id, index) => (
+            
+            <Card key={index} style={{width: '300px', height: '290px'}}>
+              {index > 0 && <br />}
+              <CardBody>
+                <Link to={`http://localhost:3000/movie/${id.watchhistory_movieid}`}>
+                <Card.Title style={{textAlign: 'center'}}>{id.title}</Card.Title>
+                </Link>
+                <br></br>
+                <CardText>{id.reviewtext}
+                <CardText style={{fontSize: '12px', textAlign: 'end'}}>{id.reviewdate}
+                </CardText></CardText>
+                
+                <RatingStars rating={id.rating} />
+              </CardBody>
+              
+            </Card>
+            
           ))}
         </div>
       )}
