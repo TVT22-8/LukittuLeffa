@@ -25,11 +25,13 @@ exports.getUserById = async(req,res) => {
 };
 
 exports.getUserByUsername = async(username) => {
-
+  //exports.getUserByUsername = async(req, res) => {
+    //const {username} = req.params;
   try{
       const result = await pool.query('SELECT * FROM userlukittu where username=$1;',
       [username]);
       return result.rows
+      //res.json(result.rows)
   } catch (error) {
       console.error(error);
       res.status(500).json({error:'Server error when fetching USER by Username'});
