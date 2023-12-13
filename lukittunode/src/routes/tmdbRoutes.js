@@ -10,5 +10,6 @@ router.get('/search/movie', tmdbController.searchbykeyword);
 router.get('/movie/:movieId/credits', tmdbController.getcast);
 // Search for similar movies by movieId
 router.get('/movie/:movieId/recommendations', tmdbController.getSimilarMovies);
-
+// Search for Title by movieId
+router.get('movie/:movieId/Title', tmdbController.getMovieTitlefromid);
 module.exports = router;
