@@ -1,3 +1,4 @@
+const { group } = require('console');
 const pool = require('../../db_pool/pool');
 const fetchfromid = require('../utils/fetchfromid');
 
@@ -41,12 +42,31 @@ exports.getAllMembersByID = async(req,res) => {
 exports.createGroup = async(req, res) => {
     const {gName, description, ownerId} = req.body;
     try{//Creates a group with inserts GroupName,Description and OwnerId
-        const result = await pool.query(`INSERT INTO watchgroup (groupname, description, owner_userid) 
-        VALUES ($1, $2, $3) RETURNING *`,
-        [gName, description, ownerId]);
-        res.json(result.rows[0]);
-    } catch(error){
-        console.error(error);
+        await pool.query('BEGIN');
+
+    // Insert into watchgroup
+    const groupResult = await pool.query(
+      `INSERT INTO watchgroup (groupname, description, owner_userid) 
+       VALUES ($1, $2, $3) RETURNING groupid`,
+      [gName, description, ownerId]
+    );
+
+    const groupId = groupResult.rows[0].groupid;
+
+    // Insert into group_membership to add the owner as a member
+    await pool.query(
+      `INSERT INTO group_membership (userid, groupid) 
+       VALUES ($1, $2)`,
+      [ownerId, groupId]
+    );
+
+    // Commit the transaction
+    await pool.query('COMMIT');
+
+    res.json({ success: true });
+  } catch (error) {
+    // Rollback the transaction if there's an error
+    await pool.query('ROLLBACK');
         res.status(500).json({error:'Internal Server Error when creating a Group'});
     }
 };
@@ -66,39 +86,17 @@ exports.addMember = async(req, res) =>{
 
 
 exports.removeMember = async (req, res) => {
-    const { groupId, adminId, deletedId } = req.params;
+    const { groupId, deletedId } = req.params;
     try {//Remove a user from the group, only the right admin ID can delete a member from group
-        const groupResult = await pool.query('SELECT * FROM watchgroup WHERE groupid = $1', [groupId]);
-
-        if (groupResult.rows.length === 0) {
-            return res.status(404).json({ error: 'Group not found' });
-        }
-
-        const group = groupResult.rows[0];
-
-        const moderatorId = group.owner_userid;
-        console.log('deleted user id: ',deletedId);
-        console.log('admin trier: ',adminId);   
-        console.log('moderator id: ', moderatorId) // PreSelected userId
-
-        if (moderatorId.toString() !== adminId.toString()) {
-            return res.status(403).json({ error: 'Permission denied. Only the moderator can remove users.' });
-        }
-
         const result = await pool.query(
             'DELETE FROM group_membership WHERE userid = $1 AND groupid = $2',
             [deletedId, groupId]
         );
 
-        if (result.rowCount === 0) {
-            return res.status(404).json({ error: 'User not found in the group' });
-        }
-
-        res.json({ message: 'User removed successfully', updatedGroup: group });
-
+        res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Error when removing Member from group' });
     }
 };
 
@@ -206,3 +204,74 @@ exports.getGroupMembersReviews = async (req,res) => {
     }
 };
 
+
+//Join requests
+exports.insertJoinRequest = async (req,res) => {
+    const {uId, groupId} = req.body;
+    try{
+        const result = await pool.query(`insert into joinrequest(status, userlukittu_userid, watchgroup_groupid)
+        VALUES(false, $1, $2) returning *`, [uId, groupId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error:'Server Error Inserting Join Request'});
+    }
+};
+
+exports.viewAdminsJoinRequests = async (req,res) => {
+    const {adminId} = req.params;
+    try{
+        const result = await pool.query(`SELECT jr.*, u.username AS admin_username
+        FROM joinrequest jr
+        JOIN watchgroup wg ON jr.watchgroup_groupid = wg.groupid
+        JOIN userlukittu u ON wg.owner_userid = u.userid
+        WHERE jr.status = false AND u.userid = $1`, [adminId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Server Error Fetching Join Requests by Admin ID'});
+    }
+};
+
+exports.acceptJoinRequest = async (req,res) => {
+    const {uId, groupId} = req.body;
+    console.log(uId, groupId);
+    try{
+        // Start a transaction
+    await pool.query('BEGIN');
+
+    // Update joinrequest
+    await pool.query(
+      'UPDATE joinrequest SET status = true WHERE userlukittu_userid = $1 AND watchgroup_groupid = $2',
+      [uId, groupId]
+    );
+
+    // Insert into group_membership
+    await pool.query(
+      'INSERT INTO group_membership (userid, groupid) VALUES ($1, $2)',
+      [uId, groupId]
+    );
+
+    // Commit the transaction
+    await pool.query('COMMIT');
+
+    res.json({ success: true });
+  } catch (error) {
+    // Rollback the transaction if there's an error
+    await pool.query('ROLLBACK');
+        console.error(error);
+        res.status(500).json({error: 'Server Error Accepting and Inserting the user to Group'});
+    }
+};
+
+exports.rejectJoinRequest = async (req,res) => {
+    const {uId, groupId} = req.body;
+    try {
+        const result  = await pool.query(`delete from joinrequest where userlukittu_userid = $1 
+        AND watchgroup_groupid = $2;`,[uId,groupId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Server Error Rejecting users Join Request'});
+    }
+};

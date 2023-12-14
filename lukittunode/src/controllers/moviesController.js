@@ -7,7 +7,7 @@ const getSimilar = require('../utils/getsimilarmovies');
 exports.getUserWatchHistory = async(req, res) => {
     const {uId} = req.params;
     try{//Get every movie in users Watch History
-        const result = await pool.query('SELECT movieid FROM watchhistory WHERE userlukittu_userid = $1',
+        const result = await pool.query('SELECT movieid FROM watchhistory WHERE userlukittu_userid = $1 ORDER BY entry_order DESC',
         [uId]);
         res.json(result.rows);
     } catch (error) {
