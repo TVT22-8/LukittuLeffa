@@ -28,7 +28,7 @@ router.get('/watchreviews', reviewController.getFiveLatestReviews);//For mainpag
 router.get('/users/watchhistory/:uId', movieController.getUserWatchHistory);//Get a spesific users watchhistory
 router.post('/users/watchhistory', movieController.addMovieToWatchHistory);//Add a new movie to a users history
 router.delete('/users/watchhistory/:uId/:movieId', movieController.removeMovieFromHistory);//Remove a movie from users history by userID and movieID
-router.get('/users/similar/:uId', movieController.getUsersSimilars);
+router.get('/users/similar/:uId', movieController.getUsersSimilars);//Get 9 Recommended movies for the users from their 3 lates Movies in History
 
 //USERS
 router.get('/users', userController.getUsers);//Get all users IDs Names and Passwords
@@ -40,6 +40,7 @@ router.delete('/users/:uId', userController.deleteUser);//Delete an user by user
 
 //GROUPS
 router.get('/groups', groupController.getAllGroups);//Get all groups and the ownersID
+router.get('/groups/:groupId', groupController.getGroupInfoByID)//Gets a groups details by its ID
 router.get('/groups/members/:groupId', groupController.getAllMembersByID);//Get all members of a group by groupID
 router.post('/groups', groupController.createGroup);//Create a group, insert the owners ID
 router.post('/groups/add-member', groupController.addMember);//Add a member to group, determines admin rights
