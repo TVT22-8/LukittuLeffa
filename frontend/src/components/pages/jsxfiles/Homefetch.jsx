@@ -267,6 +267,7 @@ const Homefetch = () => {
       </OuterCard>
       </div>
 
+
       <div style={{position: 'absolute', left: '60px', top: '1690px', minWidth: '1800px', maxWidth: '1800px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Suggested Movies</Card.Title>
       <OuterCard style={{ width: '1800px', height: '325px', overflowX: 'auto'}}>
@@ -293,7 +294,7 @@ const Homefetch = () => {
       {userGroups && (
         <div style={{display: 'inline-flex', flexDirection: 'row'}}>
           {userGroups.map((id, index) => (
-            <Link>
+            <Link to={`/group/${id.groupid}`} key={id.groupid} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Card key={index} style={{width: '500px', height: '290px'}}>
               {index > 0 && <br />}
               <CardBody>
@@ -308,7 +309,7 @@ const Homefetch = () => {
         </div>
       )}
       </OuterCard>
-      </div>
+    </div>
 
       <div style={{position: 'absolute', left: '60px', top: '2450px', minWidth: '880px', maxWidth: '880px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Your Latest Review</Card.Title>
