@@ -293,7 +293,7 @@ const Homefetch = () => {
       {userGroups && (
         <div style={{display: 'inline-flex', flexDirection: 'row'}}>
           {userGroups.map((id, index) => (
-            <Link>
+            <Link to={`/group/${id.groupid}`} key={id.groupid} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Card key={index} style={{width: '500px', height: '290px'}}>
               {index > 0 && <br />}
               <CardBody>
