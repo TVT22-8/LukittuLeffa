@@ -12,6 +12,18 @@ exports.getAllGroups = async(req, res) => {
     }
 };
 
+exports.getGroupInfoByID = async(req,res) => {
+    const {groupId} = req.params;
+    try {
+        const result = await pool.query(`select groupid, groupname, description, owner_userid AS owner 
+        from watchgroup where groupid = 9`,
+        [groupId])
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error:'Internal Server Error Fetching Group by Group ID'})
+    }
+};
+
 exports.getAllMembersByID = async(req,res) => {
     const {groupId} = req.params;
     try{//Gets every member that belongs to group

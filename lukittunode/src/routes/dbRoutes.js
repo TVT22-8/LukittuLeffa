@@ -40,6 +40,7 @@ router.delete('/users/:uId', userController.deleteUser);//Delete an user by user
 
 //GROUPS
 router.get('/groups', groupController.getAllGroups);//Get all groups and the ownersID
+router.get('/groups/:groupId', groupController.getGroupInfoByID)//Gets a groups details by its ID
 router.get('/groups/members/:groupId', groupController.getAllMembersByID);//Get all members of a group by groupID
 router.post('/groups', groupController.createGroup);//Create a group, insert the owners ID
 router.post('/groups/add-member', groupController.addMember);//Add a member to group, determines admin rights
