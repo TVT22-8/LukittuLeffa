@@ -3,7 +3,7 @@ const pool = require('../../db_pool/pool');
 const bcrypt = require('bcrypt');
 
 exports.getUsers = async (req, res) => {
-  try {
+  try {//Get all of the Users in Database
     const result = await pool.query('SELECT * FROM userlukittu');
     res.json(result.rows);
   } catch (error) {
@@ -14,7 +14,7 @@ exports.getUsers = async (req, res) => {
 
 exports.getUserById = async(req,res) => {
     const {uId} = req.params;
-    try{
+    try{//Get the Users Information when inserting Users Id
         const result = await pool.query('SELECT * FROM userlukittu where userid=$1;',
         [uId]);
         res.json(result.rows);
@@ -25,9 +25,7 @@ exports.getUserById = async(req,res) => {
 };
 
 exports.getUserByUsername = async(username) => {
-  //exports.getUserByUsername = async(req, res) => {
-    //const {username} = req.params;
-  try{
+  try{//This is used to fetch the username for verifying login, the username parameter comes from fronted
       const result = await pool.query('SELECT * FROM userlukittu where username=$1;',
       [username]);
       return result.rows
@@ -40,8 +38,10 @@ exports.getUserByUsername = async(username) => {
 
 exports.getUsersGroups = async (req, res) => {
   const {uId} = req.params;
-    try{
-        const result = await pool.query('select wg.groupid, wg.groupname, wg.description, gm.is_admin, username from watchgroup wg join group_membership gm on wg.groupid = gm.groupid join userlukittu u on gm.userid = u.userid where u.userid = $1',
+    try{//Get all of the Groups the User is part of
+        const result = await pool.query(`select wg.groupid, wg.groupname, wg.description, gm.is_admin, username 
+        from watchgroup wg join group_membership gm on wg.groupid = gm.groupid 
+        join userlukittu u on gm.userid = u.userid where u.userid = $1`,
         [uId]);
         res.json(result.rows);
     } catch (error) {
@@ -52,9 +52,9 @@ exports.getUsersGroups = async (req, res) => {
 
 
 exports.createUser = async (req, res) => {
-  const { uname, pwd } = req.body.credentials;
   
-  try {
+  const { uname, pwd } = req.body.credentials;
+  try {//Creates a new User and Hashes the password
     const hashedPassword = await new Promise((resolve, reject) => {
       bcrypt.hash(pwd, 10, (err, hash) => {
         if (err) {
@@ -79,8 +79,7 @@ exports.createUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     const {uId} = req.params;
-
-    try {
+    try {//DELETE USER
         await pool.query('DELETE FROM userlukittu WHERE userid = $1', [uId]);
             res.json({message: 'User deleted succesfully'});
     } catch (error) {
