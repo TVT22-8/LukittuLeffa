@@ -1,86 +1,160 @@
 const chai = require('chai');
-const chaiHttp = require('chai-http');
-const fetchMock = require('fetch-mock');
-const tmdbController = require('../controllers/tmdbController'); 
-
-chai.use(chaiHttp);
 const expect = chai.expect;
+const tmdbController = require('../controllers/tmdbController');
 
 describe('tmdbController', () => {
-  afterEach(() => {
-    fetchMock.restore(); // Restore fetch mock after each test
+  describe('getMovieDetailsfromid', () => {
+    it('should get movie details by ID', async () => {
+      const req = { params: { movieId: 123 } }; 
+      const res = {
+        json: (data) => {
+          expect(data).to.be.an('object');
+          expect(data.title).to.be.a('string');
+          
+        },
+        status: (code) => {
+          expect(code).to.equal(200);
+          return res;
+        },
+      };
+
+      await tmdbController.getMovieDetailsfromid(req, res);
+      expect(res).to.be.an('object');
+    });
+
+    it('should handle errors when getting movie details by ID', async () => {
+      const req = { params: { movieId: 'invalid_movie_id' } };
+      const res = {
+        json: (data) => {
+          expect(data).to.be.an('object');
+          expect(data).to.have.property('error');
+          
+        },
+        status: (code) => {
+          expect(code).to.equal(500);
+          return res;
+        },
+      };
+
+      await tmdbController.getMovieDetailsfromid(req, res);
+    });
   });
 
-  it('should get movie details by ID', async () => {
-    const mockMovieId = '116776';
-    const mockMovieData = { id: mockMovieId, title: 'Mock Movie', };
-
-    fetchMock.get(`/api/movie/${mockMovieId}`, mockMovieData);
-
-    // Simulating the request object and response object
-    const req = { params: { movieId: mockMovieId } };
-    const res = { json: data => data }; // Mocking the response.json() method
-
-    await tmdbController.getMovieDetailsfromid(req, res);
-    
-    
-  });
-
-  it('should search movies by keyword', async () => {
-    const mockQuery = 'action'; 
-    const mockSearchResult = [
-      { id: 1, title: 'Action Movie 1', poster_path: '/path/to/poster1.jpg', release_date: '2023-01-01', popularity: 8.5 },
-      
-    ];
-
-    fetchMock.get(`/api/search?query=${mockQuery}`, mockSearchResult);
-
-    // Simulating the request object and response object
-    const req = { query: { query: mockQuery } };
-    const res = { json: data => data };
-
-    // Call the method being tested
-    await tmdbController.searchbykeyword(req, res);
-  });
-
-  it('should get cast details by movie ID', async () => {
-    const mockMovieId = '116776'; 
-    const mockCreditsData = [
-      { id: 1, name: 'Actor 1', character: 'Character 1' },
-      { id: 2, name: 'Actor 2', character: 'Character 2' },
-      
-    ];
-
-    fetchMock.get(`/api/credits/${mockMovieId}`, mockCreditsData);
-
-    // Simulating the request object and response object
-    const req = { params: { movieId: mockMovieId } };
-    const res = { json: data => data }; // Mocking the response.json() method
-
-    
-    await tmdbController.getcast(req, res);
-
-
-  });
-
-  it('should get similar movies by movie ID', async () =>{
-    const mockMovieId = '116776'; 
-    const mockSimilarMovieData = [
-      {movie: 1, name: 'movie 1'},
-      {movie: 2, name: 'movie 2'}
-    ];
-
-    fetchMock.get(`/api/${mockMovieId}/recommendations`, mockSimilarMovieData);
-    // Simulating the request object and response object
-    
-    const req = { params: { movieId: mockMovieId } };
-    const res = { json: data => data }; // Mocking the response.json() method
-
-    await tmdbController.getSimilarMovies(req, res);
-  } )
   
+  describe('searchbykeyword', () => {
+    it('should search by keyword', async () => {
+      const req = {
+        query: {
+          query: 'action',
+        },
+      };
+    
+      const res = {
+        json: (data) => {
+          expect(data).to.be.an('array'); 
+        },
+        status: (code) => {
+          expect(code).to.equal(200); 
+          return res;
+        },
+      };
+    
+      await tmdbController.searchbykeyword(req, res);
+      expect(res).to.be.an('object');
+    });
+    
+
+    it('should handle errors when searching by keyword', async () => {
+      const req = { params: { movieId: 'invalid_query' } };
+      const res = {
+        json: (data) => {
+          expect(data).to.be.an('object');
+          expect(data).to.have.property('error');
+          
+        },
+        status: (code) => {
+          expect(code).to.equal(500);
+          return res;
+        },
+      };
+
+      await tmdbController.searchbykeyword(req, res);
+    });
+  });
+
+  describe('getcast', () => {
+    it('should get cast for a movie', async () => {
+      const req = { params: { movieId: 123 } }; 
+      const res = {
+        json: (data) => {
+          expect(data).to.be.an('object');
+          expect(data.cast).to.be.an('array');
+          
+        },
+        status: (code) => {
+          expect(code).to.equal(200);
+          return res;
+        },
+      };
+    
+      await tmdbController.getcast(req, res);
+    });
+    
+    it('should handle errors when getting cast for a movie', async () => {
+      const req = { params: { movieId: 'invalid_movie_id' } };
+      const res = {
+        json: (data) => {
+          expect(data).to.be.an('object');
+          expect(data).to.have.property('error');
+          
+        },
+        status: (code) => {
+          expect(code).to.equal(500);
+          return res;
+        },
+      };
+    
+      await tmdbController.getcast(req, res);
+      expect(res).to.be.an('object');
+    });
+    
+  });
+
+  describe('getSimilarMovies', () => {
+    it('should get similar movies', async () => {
+      const req = { params: { movieId: 123 } }; 
+      const res = {
+        json: (data) => {
+          expect(data).to.be.an('array');
+          
+        },
+        status: (code) => {
+          expect(code).to.equal(200);
+          return res;
+        },
+      };
+    
+      await tmdbController.getSimilarMovies(req, res);
+    });
+    
+    it('should handle errors when getting similar movies', async () => {
+      const req = { params: { movieId: 'invalid_movie_id' } };
+      const res = {
+        json: (data) => {
+          expect(data).to.be.an('object');
+          expect(data).to.have.property('error');
+          
+        },
+        status: (code) => {
+          expect(code).to.equal(500);
+          return res;
+        },
+      };
+    
+      await tmdbController.getSimilarMovies(req, res);
+      expect(res).to.be.an('object');
+      
+    });
+    
+  });
 });
-
-  
-  
-
