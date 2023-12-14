@@ -44,7 +44,7 @@ router.get('/groups/:groupId', groupController.getGroupInfoByID)//Gets a groups 
 router.get('/groups/members/:groupId', groupController.getAllMembersByID);//Get all members of a group by groupID
 router.post('/groups', groupController.createGroup);//Create a group, insert the owners ID
 router.post('/groups/add-member', groupController.addMember);//Add a member to group, determines admin rights
-router.delete('/groups/:groupId/:adminId/:deletedId', groupController.removeMember);//Delete a member from a group, Insert the ADMINs ID and the userID you want to remove
+router.delete('/groups/:groupId/:deletedId', groupController.removeMember);//Delete a member from a group, Insert the ADMINs ID and the userID you want to remove
 router.delete('/groups/:groupId/:adminId', groupController.deleteGroup);//Delete a group by a groups ID and admins ID
 router.get('/groups/chat/:groupId', groupController.getGroupChatsByID);//Get a Groups all Chats
 router.post('/groups/chat', groupController.postGroupChat);//Post a Group Chat
