@@ -81,7 +81,7 @@ const Homefetch = () => {
         try {
             const response = await fetch(`http://localhost:3002/db/users/group/reviews/${userId[0].userid}`);
             const data = await response.json();
-            console.log(data, 'user reviews');
+            console.log(data, 'group reviews');
             setGroupReview(data);
         } catch (error) {
             console.error('Error fetching grou reviews:', error);
