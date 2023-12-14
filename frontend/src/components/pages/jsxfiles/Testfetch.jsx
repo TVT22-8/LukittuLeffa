@@ -1,17 +1,134 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, CardBody } from 'react-bootstrap';
+import { Card, Button, CardBody, Form } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import useUserId from './useUserId';
 
 
 const url = 'https://image.tmdb.org/t/p/original';
 const url2 = 'https://image.tmdb.org/t/p/w200';
+
 
 const Testfetch = () => {
   // Remove the movieId state declaration
   const [movieInfo, setMovieInfo] = useState(null);
   const [castInfo, setCastInfo] = useState(null);
   const [reviewInfo, setReviewInfo] = useState(null);
+  const [reviewText, setReviewText] = useState(null);
   const { id: movieId } = useParams(); // Use movieId from the URL parameters
+  const userId = useUserId();
+  const [selectedNumber, setSelectedNumber] = useState(1);
+
+  const handleSelectChange = (event) => {
+    const selectedValue = parseInt(event.target.value, 10);
+    setSelectedNumber(selectedValue);
+  };
+
+
+  const addWatchlist = async (id) => {
+
+    if(userId == null){
+      alert('Not logged in');
+      return;
+    }
+
+    const ids = {
+      'uId': userId[0].userid,
+      'movieId': id
+    }
+    console.log('katotaanpa', ids);
+    try {
+      const response = await fetch(`http://localhost:3002/db/users/watchlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // You can include additional data in the request body if needed
+        body: JSON.stringify(ids),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Added to wathclist:', result);
+        alert('Added to watchlist');
+      } else {
+        console.error('Failed to send watchlist:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding to watchlist:', error);
+    }
+  };
+
+  const addHistory = async (id) => {
+
+    if(userId == null){
+      alert('Not logged in');
+      return;
+    }
+
+    const ids = {
+      'uId': userId[0].userid,
+      'movieId': id
+    }
+    console.log('katotaanpa', ids);
+    try {
+      const response = await fetch(`http://localhost:3002/db/users/watchhistory`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // You can include additional data in the request body if needed
+        body: JSON.stringify(ids),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Added to history:', result);
+        alert('Added to history');
+      } else {
+        console.error('Failed to send history:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding to history:', error);
+    }
+  };
+
+  const addReview = async (id) => {
+
+    if(userId == null){
+      alert('Not logged in');
+      return;
+    }
+
+    const ids = {
+      'revText': reviewText,
+      'rating': selectedNumber,
+      'movieId': id,
+      'uId': userId[0].userid
+    }
+    console.log('katotaanpa', ids);
+    try {
+      const response = await fetch(`http://localhost:3002/db/users/watchreviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // You can include additional data in the request body if needed
+        body: JSON.stringify(ids),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Added review:', result);
+        alert('Added review');
+      } else {
+        console.error('Failed to send review:', response.statusText);
+        alert('Failed to sen review "have u watched the movie?"');
+      }
+    } catch (error) {
+      console.error('Error adding to review:', error);
+    }
+  };
+
 
   useEffect(() => {
     // Define the fetching functions inside useEffect or move them outside if they don't need to access movieId directly from the closure
@@ -55,7 +172,8 @@ const Testfetch = () => {
   }, [movieId]); // Depend on movieId from useParams
 
 
- 
+
+
   return (
     <div>
       <div style={{ position: 'absolute', top: '100px', display: 'flex', justifyContent: 'flex-start', margin: '0 100px' }}>
@@ -70,7 +188,8 @@ const Testfetch = () => {
               <Card.Text>
                 Duration: {movieInfo.runtime} Minutes
               </Card.Text>
-              <Button variant="primary">Add to ...</Button>
+              <Button variant="primary" onClick={() => addWatchlist(movieId)} style={{ display: 'inline-flex', margin: '0 20px' }}>Add to watchlist</Button>
+              <Button variant="primary" onClick={() => addHistory(movieId)} style={{ display: 'inline-flex', justifyContent: 'space-around' }}>Add to history</Button>
             </Card.Body>
           </Card>
         )}
@@ -154,6 +273,25 @@ const Testfetch = () => {
           <Card style={{ width: '700px', height: '380px', overflowY: 'auto' }}>
             <Card.Body>
               <Card.Title style={{ textAlign: 'center', fontSize: '3rem' }}>Reviews:</Card.Title>
+              <label>
+                Review text:
+                <input type="text" value={reviewText} onChange={(e) => setReviewText(e.target.value)} />
+              </label>
+              <Form>
+                <Form.Group controlId="numberSelect">
+                  <Form.Label>Rating:</Form.Label>
+                  <Form.Control style={{width:'50px'}} as="select" value={selectedNumber} onChange={handleSelectChange}>
+                    {[...Array(10)].map((_, index) => (
+                      <option key={index + 1} value={index + 1}>
+                        {index + 1}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+              </Form>
+              <Button onClick={() => addReview(movieId)}>Add review</Button>
+              <br />
+              <br />
               <Card.Text style={{ fontSize: '1.1rem', whiteSpace: 'pre-line' }}>
                 {reviewInfo.map((review, index) => (
                   <span key={index}>
