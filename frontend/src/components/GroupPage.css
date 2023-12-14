@@ -63,7 +63,7 @@
   /* Make the form input and button visually appealing */
   .form-group {
     margin-bottom: 0; /* Remove margin if needed */
-
+    
     /* Make the form group responsive */
     @media (min-width: 576px) {
       margin-bottom: 1rem;
@@ -84,7 +84,7 @@
   .chat-list {
     overflow-y: auto; /* Make the chat list scrollable */
     flex: 1; /* Allow the chat list to fill the height */
-
+    flex-grow: 1; /* Allow the chat list to fill the height */
     /* Make the chat list responsive */
     @media (min-width: 576px) {
       flex-grow: 0;
@@ -103,3 +103,37 @@
 
   }
 
+  .scrollable-list {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: hidden; /* Hides horizontal scrollbar */
+  }
+  
+  /* Styles for the individual review cards inside the scrollable list */
+  .scrollable-list .card {
+    margin-bottom: 10px; /* Adds space between cards */
+  }
+  
+  /* Optional: Style to improve the visual appearance of the scrollbar */
+  .scrollable-list::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+  }
+  
+  .scrollable-list::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color of the scrollbar track */
+  }
+  
+  .scrollable-list::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+  }
+  
+  .scrollable-list::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the scrollbar thumb on hover */
+  }
+  .scrollable-list::-webkit-scrollbar-thumb:active {
+    background: #555; /* Color of the scrollbar thumb when active */
+  }
+
+  .scrollable-list::-webkit-scrollbar-thumb:vertical {
+    border-radius: 4px; /* Rounded corners of the thumb */
+  }
