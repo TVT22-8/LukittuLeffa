@@ -40,6 +40,7 @@ exports.getUsersSimilars = async(req,res) => {
 
         console.log(similarMovies);
 
+
         res.json(similarMovies);
     } catch (error) {
     console.error(error);
