@@ -86,39 +86,17 @@ exports.addMember = async(req, res) =>{
 
 
 exports.removeMember = async (req, res) => {
-    const { groupId, adminId, deletedId } = req.params;
+    const { groupId, deletedId } = req.params;
     try {//Remove a user from the group, only the right admin ID can delete a member from group
-        const groupResult = await pool.query('SELECT * FROM watchgroup WHERE groupid = $1', [groupId]);
-
-        if (groupResult.rows.length === 0) {
-            return res.status(404).json({ error: 'Group not found' });
-        }
-
-        const group = groupResult.rows[0];
-
-        const moderatorId = group.owner_userid;
-        console.log('deleted user id: ',deletedId);
-        console.log('admin trier: ',adminId);   
-        console.log('moderator id: ', moderatorId) // PreSelected userId
-
-        if (moderatorId.toString() !== adminId.toString()) {
-            return res.status(403).json({ error: 'Permission denied. Only the moderator can remove users.' });
-        }
-
         const result = await pool.query(
             'DELETE FROM group_membership WHERE userid = $1 AND groupid = $2',
             [deletedId, groupId]
         );
 
-        if (result.rowCount === 0) {
-            return res.status(404).json({ error: 'User not found in the group' });
-        }
-
-        res.json({ message: 'User removed successfully', updatedGroup: group });
-
+        res.json(result.rows);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Error when removing Member from group' });
     }
 };
 
