@@ -69,10 +69,20 @@ const GroupPage = () => {
       }
       const data = await response.json();
       setParticipants(data);
+      const loggedInUser = data.find(participant => participant.userid === user[0].userid);
+      if (loggedInUser) {
+        // Update your state or context to reflect the admin status.
+        // This is just an example; adjust it to fit how you manage state/context.
+        user[0].is_admin = loggedInUser.is_admin;
+      }
     } catch (error) {
       setError(error.message);
     }
   };
+
+
+
+  
 
   const fetchRecentMovies = async () => {
     try {
@@ -152,36 +162,34 @@ const handleSendMessage = async (event) => {
 };
 
 const kickUser = async (userIdToKick) => {
-  if (!user || !user.is_admin) {
+  // Check if the current user is admin before proceeding.
+  if (!user[0].is_admin) {
     alert("You don't have permission to perform this action.");
     return;
   }
 
-  const adminId = user.id; // Assuming `user.id` holds the admin's ID
-
   try {
-    const response = await fetch(`http://localhost:3002/db/groups/${groupId}/${adminId}/${userIdToKick}`, {
+    const response = await fetch(`http://localhost:3002/db/groups/${groupId}/kick/${userIdToKick}`, {
       method: 'DELETE',
-      // Include any headers such as authentication tokens
+      headers: {
+        'Content-Type': 'application/json',
+        // Include any other necessary headers, such as authorization tokens
+      },
+      body: JSON.stringify({
+        adminId: user[0].userid, // Send the admin ID in the request body if needed
+      }),
     });
 
     if (!response.ok) {
-      // If the server responded with a non-2xx status code, throw an error
-      const errorResponse = await response.json();
-      throw new Error(errorResponse.error || 'Could not remove the user.');
+      throw new Error('Network response was not ok');
     }
 
-    // If the delete was successful, filter out the kicked user from the participants list
-    setParticipants(prevParticipants =>
-      prevParticipants.filter(participant => participant.userid !== userIdToKick)
-    );
-
-    // Optionally, show a success message
-    alert('User has been removed from the group.');
+    // Update the participants state to remove the kicked user
+    setParticipants(participants.filter(participant => participant.userid !== userIdToKick));
 
   } catch (error) {
-    console.error('Error kicking user:', error);
-    alert(error.message); // Display the error message from the server
+    console.error('Failed to kick user:', error);
+    alert('Failed to kick user: ' + error.message);
   }
 };
 
@@ -262,20 +270,13 @@ const kickUser = async (userIdToKick) => {
             </div>
             {/* Render the "Kick" button for non-admin users */}
             {!participant.is_admin && (
-              <Button 
-                variant="outline-danger" 
-                size="sm"
-                onClick={() => {
-                  // Verify if the current user is an admin before kicking the user
-                  if (user?.is_admin) {
-                    kickUser(user.id, participant.userid);
-                  } else {
-                    alert("You are not authorized to kick users.");
-                  }
-                }}
-              >
-                Kick
-              </Button>
+  <Button 
+    variant="outline-danger" 
+    size="sm"
+    onClick={() => kickUser(participant.userid)}
+  >
+    Kick
+  </Button>
             )}
           </Card.Body>
         </Card>
