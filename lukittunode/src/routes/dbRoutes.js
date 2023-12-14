@@ -49,6 +49,10 @@ router.delete('/groups/:groupId/:adminId', groupController.deleteGroup);//Delete
 router.get('/groups/chat/:groupId', groupController.getGroupChatsByID);//Get a Groups all Chats
 router.post('/groups/chat', groupController.postGroupChat);//Post a Group Chat
 router.get('/groups/members/reviews/:groupId', groupController.getGroupMembersReviews);//Get All reviews of Groupmembers
+router.post('/groups/member/joinrequest', groupController.insertJoinRequest);//Request to join a group
+router.get('/groups/admin/joinrequests/:adminId', groupController.viewAdminsJoinRequests);//See Admins all Join requests
+router.post('/groups/admin/joinrequests/accept', groupController.acceptJoinRequest);//Accept a join request and insert user into group
+router.post('/groups/admin/joinrequests/reject', groupController.rejectJoinRequest);//Reject a join request
 
 
 module.exports = router;

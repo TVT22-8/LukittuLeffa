@@ -1,3 +1,4 @@
+const { group } = require('console');
 const pool = require('../../db_pool/pool');
 const fetchfromid = require('../utils/fetchfromid');
 
@@ -206,3 +207,62 @@ exports.getGroupMembersReviews = async (req,res) => {
     }
 };
 
+
+//Join requests
+exports.insertJoinRequest = async (req,res) => {
+    const {uId, groupId} = req.body;
+    try{
+        const result = await pool.query(`insert into joinrequest(status, userlukittu_userid, watchgroup_groupid)
+        VALUES(false, $1, $2) returning *`, [uId, groupId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error:'Server Error Inserting Join Request'});
+    }
+};
+
+exports.viewAdminsJoinRequests = async (req,res) => {
+    const {adminId} = req.params;
+    try{
+        const result = await pool.query(`SELECT jr.*, u.username AS admin_username
+        FROM joinrequest jr
+        JOIN watchgroup wg ON jr.watchgroup_groupid = wg.groupid
+        JOIN userlukittu u ON wg.owner_userid = u.userid
+        WHERE jr.status = false AND u.userid = $1`, [adminId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Server Error Fetching Join Requests by Admin ID'});
+    }
+};
+
+exports.acceptJoinRequest = async (req,res) => {
+    const {uId, groupId} = req.body;
+    try{
+        const result = await pool.query(`BEGIN;
+        UPDATE joinrequest
+        SET status = true
+        WHERE userlukittu_userid = $1 AND watchgroup_groupid = $2;
+        
+        INSERT INTO group_membership (user_id, group_id)
+        VALUES ($1, $2);
+        
+        COMMIT;`, [uId, groupId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Server Error Accepting and Inserting the user to Group'});
+    }
+};
+
+exports.rejectJoinRequest = async (req,res) => {
+    const {uId, groupId} = req.body;
+    try {
+        const result  = await pool.query(`delete from joinrequest where userlukittu_userid = $1 
+        AND watchgroup_groupid = $2;`,[uId,groupId]);
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Server Error Rejecting users Join Request'});
+    }
+};
