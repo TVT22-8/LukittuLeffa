@@ -231,7 +231,7 @@ const UserPage = () => {
               {/* Watchlist Section */}
               <Row className="mb-3">
  <Col>
-    <Card>
+    <Card style={{overflowX: 'auto'}}>
       <Card.Header>Watch History</Card.Header>
       <Card.Body>
         {movieHistory && movieHistory.length > 0 ? (
