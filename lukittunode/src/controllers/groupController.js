@@ -221,11 +221,21 @@ exports.insertJoinRequest = async (req,res) => {
 exports.viewAdminsJoinRequests = async (req,res) => {
     const {adminId} = req.params;
     try{
-        const result = await pool.query(`SELECT jr.*, u.username AS admin_username
-        FROM joinrequest jr
-        JOIN watchgroup wg ON jr.watchgroup_groupid = wg.groupid
-        JOIN userlukittu u ON wg.owner_userid = u.userid
-        WHERE jr.status = false AND u.userid = $1`, [adminId]);
+        const result = await pool.query(`SELECT
+        jr.*,
+        u.username AS admin_username,
+        requester.username AS requester_username,
+        wg.groupname
+      FROM
+        joinrequest jr
+      JOIN
+        watchgroup wg ON jr.watchgroup_groupid = wg.groupid
+      JOIN
+        userlukittu u ON wg.owner_userid = u.userid
+      JOIN
+        userlukittu requester ON jr.userlukittu_userid = requester.userid
+      WHERE
+        jr.status = false AND u.userid = $1`, [adminId]);
         res.json(result.rows);
     } catch (error) {
         console.error(error);
