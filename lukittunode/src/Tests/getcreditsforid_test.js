@@ -30,9 +30,9 @@ describe('getCredits function tests', () => {
       status: 200,
       body: mockResponse,
     });
-  
+    
     const result = await getCredits(movieId);
-  
+    
     // Assert specific elements from the response
     expect(result).to.have.property('cast');
   expect(result).to.have.property('directing');
