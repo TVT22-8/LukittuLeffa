@@ -16,6 +16,7 @@ const Homefetch = () => {
     const [userGroups, setUserGroups] = useState('');
     const [userReview, setUserReview] = useState('');
     const [groupReview, setGroupReview] = useState('');
+    const [sugMovie, setSugMovie] = useState('');
     const userId = useUserId();
 
     
@@ -30,6 +31,7 @@ const Homefetch = () => {
         fetchUserReviews();
         fetchUserHistory();
         fetchUserGroups();
+        fetchSuggestedMovies();
       }, [userId]); 
 
     useEffect(() => {
@@ -52,6 +54,17 @@ const Homefetch = () => {
             console.error('Error fetching five reviews:', error);
         }
     };
+
+    const fetchSuggestedMovies = async () => {
+      try {
+          const response = await fetch(`http://localhost:3002/db/users/similar/${userId[0].userid}`);
+          const data = await response.json();
+          console.log(data, 'suggested movies');
+          setSugMovie(data);
+      } catch (error) {
+          console.error('Error fetching five reviews:', error);
+      }
+  };
 
     const fetchUserReviews = async () => {
         try {
@@ -255,6 +268,26 @@ const Homefetch = () => {
       </div>
 
       <div style={{position: 'absolute', left: '60px', top: '1690px', minWidth: '1800px', maxWidth: '1800px'}}>
+      <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Suggested Movies</Card.Title>
+      <OuterCard style={{ width: '1800px', height: '325px', overflowX: 'auto'}}>
+      {sugMovie && (
+        <div style={{display: 'inline-flex', flexDirection: 'row'}}>
+          {sugMovie.map((id, index) => (
+            <Card key={index} style={{width: '200px', height: '290px'}}>
+              {index > 0 && <br />}
+              <CardBody>
+                <Link to={`http://localhost:3000/movie/${id.movieId}`}>
+                <Card.Img style={{height: "100%", width: "100%"}} src={url + id.poster_path}></Card.Img>
+                </Link>
+              </CardBody>
+            </Card>
+          ))}
+        </div>
+      )}
+      </OuterCard>
+      </div>
+
+      <div style={{position: 'absolute', left: '60px', top: '2070px', minWidth: '1800px', maxWidth: '1800px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Your Groups</Card.Title>
       <OuterCard style={{ minWidth: '1800px', height: '325px', overflowX: 'auto'}}>
       {userGroups && (
@@ -277,7 +310,7 @@ const Homefetch = () => {
       </OuterCard>
       </div>
 
-      <div style={{position: 'absolute', left: '60px', top: '2070px', minWidth: '880px', maxWidth: '880px'}}>
+      <div style={{position: 'absolute', left: '60px', top: '2450px', minWidth: '880px', maxWidth: '880px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Your Latest Review</Card.Title>
       <OuterCard style={{ height: '325px', overflowX: 'auto'}}>
       {userReview && (
@@ -306,7 +339,7 @@ const Homefetch = () => {
       </OuterCard>
       </div>
 
-      <div style={{position: 'absolute', right: '60px', top: '2070px', minWidth: '880px', maxWidth: '880px'}}>
+      <div style={{position: 'absolute', right: '60px', top: '2450px', minWidth: '880px', maxWidth: '880px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Groups Review</Card.Title>
       <OuterCard style={{ height: '325px', overflowX: 'auto'}}>
       {groupReview && (
@@ -319,6 +352,7 @@ const Homefetch = () => {
                 <Link to={`http://localhost:3000/movie/${id.watchhistory_movieid}`}>
                 <Card.Title style={{textAlign: 'center'}}>{id.title}</Card.Title>
                 </Link>
+                <CardText>{id.groupname}</CardText>
                 <br></br>
                 <CardText>{id.reviewtext}
                 <CardText style={{fontSize: '12px', textAlign: 'end'}}>{id.reviewdate}

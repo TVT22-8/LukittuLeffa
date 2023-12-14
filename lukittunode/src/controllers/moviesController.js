@@ -40,7 +40,7 @@ exports.getUsersSimilars = async(req,res) => {
 
         console.log(similarMovies);
 
-        res.json({ similarMovies });
+        res.json( similarMovies );
     } catch (error) {
     console.error(error);
     res.status(500).json({error:'Server error when fetching an Users Watch History'});
