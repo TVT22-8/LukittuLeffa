@@ -17,7 +17,7 @@ exports.getGroupInfoByID = async(req,res) => {
     try {
         const result = await pool.query(`select groupid, groupname, description, owner_userid AS owner 
         from watchgroup where groupid = $1`,
-        [groupId])
+        [groupId]);
         res.json(result.rows);
     } catch (error) {
         console.error(error);

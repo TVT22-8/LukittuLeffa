@@ -5,8 +5,8 @@ const fetchfromid = require('../utils/fetchfromid');
 exports.getUsersReviews = async(req,res) => {
     const{uId} = req.params;
     try{//Get all of the reviews a spesific userId has posted
-        const result = await pool.query(`SELECT reviewid, reviewtext, rating, reviewdate, watchhistory_movieid 
-        FROM watchreviews WHERE userlukittu_userid = $1`,
+        const result = await pool.query(`SELECT reviewid, reviewtext, rating, TO_CHAR(reviewdate, 'DD.MM.YYYY HH24:MI') AS reviewdate, watchhistory_movieid 
+        FROM watchreviews WHERE userlukittu_userid = $1 ORDER BY reviewdate DESC`,
         [uId]);
 
         const modifiedResult = await fetchMovieTitles(result.rows);
@@ -22,7 +22,7 @@ exports.getMovieReviews = async(req,res) => {
     const{movieId} = req.params;
     try{//Get all of the movie reviews for a spesific movie
         const result = await pool.query(`SELECT reviewid, reviewtext, rating, TO_CHAR(reviewdate, 'DD.MM.YYYY HH24:MI') AS reviewdate, ul.username 
-        FROM watchreviews JOIN userlukittu ul ON userlukittu_userid = ul.userid WHERE watchhistory_movieid = $1`,
+        FROM watchreviews JOIN userlukittu ul ON userlukittu_userid = ul.userid WHERE watchhistory_movieid = $1 ORDER BY reviewdate DESC`,
         [movieId]);
         res.json(result.rows);
     }catch(error){

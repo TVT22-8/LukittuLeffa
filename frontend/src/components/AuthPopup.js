@@ -12,10 +12,15 @@ const AuthPopup = ({ onClose }) => {
 
 
 
-  const { login, register } = useAuth();
+  const { login, register, logout } = useAuth();
 
   const handleLogin = async () => {
     await login(username, password);
+    onClose();
+  };
+
+  const handleLogout = async () => {
+    await logout(username, password);
     onClose();
   };
 
@@ -47,6 +52,7 @@ const AuthPopup = ({ onClose }) => {
       </label>
       <Button onClick={handleRegister}>Register</Button>
       <Button onClick={handleLogin}>Login</Button>
+      <Button onClick={handleLogout}>Log out</Button>
       <Button onClick={onClose}>Close</Button>
     </div>
   );
