@@ -5,6 +5,7 @@ import './Navbar.css';
 import SearchBar from './SearchBar';
 import { Button } from './Button'; // Import the Button component
 
+
 const MenuItems = [
   {
     title: 'Settings',
