@@ -28,6 +28,9 @@ export const AuthProvider = ({ children }) => {
         const result = await response.json();
 
         console.log('Authenticated: ', result.authenticated);
+        if(result.authenticated == false){
+          alert('Username or password wrong');
+        }
 
         setUser(result.user)
       }
@@ -42,16 +45,42 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const getUser = () => {
-    // Implement getting user data (e.g., check if user is logged in)
-    return user;
+  const register = async (uname, pwd) => {
+
+    const credentials = {
+      'uname': uname,
+      'pwd': pwd,
+    };
+
+    console.log(credentials);
+  try {
+    const response = await fetch('http://localhost:3002/db/users', {
+      method: 'POST',
+      body: JSON.stringify({ credentials }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok){
+      const result = await response.json();
+      console.log('register' ,result);
+    }else{
+      console.error('Failed to register:', response.statusText);
+    }
+    
+    
+    
+  } catch (error) {
+    console.error('Error sending data to backend:', error);
+  }
   };
 
   useEffect(() => {
     // Implement any initial setup (e.g., check if the user is already logged in)
   }, []);
 
-  const value = { login, logout, user };
+  const value = { login, logout, register, user };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

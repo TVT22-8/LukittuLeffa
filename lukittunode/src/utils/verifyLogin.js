@@ -6,6 +6,20 @@ const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
+app.post('/users', async (req, res) => {
+  try {
+    console.log('Received request at /verifylogin');
+
+    const{uname, pwd} = req.body.credentials;
+
+    await userController.createUser(uname, pwd);
+  }
+  catch (error) {
+    console.error('Error during registering:', error.message);
+    res.json({ error: 'Server error during registering' });
+  }
+});
+
 app.post('/verifylogin', async (req, res) => {
   try {
     console.log('Received request at /verifylogin');

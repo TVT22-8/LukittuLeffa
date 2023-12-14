@@ -52,7 +52,7 @@ exports.getUsersGroups = async (req, res) => {
 
 
 exports.createUser = async (req, res) => {
-  const { uname, pwd } = req.body;
+  const { uname, pwd } = req.body.credentials;
   
   try {
     const hashedPassword = await new Promise((resolve, reject) => {
