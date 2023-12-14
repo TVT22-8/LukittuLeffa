@@ -240,27 +240,25 @@ const Homefetch = () => {
       </OuterCard>
       </div>
 
-      <div style={{position: 'absolute', left: '60px', top: '1640px', minWidth: '1800px', maxWidth: '1800px'}}>
-      <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Your Groups</Card.Title>
-      <OuterCard style={{ minWidth: '1800px', height: '325px', overflowX: 'auto'}}>
-      {userGroups && (
-        <div style={{display: 'inline-flex', flexDirection: 'row'}}>
-          {userGroups.map((id, index) => (
-            <Link>
-            <Card key={index} style={{width: '500px', height: '290px'}}>
-              {index > 0 && <br />}
-              <CardBody>
-                <Card.Title>{id.groupname}</Card.Title>
-                <CardText>{id.description}</CardText>
-              </CardBody>
-              
-            </Card>
-            </Link>
-          ))}
-        </div>
-      )}
+      <div style={{ position: 'absolute', left: '60px', top: '1640px', minWidth: '1800px', maxWidth: '1800px' }}>
+      <Card.Title style={{ textAlign: 'center', fontSize: '40px' }}>Your Groups</Card.Title>
+      <OuterCard style={{ minWidth: '1800px', height: '325px', overflowX: 'auto' }}>
+        {userGroups && (
+          <div style={{ display: 'inline-flex', flexDirection: 'row' }}>
+            {userGroups.map((group, index) => (
+              <Link to={`/group/${group.groupid}`} key={group.groupid} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Card style={{ width: '500px', height: '290px', margin: '0 10px' }}>
+                  <CardBody>
+                    <Card.Title>{group.groupname}</Card.Title>
+                    <CardText>{group.description}</CardText>
+                  </CardBody>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        )}
       </OuterCard>
-      </div>
+    </div>
 
       <div style={{position: 'absolute', left: '60px', top: '2020px', minWidth: '800px', maxWidth: '800px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Your Latest Review</Card.Title>

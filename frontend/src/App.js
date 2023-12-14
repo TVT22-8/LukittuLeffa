@@ -8,7 +8,7 @@ import Group from './components/pages/Group';
 import Home from './components/pages/Home';
 import Settings from './components/pages/Settings';
 import User from './components/pages/User';
-
+import GroupPage from './components/pages/GroupPage';
 import { AuthProvider } from './components/pages/jsxfiles/Logging';
 
 
@@ -36,6 +36,7 @@ const App = () => {
           <Route path='/User' element={<User/>} /> {/* This will allow Home to receive an ID */}
           <Route path="/Settings"/>
           <Route path="/" element={<Home />} />
+          <Route path="/group/:groupId" element={<GroupPage />} />
           <Route path="/movie/:id" element={<Movie/>} /> {/* This will allow Home to receive an ID */}
         </Routes>
       </div>
