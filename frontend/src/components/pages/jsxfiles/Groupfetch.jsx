@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useUserId from './useUserId';
 //import { Button } from '../../Button';
-import { Card, Button, CardBody, Form } from 'react-bootstrap';
+import { Card, Button, CardBody, Form, CardText } from 'react-bootstrap';
 import OuterCard from './OuterCard';
 
 const GroupFetch = () => {
@@ -107,6 +107,78 @@ const GroupFetch = () => {
     }
   };
 
+  const acceptJoin = async (id) => {
+
+
+    if (userId == null) {
+      alert('Not logged in');
+      return;
+    }
+
+    const join = {
+      'uId': id.userlukittu_userid,
+      'groupId': id.watchgroup_groupid
+    }
+    console.log('package' ,join);
+    try {
+      const response = await fetch(`http://localhost:3002/db/groups/admin/joinrequests/accept`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // You can include additional data in the request body if needed
+        body: JSON.stringify(join),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('acceptjoin:', result);
+        fetchJoinRequest();
+      } else {
+        console.error('Failed to accept join request:', response.statusText);
+        alert('Failed to accept join request');
+      }
+    } catch (error) {
+      console.error('Error adding group:', error);
+    }
+  };
+
+  const declineJoin = async (id) => {
+
+
+    if (userId == null) {
+      alert('Not logged in');
+      return;
+    }
+
+    const join = {
+      'uId': id.userlukittu_userid,
+      'groupId': id.watchgroup_groupid
+    }
+    console.log('package' ,join);
+    try {
+      const response = await fetch(`http://localhost:3002/db/groups/admin/joinrequests/reject`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // You can include additional data in the request body if needed
+        body: JSON.stringify(join),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('acceptjoin:', result);
+        fetchJoinRequest();
+      } else {
+        console.error('Failed to accept join request:', response.statusText);
+        alert('Failed to accept join request');
+      }
+    } catch (error) {
+      console.error('Error adding group:', error);
+    }
+  };
+
 
   const fetchGroups = async () => {
     try {
@@ -138,6 +210,29 @@ const GroupFetch = () => {
       </label>
       <Button onClick={() => addGroup()}>Create Group</Button>
       <br />
+
+      <div style={{position: 'static'}}>
+      <OuterCard style={{ overflowX: 'auto'}}>
+      {joinRequest && (
+        <div style={{display: 'inline-flex', flexDirection: 'row'}}>
+          {joinRequest.map((show, index) => (
+            <Card key={index} style={{width: '350px', height: '290px'}}>
+              {index > 0 && <br />}
+              <CardBody>
+                <Card.Title>{show.groupname}</Card.Title>
+                <br />
+                <CardText>Username: {show.requester_username}</CardText>
+                <br />
+                <Button onClick={() => acceptJoin(show)} style={{display:'inline-flex', margin:'0 20px'}}>Accept</Button>
+                <Button onClick={() => declineJoin(show)} style={{display:'inline-flex'}}>Decline</Button>
+              </CardBody>
+            </Card>
+          ))}
+        </div>
+      )}
+      </OuterCard>
+      </div> 
+
       <br />
 
       {groups.map((group) => (
