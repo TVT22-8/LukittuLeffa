@@ -270,7 +270,7 @@ const UserPage = () => {
                   <br></br>
                   <Card.Text>{review.reviewtext}</Card.Text>
                   <Card.Text style={{ fontSize: '12px', textAlign: 'end' }}>
-                    Reviewed on: {new Date(review.reviewdate).toLocaleDateString()}
+                    Reviewed on: {(review.reviewdate)}
                   </Card.Text>
                   <RatingStars rating={review.rating} />
                 </CardBody>
