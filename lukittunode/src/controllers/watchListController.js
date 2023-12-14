@@ -2,7 +2,7 @@ const pool = require('../../db_pool/pool');
 
 exports.getUsersWatchlist = async (req,res) => {
     const {uId} = req.params;
-    try{
+    try{//Get all of the movies in a spesific Users Watch List
         const result =  await pool.query('SELECT * FROM watchlist WHERE userlukittu_userid = $1',
         [uId]);
         res.json(result.rows);
@@ -14,8 +14,9 @@ exports.getUsersWatchlist = async (req,res) => {
 
 exports.addMovieToUsersWatchlist = async (req,res) => {
     const{uId, movieId} = req.body;
-    try{
-        const result = await pool.query('INSERT INTO watchlist (movieid, userlukittu_userid) VALUES ($1, $2) RETURNING *',
+    try{//Adds a movie to users Watch List, must know movieId and userId
+        const result = await pool.query(`INSERT INTO watchlist (movieid, userlukittu_userid)
+         VALUES ($1, $2) RETURNING *`,
         [movieId, uId]);
     res.json(result.rows);
     } catch (error) {
@@ -26,8 +27,10 @@ exports.addMovieToUsersWatchlist = async (req,res) => {
 
 exports.removeMovieFromUsersWatchlist = async (req,res) => {
     const{uId, movieId} = req.params;
-    try{
-        const result = await pool.query('DELETE FROM watchlist WHERE userlukittu_userid = $1 AND movieid = $2 RETURNING *',
+    try{//Removes movie from users Watch List, REMINDER this is also performed when user inserts
+        //The same movie into their Watch History
+        const result = await pool.query(`DELETE FROM watchlist WHERE userlukittu_userid = $1 
+        AND movieid = $2 RETURNING *`,
         [uId, movieId]);
     res.json(result.rows);
     } catch (error) {
