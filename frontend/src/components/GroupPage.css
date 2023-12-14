@@ -1,0 +1,105 @@
+/* Custom styles.css file */
+/* Ensure that the card header matches the mockup */
+.card-header {
+    background-color: #f8f9fa; /* Bootstrap's default card header color */
+    border-bottom: 1px solid #e9ecef; /* Bootstrap's default card border color */
+
+    /* Make the card header responsive */
+    @media (min-width: 576px) {
+      padding: 0.75rem 1.25rem;
+    }
+
+  }
+  
+  /* Style for the chat message */
+  .chat-message {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+
+    /* Make the chat message responsive */
+    @media (min-width: 576px) {
+      padding: 15px;
+    }
+  }
+  
+  .chat-timestamp {
+    font-size: 0.8rem;
+    color: #6c757d; /* Bootstrap's default text-muted color */
+
+    /* Make the chat timestamp responsive */
+    @media (min-width: 576px) {
+      font-size: 0.9rem;
+    }
+  }
+  
+  .admin-label {
+    font-weight: bold;
+    color: #007bff; /* Bootstrap primary color */
+
+    /* Make the admin label responsive */
+    @media (min-width: 576px) {
+      font-size: 0.9rem;
+    }
+  }
+  
+  .kick-button {
+    margin-left: 10px;
+    font-size: 0.8rem;
+    color: #007bff; /* Bootstrap primary color */
+    cursor: pointer;
+
+  }
+  
+  /* Style for the list group to make it scrollable if content is long */
+  .list-group {
+    max-height: 300px;
+    overflow-y: auto;
+    /* Make the list group responsive */
+    @media (min-width: 576px) {
+      max-height: 400px;
+    }
+  }
+  
+  /* Make the form input and button visually appealing */
+  .form-group {
+    margin-bottom: 0; /* Remove margin if needed */
+
+    /* Make the form group responsive */
+    @media (min-width: 576px) {
+      margin-bottom: 1rem;
+    }
+  }
+  
+  .send-button {
+    width: 100%; /* Make the button full width */
+    font-size: 0.8rem;
+    color: #fff; /* White text color */
+    background-color: #007bff; /* Bootstrap primary color */
+    border-color: #007bff; /* Bootstrap primary color */
+
+  }
+
+ 
+  
+  .chat-list {
+    overflow-y: auto; /* Make the chat list scrollable */
+    flex: 1; /* Allow the chat list to fill the height */
+
+    /* Make the chat list responsive */
+    @media (min-width: 576px) {
+      flex-grow: 0;
+    }
+
+  }
+  
+  .chat-form {
+    border-top: 1px solid #ddd; /* Add a separator line between messages and input */
+    padding: 20px;
+
+    /* Make the chat form responsive */
+    @media (min-width: 576px) {
+      padding: 15px;
+    }
+
+  }
+
