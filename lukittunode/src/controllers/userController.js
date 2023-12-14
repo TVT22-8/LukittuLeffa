@@ -52,7 +52,8 @@ exports.getUsersGroups = async (req, res) => {
 
 
 exports.createUser = async (req, res) => {
-  const { uname, pwd } = req.body;
+  
+  const { uname, pwd } = req.body.credentials;
   try {//Creates a new User and Hashes the password
     const hashedPassword = await new Promise((resolve, reject) => {
       bcrypt.hash(pwd, 10, (err, hash) => {

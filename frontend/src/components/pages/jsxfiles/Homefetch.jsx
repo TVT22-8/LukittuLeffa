@@ -26,6 +26,7 @@ const Homefetch = () => {
 
     useEffect(() => {
         fetchUserWatchlist();
+        fetchGroupReviews();
         fetchUserReviews();
         fetchUserHistory();
         fetchUserGroups();
@@ -65,7 +66,7 @@ const Homefetch = () => {
 
     const fetchGroupReviews = async () => {
         try {
-            const response = await fetch(`http://localhost:3002/db/users/watchreviews/${userId[0].userid}`);
+            const response = await fetch(`http://localhost:3002/db/users/group/reviews/${userId[0].userid}`);
             const data = await response.json();
             console.log(data, 'user reviews');
             setGroupReview(data);
@@ -163,6 +164,8 @@ const Homefetch = () => {
       
     return (
     <div>
+        <Card.Title style={{textAlign:'center', fontSize:'60px'}}>Home Page</Card.Title>
+        <br />
 
     <div style={{position: 'absolute', left: '60px', minWidth: '1800px', maxWidth: '1800px'}}>
     <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Five Latest Reviews</Card.Title>
@@ -191,7 +194,7 @@ const Homefetch = () => {
       </OuterCard>
       </div> 
 
-    <div style={{position: 'absolute', left: '60px', top: '500px', minWidth: '1800px', maxWidth: '1800px'}}>
+    <div style={{position: 'absolute', left: '60px', top: '550px', minWidth: '1800px', maxWidth: '1800px'}}>
     <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Finnkino</Card.Title>
       <OuterCard style={{ width: '1800px', height: '325px', overflowX: 'auto'}}>
       {finn && (
@@ -211,7 +214,7 @@ const Homefetch = () => {
       </OuterCard>
       </div> 
 
-      <div style={{position: 'absolute', left: '60px', top: '880px', minWidth: '1800px', maxWidth: '1800px'}}>
+      <div style={{position: 'absolute', left: '60px', top: '930px', minWidth: '1800px', maxWidth: '1800px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Watchlist</Card.Title>
       <OuterCard style={{ width: '1800px', height: '325px', overflowX: 'auto'}}>
       {movieInfo && (
@@ -231,7 +234,7 @@ const Homefetch = () => {
       </OuterCard>
       </div>
 
-      <div style={{position: 'absolute', left: '60px', top: '1260px', minWidth: '1800px', maxWidth: '1800px'}}>
+      <div style={{position: 'absolute', left: '60px', top: '1310px', minWidth: '1800px', maxWidth: '1800px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>History</Card.Title>
       <OuterCard style={{ width: '1800px', height: '325px', overflowX: 'auto'}}>
       {movieHistory && (
@@ -271,7 +274,7 @@ const Homefetch = () => {
       </OuterCard>
     </div>
 
-      <div style={{position: 'absolute', left: '60px', top: '2020px', minWidth: '880px', maxWidth: '880px'}}>
+      <div style={{position: 'absolute', left: '60px', top: '2070px', minWidth: '880px', maxWidth: '880px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Your Latest Review</Card.Title>
       <OuterCard style={{ height: '325px', overflowX: 'auto'}}>
       {userReview && (
@@ -300,7 +303,7 @@ const Homefetch = () => {
       </OuterCard>
       </div>
 
-      <div style={{position: 'absolute', right: '60px', top: '2020px', minWidth: '880px', maxWidth: '880px'}}>
+      <div style={{position: 'absolute', right: '60px', top: '2070px', minWidth: '880px', maxWidth: '880px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Groups Review</Card.Title>
       <OuterCard style={{ height: '325px', overflowX: 'auto'}}>
       {groupReview && (
