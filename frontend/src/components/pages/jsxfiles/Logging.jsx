@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 
       if(response.ok){
         const result = await response.json();
-
+        alert('Logged in')
         console.log('Authenticated: ', result.authenticated);
         if(result.authenticated == false){
           alert('Username or password wrong');
@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     // Implement logout logic (e.g., clear user data)
+    alert('logged out');
     setUser(null);
   };
 
@@ -65,6 +66,7 @@ export const AuthProvider = ({ children }) => {
     if (response.ok){
       const result = await response.json();
       console.log('register' ,result);
+      alert('Account created');
     }else{
       console.error('Failed to register:', response.statusText);
     }

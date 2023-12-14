@@ -177,7 +177,7 @@ const Homefetch = () => {
       
     return (
     <div>
-        <Card.Title style={{textAlign:'center', fontSize:'60px'}}>Home Page</Card.Title>
+        <Card.Title style={{textAlign:'center', fontSize:'60px', backgroundColor:'grey'}}>Home Page</Card.Title>
         <br />
 
     <div style={{position: 'absolute', left: '60px', minWidth: '1800px', maxWidth: '1800px'}}>
