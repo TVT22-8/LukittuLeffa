@@ -4,14 +4,9 @@ import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import './Navbar.css';
 import SearchBar from './SearchBar';
 import { Button } from './Button'; // Import the Button component
-
+import { Bootstrap } from 'react-bootstrap-icons';
 
 const MenuItems = [
-  {
-    title: 'Settings',
-    path: '/settings',
-    cName: 'nav-links',
-  },
   {
     title: 'Groups',
     path: '/Group',
