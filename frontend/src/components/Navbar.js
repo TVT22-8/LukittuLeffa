@@ -8,11 +8,6 @@ import { Button } from './Button'; // Import the Button component
 
 const MenuItems = [
   {
-    title: 'Settings',
-    path: '/settings',
-    cName: 'nav-links',
-  },
-  {
     title: 'Groups',
     path: '/Group',
     cName: 'nav-links',
