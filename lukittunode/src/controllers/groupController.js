@@ -101,31 +101,30 @@ exports.removeMember = async (req, res) => {
 };
 
 exports.deleteGroup = async (req, res) => {
-    const {groupId, adminId} = req.params;
+    const {groupId} = req.params;
     try{//Delete a Group but only with the Correct adminID
-        const groupResult = await pool.query('SELECT * FROM watchgroup WHERE groupid = $1', [groupId]);
-        if (groupResult.rows.length === 0){
-            return res.status(404).json({error: 'Group not found'});
-        }
+        await pool.query('BEGIN');
 
-        const group = groupResult.rows[0];
-        const moderatorId = group.owner_userid;
-
-        if(moderatorId.toString() !== adminId.toString()){
-            return res.status(403).json({error: 'Permission denied. Only the moderator can remove group'});
-        }
-
-        const result = await pool.query(
-            'DELETE FROM watchgroup WHERE groupid = $1',
-            [groupId]
+        // Delete Watch Group
+        await pool.query(
+          `delete from watchgroup where groupid = $1`,
+          [groupId]
         );
-
-        res.json({message:'Group removed succesfully', updatedGroup: result.rows[0]});
-    }
-
-    catch(error){
-        console.error(error);
-        res.status(500).json({error: 'Internal Server Error'});
+    
+        // Deletes every member from Group Membership
+        await pool.query(
+          `delete from group_membership where groupid = $1`,
+          [groupId]
+        );
+    
+        // Commit the transaction
+        await pool.query('COMMIT');
+    
+        res.json({ success: true });
+      } catch (error) {
+        // Rollback the transaction if there's an error
+        await pool.query('ROLLBACK');
+        res.status(500).json({error: 'Internal Server Error Deleting a Group'});
     }
 };
 
