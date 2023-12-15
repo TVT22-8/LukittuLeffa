@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const movieController = require('../controllers/moviesController');
 
-describe('Test Watch History Functions', () => {
+describe('Test movieController Functions', () => {
   
 
   it('should get user watch history', async () => {
