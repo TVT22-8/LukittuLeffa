@@ -29,8 +29,8 @@ const SearchBar = ({ onSearch, searchResults }) => {
           {searchResults.map((result) => (
   <li key={result.id} className="list-group-item">
     <Link to={`/movie/${result.id}`}>
-      {result.title.length > 10
-        ? `${result.title.substring(0, 15)}...`
+      {result.title.length > 55
+        ? `${result.title.substring(0, 55)}...`
         : result.title}
     </Link>
   </li>

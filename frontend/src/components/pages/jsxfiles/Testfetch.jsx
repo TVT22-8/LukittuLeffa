@@ -3,6 +3,7 @@ import { Card, Button, CardBody, Form } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import useUserId from './useUserId';
 
+//this code fetches and posts all movie information on moviepage
 
 const url = 'https://image.tmdb.org/t/p/original';
 const url2 = 'https://image.tmdb.org/t/p/w200';

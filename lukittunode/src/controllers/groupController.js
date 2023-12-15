@@ -162,7 +162,7 @@ exports.getGroupMembersReviews = async (req,res) => {
         group_membership gm on wr.userlukittu_userid = gm.userid where gm.groupid = $1`,
         [groupId]);
         const watchhistoryMovieIds = result.rows.map((entry) => entry.watchhistory_movieid);
-        console.log(watchhistoryMovieIds);
+        //console.log(watchhistoryMovieIds);
 
         async function fetchTitles(movieId) {
             try {
