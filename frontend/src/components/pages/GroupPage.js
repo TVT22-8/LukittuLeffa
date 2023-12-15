@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Container, Row, Col, Card, ListGroup, Form, Button } from 'react-bootstrap';
 import '../GroupPage.css';
 import Badge from 'react-bootstrap/Badge';
@@ -69,10 +69,20 @@ const GroupPage = () => {
       }
       const data = await response.json();
       setParticipants(data);
+      const loggedInUser = data.find(participant => participant.userid === user[0].userid);
+      if (loggedInUser) {
+        // Update your state or context to reflect the admin status.
+        // This is just an example; adjust it to fit how you manage state/context.
+        user[0].is_admin = loggedInUser.is_admin;
+      }
     } catch (error) {
       setError(error.message);
     }
   };
+
+
+
+  
 
   const fetchRecentMovies = async () => {
     try {
@@ -151,6 +161,38 @@ const handleSendMessage = async (event) => {
     fetchMessages();
 };
 
+const kickUser = async (userIdToKick) => {
+  // Check if the current user is admin before proceeding.
+  if (!user[0].is_admin) {
+    alert("You don't have permission to perform this action.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:3002/db/groups/${groupId}/kick/${userIdToKick}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        // Include any other necessary headers, such as authorization tokens
+      },
+      body: JSON.stringify({
+        adminId: user[0].userid, // Send the admin ID in the request body if needed
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    // Update the participants state to remove the kicked user
+    setParticipants(participants.filter(participant => participant.userid !== userIdToKick));
+
+  } catch (error) {
+    console.error('Failed to kick user:', error);
+    alert('Failed to kick user: ' + error.message);
+  }
+};
+
 
 
   return (
@@ -171,7 +213,9 @@ const handleSendMessage = async (event) => {
       {reviews.map((review) => (
         <Card key={review.reviewid} className="mb-2">
           <Card.Body>
+            <Link to={`http://localhost:3000/movie/${review.watchhistory_movieid}`}>              
             <Card.Title>{review.title}</Card.Title>
+            </Link>
             <Card.Text>{review.reviewtext}</Card.Text>
             <div className="text-muted">{review.reviewdate}</div>
              <RatingStars rating= {review.rating} />
@@ -181,9 +225,10 @@ const handleSendMessage = async (event) => {
     </Card.Body>
   </Card>
 </Col>
+
 <Col md={4}>
     <Card className="chat-card">
-      <Card.Header>Chat</Card.Header>
+      <Card.Header>Chat</Card.Header> 
       <Card.Body className="scrollable-list chat-list">
         {messages.map((message) => (
           <Card key={message.chat_id} className="mb-2">
@@ -223,8 +268,15 @@ const handleSendMessage = async (event) => {
                 <Badge pill variant="primary" className="ml-2">Admin</Badge>
               )}
             </div>
-            {participant.is_admin && (
-              <Button variant="outline-danger" size="sm">Kick</Button>
+            {/* Render the "Kick" button for non-admin users */}
+            {!participant.is_admin && (
+  <Button 
+    variant="outline-danger" 
+    size="sm"
+    onClick={() => kickUser(participant.userid)}
+  >
+    Kick
+  </Button>
             )}
           </Card.Body>
         </Card>

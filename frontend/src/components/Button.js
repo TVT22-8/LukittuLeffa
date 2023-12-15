@@ -1,6 +1,5 @@
 // Button.js
 import React, { useState } from 'react';
-import './Button.css';
 import { Link } from 'react-router-dom';
 import AuthPopup from './AuthPopup'; // Create AuthPopup component in a separate file
 
@@ -17,7 +16,7 @@ export function Button() {
   return (
     <div>
       {/* Use a button instead of Link here */}
-      <button className='btn' color='white' onClick={handleOpenPopup}>
+      <button className='signup-button' color='white' onClick={handleOpenPopup}>
         Sign Up
       </button>
 

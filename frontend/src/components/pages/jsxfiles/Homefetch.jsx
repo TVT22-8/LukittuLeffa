@@ -267,7 +267,6 @@ const Homefetch = () => {
       </OuterCard>
       </div>
 
-
       <div style={{position: 'absolute', left: '60px', top: '1690px', minWidth: '1800px', maxWidth: '1800px'}}>
       <Card.Title style={{textAlign: 'center', fontSize: '40px'}}>Suggested Movies</Card.Title>
       <OuterCard style={{ width: '1800px', height: '325px', overflowX: 'auto'}}>

@@ -284,42 +284,44 @@ const UserPage = () => {
     </Card>
   </Col>
 </Row>
-  {/* User's Groups Section */}
-  <Row className="mb-3">
-      <Col>
-        <Card>
-          <Card.Header>Your Groups</Card.Header>
-          <Card.Body>
-            {userGroups.length > 0 ? (
-              userGroups.map((group, index) => (
-                <Card
-                  key={index}
-                  style={{
-                    width: '100%',
-                    marginBottom: '10px',
-                    backgroundColor: group.is_admin ? '#eff6ff' : '#fff', // Highlight background if admin
-                  }}
-                >
-                  <CardBody>
-                    <Card.Title>
-                      {group.groupname}
-                      {group.is_admin && (
-                        <Badge pill variant="primary" style={{ marginLeft: '10px' }}>
-                          Admin
-                        </Badge> // Display the admin badge if the user is an admin
-                      )}
-                    </Card.Title>
-                    <Card.Text>{group.description}</Card.Text>
-                  </CardBody>
-                </Card>
-              ))
-            ) : (
-              <p>You are not a member of any groups.</p>
-            )}
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
+   {/* User's Groups Section */}
+   <Row className="mb-3">
+        <Col>
+          <Card>
+            <Card.Header>Your Groups</Card.Header>
+            <Card.Body>
+              {userGroups.length > 0 ? (
+                userGroups.map((group) => (
+                  <Link to={`/group/${group.groupid}`} key={group.groupid} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <Card
+                      style={{
+                        width: '100%',
+                        marginBottom: '10px',
+                        backgroundColor: group.is_admin ? '#eff6ff' : '#fff',
+                      }}
+                    >
+                      <CardBody>
+                        <Card.Title>
+                          {group.groupname}
+                          {group.is_admin && (
+                            <Badge pill variant="primary" style={{ marginLeft: '10px' }}>
+                              Admin
+                            </Badge>
+                          )}
+                        </Card.Title>
+                        <Card.Text>{group.description}</Card.Text>
+                      </CardBody>
+                    </Card>
+                  </Link>
+                ))
+              ) : (
+                <p>You are not a member of any groups.</p>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
             </Container>
           );
         };
