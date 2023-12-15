@@ -102,7 +102,7 @@ exports.removeMember = async (req, res) => {
 
 exports.deleteGroup = async (req, res) => {
     const {groupId} = req.params;
-    try{//Delete a Group but only with the Correct adminID
+    try{//Delete a Group
         await pool.query('BEGIN');
 
         // Delete Watch Group
@@ -159,7 +159,7 @@ exports.getGroupMembersReviews = async (req,res) => {
     try{//Get all of the groupMembers and all of their Movie Reviews
         const result = await pool.query(`SELECT reviewid, reviewtext, rating, TO_CHAR(reviewdate, 'DD.MM.YYYY') AS reviewdate, 
         watchhistory_movieid, userlukittu_userid FROM watchreviews wr JOIN 
-        group_membership gm on wr.userlukittu_userid = gm.userid where gm.groupid = $1`,
+        group_membership gm on wr.userlukittu_userid = gm.userid where gm.groupid = $1 ORDER BY reviewdate DESC`,
         [groupId]);
         const watchhistoryMovieIds = result.rows.map((entry) => entry.watchhistory_movieid);
         //console.log(watchhistoryMovieIds);
