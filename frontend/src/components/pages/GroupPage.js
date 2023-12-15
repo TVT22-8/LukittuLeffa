@@ -169,7 +169,7 @@ const kickUser = async (userIdToKick) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:3002/db/groups/${groupId}/kick/${userIdToKick}`, {
+    const response = await fetch(`http://localhost:3002/db/groups/${groupId}/${userIdToKick}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -179,7 +179,6 @@ const kickUser = async (userIdToKick) => {
         adminId: user[0].userid, // Send the admin ID in the request body if needed
       }),
     });
-
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -190,40 +189,6 @@ const kickUser = async (userIdToKick) => {
   } catch (error) {
     console.error('Failed to kick user:', error);
     alert('Failed to kick user: ' + error.message);
-  }
-};
-
-const handleDeleteGroup = async () => {
-  const confirmDelete = window.confirm("Are you sure you want to delete this group?");
-  if (confirmDelete) {
-    try {
-      // Assuming `user[0].userid` is the ID of the logged-in user who is also the admin
-      const adminId = user[0].userid;
-
-      const response = await fetch(`http://localhost:3002/db/groups/${groupId}/${adminId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          // Include any other necessary headers such as authorization tokens
-        },
-      });
-
-      if (!response.ok) {
-        // If the server responded with a non-2xx status code, it will throw an error
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.error || 'Could not delete the group.');
-      }
-
-      // If the delete was successful, handle the aftermath, like redirecting the user
-      alert('Group has been successfully deleted.');
-      // Redirect to another page, for example, the dashboard
-      // This depends on your routing setup, using useHistory from react-router-dom for example
-      // history.push('/dashboard');
-
-    } catch (error) {
-      console.error('Failed to delete group:', error);
-      alert('Failed to delete group: ' + error.message);
-    }
   }
 };
 
@@ -298,36 +263,23 @@ const handleDeleteGroup = async () => {
           <Card.Body className="d-flex justify-content-between align-items-center">
             <div>
               {participant.username}
-              {/* Show the Admin badge and Delete Group button if participant is admin */}
               {participant.is_admin && (
-                <>
-                  <Badge pill variant="primary" className="ml-2">Admin</Badge>
-                  {/* Show Delete Group button only for the logged-in admin user */}
-                  {user[0].is_admin && participant.userid === user[0].userid && (
-                    <Button 
-                      variant="danger" 
-                      className="ml-2" // Adjust the class as needed
-                      onClick={handleDeleteGroup}
-                    >
-                      Delete Group
-                    </Button>
-                  )}
-                </>
+                <Badge pill variant="primary" className="ml-2">Admin</Badge>
               )}
             </div>
             {/* Render the "Kick" button for non-admin users */}
-            {!participant.is_admin && user[0].is_admin && (
-              <Button 
-                variant="outline-danger" 
-                size="sm"
-                onClick={() => kickUser(participant.userid)}
-              >
-                Kick
-              </Button>
-            )}
-          </Card.Body>
-        </Card>
-      ))}
+            {!participant.is_admin && (
+        <Button 
+    variant="outline-danger" 
+    size="sm"
+    onClick={() => kickUser(participant.userid)}
+  >
+    Kick
+  </Button>
+      )}
+    </Card.Body>
+  </Card>
+))}
     </Card.Body>
   </Card>
 </Col>
