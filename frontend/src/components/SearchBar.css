@@ -22,7 +22,7 @@
   }
  
   .list-group {
-    width: 200px;
+    width: 400px;
     position: absolute;
     top: 100%; /* This will start the list-group right after the search-bar */
     left: 0; /* Align it with the left edge of the search-bar */
