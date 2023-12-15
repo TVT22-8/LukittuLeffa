@@ -169,7 +169,7 @@ const kickUser = async (userIdToKick) => {
   }
 
   try {
-    const response = await fetch(`http://localhost:3002/db/groups/${groupId}/kick/${userIdToKick}`, {
+    const response = await fetch(`http://localhost:3002/db/groups/${groupId}/${userIdToKick}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -200,7 +200,7 @@ const handleDeleteGroup = async () => {
       // Assuming `user[0].userid` is the ID of the logged-in user who is also the admin
       const adminId = user[0].userid;
 
-      const response = await fetch(`http://localhost:3002/db/groups/${groupId}/${adminId}`, {
+      const response = await fetch(`http://localhost:3002/db/groups/${groupId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
