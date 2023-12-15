@@ -123,7 +123,7 @@ exports.getFiveLatestReviews = async (req, res) => {
 
 async function fetchMovieTitles(resultRows) {
     const watchhistoryMovieIds = resultRows.map((entry) => entry.watchhistory_movieid);
-    console.log(watchhistoryMovieIds);
+    //console.log(watchhistoryMovieIds);
 
     async function fetchTitles(movieId) {
         try {
