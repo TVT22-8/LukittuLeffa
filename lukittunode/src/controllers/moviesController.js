@@ -25,7 +25,7 @@ exports.getUsersSimilars = async(req,res) => {
         ORDER BY entry_order DESC
         LIMIT 3;`,[uId]);
         const movieIds = result.rows.map((entry) => entry.movieid);
-        console.log(movieIds);
+       // console.log(movieIds);
 
         let similarMovies = [];
 
@@ -38,7 +38,7 @@ exports.getUsersSimilars = async(req,res) => {
             similarMovies = similarMovies.concat(currentSimilarMovies);
         }
 
-        console.log(similarMovies);
+       // console.log(similarMovies);
 
 
         res.json(similarMovies);
