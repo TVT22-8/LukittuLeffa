@@ -38,12 +38,12 @@ describe('getCredits function tests', () => {
   expect(result).to.have.property('directing');
   expect(result).to.have.property('writing');
   expect(result).to.have.property('producing');
-    // Add assertions for crew members or any specific data you want to test
+    
   });
   
 
   it('should handle API error', async () => {
-    const movieId = -1; // Replace with an invalid movie ID to simulate API error
+    const movieId = -1;
 
     fetchMock.getOnce(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`, {
       status: 404, // Simulate API error
