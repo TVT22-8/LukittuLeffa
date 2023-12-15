@@ -44,6 +44,7 @@ const GroupFetch = () => {
       if (response.ok) {
         const result = await response.json();
         console.log('Group:', result);
+        fetchGroups();
         alert('Added group');
       } else {
         console.error('Failed to send group:', response.statusText);
